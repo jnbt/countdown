@@ -51,38 +51,50 @@ Define how often the counter should be updated.
 Possible steps are:
 <pre>:millis, :seconds, :minutes, :hours, :days</pre>
 
-Default is :seconds
+Default is <pre>:seconds</pre>
 
 ####:units
 
-Define which time units should be used and how they should be ordered.
+Define which time units should be displayed and how they should be ordered.
+
+Available keys are:
+<pre>:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis</pre>
 
 Default is
 ```ruby
 [:days, :hours, :minutes, :seconds]
 ```
+####:separators
+
+Define how different time units are separated from each other.
 
 Available keys are:
 <pre>:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis</pre>
 
-####:seperators
-
-Define how different time units are separated from each other.
-You can pluralize any seperator by supplying an array e.g day: ["day","days"]
-
 Default is
 ```ruby
-{ year: "Y", month: "M", week: "w" day: "d", hour: "h", min: "m", sec: "s", ms: "ms" }
+{ years: "Y", months: "M", weeks: "w" days: "d", hours: "h", minutes: "m", seconds: "s", millis: "ms" }
 ```
+You can singularize separators by supplying a hash e.g
+```ruby
+days: {value: "days", singular: "day"}
+```
+By default separators are displayed after the corresponding time unit.
+To display them before to the units use this option:
+```ruby
+seconds: {value: "seconds:", align: :before}
+```
+results in this:
 
-Available keys are:
-<pre>:day, :hour, :min, :sec, :ms</pre>
+<pre>
+seconds:1
+</pre>
 
 ####:leading_zeroes
 
 Set to false to remove leading zeroes (e.g 08:00:00 => 8:00:00)
 
-Defaults to true.
+Defaults to <pre>true</pre>.
 
 ## Countup
 
