@@ -32,13 +32,13 @@ It is updated every second and the generated html looks like this:
 
 ```ruby
 <div class="countdown">
-  <span class="days">1</span>
+  <span class="days day_001">1</span>
   <span class="day-separator">d</span>
-  <span class="hours">03</span>
+  <span class="hours hour_03">03</span>
   <span class="hour-separator">h</span>
-  <span class="minutes">59</span>
+  <span class="minutes minute_59">59</span>
   <span class="minute-separator">m</span>
-  <span class="seconds">59</span>
+  <span class="seconds second_59">59</span>
   <span class="minute-separator">s</span>
 </div>
 ```
