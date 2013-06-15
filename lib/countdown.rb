@@ -1,3 +1,7 @@
 require 'countdown/version'
 require 'countdown/view_helpers'
-require 'countdown/railtie' if defined? Rails
+
+if defined? Rails
+  require 'countdown/engine' if ::Rails.version >= '3.1'
+  require 'countdown/railtie'
+end

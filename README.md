@@ -17,6 +17,14 @@ Or install it yourself as:
 
     $ gem install countdown
 
+### Rails 3.1 or greater (with asset pipeline *enabled*)
+
+Add the countdown javascript file to `app/assets/javascripts/application.js`:
+
+```js
+//= require countdown
+```
+
 ## Usage
 
 ```ruby
