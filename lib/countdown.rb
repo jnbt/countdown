@@ -1,4 +1,6 @@
 require 'countdown/version'
+require 'countdown/content_tags'
+require 'countdown/counters'
 require 'countdown/view_helpers'
 
 if defined? Rails

@@ -1,12 +1,13 @@
 module Countdown
   module ViewHelpers
+    include ::Countdown::Counters
 
     def countdown(time, options={})
-      safe_buffer "<div class=\"countdown\">#{time}</div>"
+      safe_buffer DownCounter.new(time, options).to_html
     end
 
     def countup(time, options={})
-      safe_buffer "<div class=\"countup\">#{time}</div>"
+      safe_buffer UpCounter.new(time, options).to_html
     end
 
     private
