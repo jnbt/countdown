@@ -10,7 +10,13 @@ module Countdown
       end
 
       it 'creates a default 24h countdown' do
-        assert_equal '', @view.countdown(DateTime.now+1)
+        time = DateTime.now+1
+        assert_equal "<div class=\"countdown\">#{time}</div>", @view.countdown(time)
+      end
+
+      it 'creates a default 24h countup' do
+        time = DateTime.now+1
+        assert_equal "<div class=\"countup\">#{time}</div>", @view.countup(time)
       end
 
     end
