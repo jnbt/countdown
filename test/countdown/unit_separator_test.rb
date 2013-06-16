@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'date'
 
 module Countdown
   class UnitSeparatorTest < TestCase

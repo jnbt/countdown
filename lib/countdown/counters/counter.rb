@@ -24,10 +24,6 @@ module Countdown
             time_unit = TimeUnit.new unit, timer[unit]
 
             UnitTagBuilder.new(time_unit, separator).to_html
-
-            #unit_tag = ContentTag.new(:span, class: "#{unit}-#{time_to_unit(unit)}").to_s do
-            #  time_to_unit(unit)
-            #end
           end.join
         end
       end
