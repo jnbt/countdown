@@ -17,6 +17,10 @@ module Countdown
         @singularize = options.delete(:singularize) || DEFAULT_SINGULARIZE
       end
 
+      def attributes
+        { :class => "separator #{unit}", :'data-singular' => (singular || value), :'data-plural' => value }
+      end
+
       def after?
         @align == DEFAULT_ALIGN
       end
@@ -30,7 +34,7 @@ module Countdown
       end
 
       def to_html
-        ContentTag.new(:span, class: "#{unit}-separator").to_s do
+        ContentTag.new(:span, attributes).to_s do
           singularize_value.to_s
         end
       end

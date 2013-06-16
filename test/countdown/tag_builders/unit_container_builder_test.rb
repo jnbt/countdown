@@ -32,12 +32,16 @@ module Countdown
       end
 
       it 'creates html' do
-        assert_equal '<span class="minutes"><span class="minutes-1">1</span><span class="minutes-separator">m</span></span>', @unit_tag_builder.to_html
+        expected = '<span class="minutes"><span class="minutes-1">1</span><span class="separator minutes" data-singular="m" data-plural="m">m</span></span>'
+
+        assert_equal expected, @unit_tag_builder.to_html
       end
 
       it 'creates html with separator aligned before' do
+        expected = '<span class="minutes"><span class="separator minutes" data-singular="m" data-plural="m">m</span><span class="minutes-1">1</span></span>'
         unit_tag_builder = UnitContainerBuilder.new(:minutes, 1, {value: 'm', align: :before})
-        assert_equal '<span class="minutes"><span class="minutes-separator">m</span><span class="minutes-1">1</span></span>', unit_tag_builder.to_html
+
+        assert_equal expected, unit_tag_builder.to_html
       end
     end
 

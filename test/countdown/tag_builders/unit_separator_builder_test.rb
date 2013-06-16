@@ -50,7 +50,9 @@ module Countdown
       end
 
       it 'creates html' do
-        assert_equal '<span class="minutes-separator">m</span>', @separator.to_html
+        expected = '<span class="separator minutes" data-singular="m" data-plural="m">m</span>'
+
+        assert_equal expected, @separator.to_html
       end
     end
   end
