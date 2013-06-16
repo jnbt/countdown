@@ -17,6 +17,22 @@ module Countdown
         assert_equal :minutes, @time_unit.unit
       end
 
+      it 'has a 1 value' do
+        [-1, 1].each do |n|
+          time_unit = TimeUnitBuilder.new(:minutes, n)
+
+          assert time_unit.one?
+        end
+      end
+
+      it 'has no 1 value' do
+        [-2, 0, 2].each do |n|
+          time_unit = TimeUnitBuilder.new(:minutes, n)
+
+          refute time_unit.one?
+        end
+      end
+
       it 'creates html' do
         assert_equal '<span class="minutes-1">1</span>', @time_unit.to_html
       end

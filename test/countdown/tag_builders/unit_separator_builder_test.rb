@@ -31,6 +31,24 @@ module Countdown
         refute separator.after?
       end
 
+      it 'singularizes' do
+        separator = UnitSeparatorBuilder.new(:minutes, {value: 'minutes', singularize: true, singular: 'minute' })
+
+        assert_equal 'minute', separator.singularize_value
+      end
+
+      it 'does not singularize if no singular value is given' do
+        separator = UnitSeparatorBuilder.new(:minutes, {value: 'minutes', singularize: true })
+
+        assert_equal 'minutes', separator.singularize_value
+      end
+
+      it 'does not singularize when disabled' do
+        separator = UnitSeparatorBuilder.new(:minutes, {value: 'minutes', singularize: false, singular: 'minute' })
+
+        assert_equal 'minutes', separator.singularize_value
+      end
+
       it 'creates html' do
         assert_equal '<span class="minutes-separator">m</span>', @separator.to_html
       end

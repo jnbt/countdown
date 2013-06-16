@@ -9,7 +9,11 @@ module Countdown
       def initialize(unit, unit_value, separator_options)
         @unit           = unit
         @time_unit      = TimeUnitBuilder.new unit, unit_value
-        @unit_separator = UnitSeparatorBuilder.new unit, separator_options
+        @unit_separator = UnitSeparatorBuilder.new unit, separator_options.merge(singularize: singularize?)
+      end
+
+      def singularize?
+        time_unit.one?
       end
 
       def to_html
