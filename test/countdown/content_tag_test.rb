@@ -8,18 +8,22 @@ module Countdown
         @tag = ContentTag.new(:div)
       end
 
-      it 'should render to string with block given' do
+      it 'should convert tag to string with block given' do
         string = 'test'
         tag = @tag.to_s { string }
 
         assert tag.is_a?(String)
+        assert tag.include?('<div')
+        assert tag.include?('</div>')
         assert tag.include?(string)
       end
 
-      it 'should render to string without block' do
+      it 'should convert tag to string without block' do
         tag = @tag.to_s
 
         assert tag.is_a?(String)
+        assert tag.include?('<div')
+        assert tag.include?('</div>')
       end
 
       it 'converts attributes to html attributes' do
