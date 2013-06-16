@@ -1,9 +1,7 @@
 require 'countdown/version'
 require 'countdown/countdown_timer'
 require 'countdown/content_tags'
-require 'countdown/unit_separator'
-require 'countdown/time_unit'
-require 'countdown/counters'
+require 'countdown/tag_builders'
 require 'countdown/view_helpers'
 
 if defined? Rails

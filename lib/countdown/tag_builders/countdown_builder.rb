@@ -1,7 +1,7 @@
 module Countdown
-  module Counters
+  module TagBuilders
 
-    class Counter
+    class CountdownBuilder
       include ::Countdown::ContentTags
 
       DEFAULT_DIRECTION  = :down
@@ -20,10 +20,7 @@ module Countdown
       def to_html
         CountdownTag.new(direction).to_s do
           units.map do |unit|
-            separator = UnitSeparator.new unit, separators[unit]
-            time_unit = TimeUnit.new unit, timer[unit]
-
-            UnitTagBuilder.new(time_unit, separator).to_html
+            UnitTagBuilder.new(unit, timer[unit], separators[unit]).to_html
           end.join
         end
       end

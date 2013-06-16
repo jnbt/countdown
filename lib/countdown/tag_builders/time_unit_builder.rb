@@ -1,5 +1,5 @@
 module Countdown
-  class TimeUnit
+  class TimeUnitBuilder
     include ::Countdown::ContentTags
 
     attr_reader :unit, :value
