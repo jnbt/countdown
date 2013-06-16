@@ -23,11 +23,15 @@ module Countdown
     end
 
     it 'overwrites default alignment' do
-      separator = UnitSeparator.new(value: 'm', align: :before)
+      separator = UnitSeparator.new(:minutes, {value: 'm', align: :before})
 
       assert_equal :before, separator.align
       assert separator.before?
       refute separator.after?
+    end
+
+    it 'creates html' do
+      assert_equal '<span class="minutes-separator">m</span>', @separator.to_html
     end
 
   end

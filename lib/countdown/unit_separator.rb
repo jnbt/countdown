@@ -1,11 +1,12 @@
 module Countdown
   class UnitSeparator
+    include ::Countdown::ContentTags
 
     DEFAULT_ALIGN = :after
     attr_reader :value, :align, :unit
 
     def initialize(unit, options={})
-      @unit  = options.delete(:unit)
+      @unit  = unit
       @value = options.delete(:value)
       @align = options.delete(:align) || DEFAULT_ALIGN
     end
