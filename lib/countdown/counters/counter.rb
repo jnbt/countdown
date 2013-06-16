@@ -8,36 +8,32 @@ module Countdown
       DEFAULT_UNITS      = [:days, :hours, :minutes, :seconds]
       DEFAULT_SEPARATORS = { years: {value: "Y"}, months: {value: "M"}, weeks: {value: "w"}, days: {value: "d"}, hours: {value: "h"}, minutes: {value: "m"}, seconds: {value: "s"}, millis: {value: "ms"} }
 
-      attr_reader :direction, :units, :separators, :time
+      attr_reader :direction, :units, :separators, :timer
 
       def initialize(time, options)
         @direction  = options.delete(:direction) || DEFAULT_DIRECTION
         @units      = options.delete(:units) || DEFAULT_UNITS
         @separators = options.delete(:separators) || DEFAULT_SEPARATORS
-        @time       = time
+        @timer      = CountdownTimer.new(time)
       end
 
       def to_html
         CountdownTag.new(direction).to_s do
           units.map do |unit|
-            html = ""
+            separator = Separator.new separators[unit]
+            time_unit = TimeUnit.new unit, timer[unit]
 
-            separator_tag = ContentTag.new(:span, class: "#{unit}-separator").to_s do
-              separators[unit][:value]
-            end
+            UnitTagBuilder.new(time_unit, separator).to_html
 
-            unit_tag = ContentTag.new(:span, class: "#{unit} #{unit}-#{time_to_unit(unit)}").to_s do
-              time_to_unit(unit)
-            end
+            #separator_tag = ContentTag.new(:span, class: "#{unit}-separator").to_s do
+            #  separators[unit][:value]
+            #end
 
-            html << separator_tag
-            html << unit_tag
+            #unit_tag = ContentTag.new(:span, class: "#{unit}-#{time_to_unit(unit)}").to_s do
+            #  time_to_unit(unit)
+            #end
           end.join
         end
-      end
-
-      def time_to_unit(unit)
-        1.to_s
       end
     end
 

@@ -1,4 +1,5 @@
 require 'countdown/version'
+require 'countdown/countdown_timer'
 require 'countdown/content_tags'
 require 'countdown/counters'
 require 'countdown/view_helpers'
