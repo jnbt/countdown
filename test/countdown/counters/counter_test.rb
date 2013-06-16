@@ -3,11 +3,11 @@ require 'date'
 
 module Countdown
   module Counters
-    class UpCounterTest < TestCase
+    class CounterTest < TestCase
 
       it 'should initialize' do
         time = DateTime.now+1
-        counter = UpCounter.new(time, options={})
+        counter = Counter.new(time, options={})
 
         assert_equal time, counter.time
       end

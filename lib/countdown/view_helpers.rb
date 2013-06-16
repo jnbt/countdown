@@ -3,11 +3,11 @@ module Countdown
     include ::Countdown::Counters
 
     def countdown(time, options={})
-      safe_buffer DownCounter.new(time, options).to_html
+      safe_buffer Counter.new(time, options).to_html
     end
 
     def countup(time, options={})
-      safe_buffer UpCounter.new(time, options).to_html
+      safe_buffer Counter.new(time, options.merge(direction: :up)).to_html
     end
 
     private
