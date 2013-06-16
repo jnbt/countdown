@@ -5,11 +5,13 @@ module Countdown
       include ::Countdown::ContentTags
 
       DEFAULT_DIRECTION = :down
+      DEFAULT_UNITS     = [:days, :hours, :minutes, :seconds]
 
-      attr_reader :direction, :time
+      attr_reader :direction, :units, :time
 
       def initialize(time, options)
         @direction = options.delete(:direction) || DEFAULT_DIRECTION
+        @units     = options.delete(:units) || DEFAULT_UNITS
         @time      = time
       end
 
