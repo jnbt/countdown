@@ -20,14 +20,10 @@ module Countdown
       def to_html
         CountdownTag.new(direction).to_s do
           units.map do |unit|
-            separator = Separator.new separators[unit]
+            separator = UnitSeparator.new unit, separators[unit]
             time_unit = TimeUnit.new unit, timer[unit]
 
             UnitTagBuilder.new(time_unit, separator).to_html
-
-            #separator_tag = ContentTag.new(:span, class: "#{unit}-separator").to_s do
-            #  separators[unit][:value]
-            #end
 
             #unit_tag = ContentTag.new(:span, class: "#{unit}-#{time_to_unit(unit)}").to_s do
             #  time_to_unit(unit)
