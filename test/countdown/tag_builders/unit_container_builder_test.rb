@@ -3,10 +3,10 @@ require 'test_helper'
 module Countdown
   module TagBuilders
 
-    class UnitTagBuilderTest < TestCase
+    class UnitContainerBuilderTest < TestCase
 
       before do
-        @unit_tag_builder = UnitTagBuilder.new(:minutes, 1, {value: 'm'})
+        @unit_tag_builder = UnitContainerBuilder.new(:minutes, 1, {value: 'm'})
       end
 
       it 'has unit' do
@@ -26,7 +26,7 @@ module Countdown
       end
 
       it 'creates html with separator aligned before' do
-        unit_tag_builder = UnitTagBuilder.new(:minutes, 1, {value: 'm', align: :before})
+        unit_tag_builder = UnitContainerBuilder.new(:minutes, 1, {value: 'm', align: :before})
         assert_equal '<span class="minutes"><span class="minutes-separator">m</span><span class="minutes-1">1</span></span>', unit_tag_builder.to_html
       end
     end

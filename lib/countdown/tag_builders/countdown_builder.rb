@@ -20,7 +20,7 @@ module Countdown
       def to_html
         CountdownTag.new(direction).to_s do
           units.map do |unit|
-            UnitTagBuilder.new(unit, timer[unit], separators[unit]).to_html
+            UnitContainerBuilder.new(unit, timer[unit], separators[unit]).to_html
           end.join
         end
       end
