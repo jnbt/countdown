@@ -23,6 +23,10 @@ module Countdown
       send unit
     end
 
+    def upcoming_years
+      (start_time.year..target_time.year).to_a
+    end
+
     def duration_in_ms
       ((target_time.to_time - start_time.to_time).to_f.round*1000).to_i
     end
@@ -38,7 +42,7 @@ module Countdown
       rest, seconds = rest.divmod(60)
       rest, minutes = rest.divmod(60)
       rest, hours   = rest.divmod(24)
-      rest, days    = rest.divmod(30) # TODO: month can be 28,29,31 aswell
+      rest, days    = rest.divmod(31) # TODO: month can be 28,29,31 aswell
       years, months = rest.divmod(12)
       weeks, days   = days.divmod(7)
 

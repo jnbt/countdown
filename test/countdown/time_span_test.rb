@@ -9,6 +9,14 @@ module Countdown
       @now = DateTime.now
     end
 
+    it 'gathers upcoming years' do
+      starting_time = DateTime.parse("2012-06-02 00:00:00")
+      target_time   = DateTime.parse("2014-06-02 00:00:00")
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      assert_equal [2012, 2013, 2014], time_span.upcoming_years
+    end
+
     describe 'duration in millis' do
 
       it 'should calculate duration for 1 day in the future' do
