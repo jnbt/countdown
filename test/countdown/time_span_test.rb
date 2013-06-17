@@ -9,6 +9,54 @@ module Countdown
       @now = DateTime.now
     end
 
+    describe 'edge cases' do
+
+      it 'has no leap year' do
+        starting_time = DateTime.parse("2013-01-01 00:00:00")
+        target_time   = DateTime.parse("2014-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+
+      it 'has a leap year' do
+        starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+        target_time   = DateTime.parse("2013-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+
+      it 'has 1 leap year within 3 years' do
+        starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+        target_time   = DateTime.parse("2015-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        expected = {years: 3, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+
+      it 'has 2 leap years within 4 years' do
+        starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+        target_time   = DateTime.parse("2016-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        expected = {years: 4, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+
+      it 'has 3 leap years within 8 years' do
+        starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+        target_time   = DateTime.parse("2020-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        expected = {years: 8, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+    end
+
     it 'gathers upcoming years' do
       starting_time = DateTime.parse("2012-06-02 00:00:00")
       target_time   = DateTime.parse("2014-06-02 00:00:00")
@@ -17,12 +65,58 @@ module Countdown
       assert_equal [2012, 2013, 2014], time_span.upcoming_years
     end
 
+    it 'selects leap years' do
+      starting_time = DateTime.parse("2016-06-01 00:00:00")
+      target_time   = DateTime.parse("2017-06-01 00:00:00")
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      assert_equal [2016], time_span.leap_years
+    end
+
+    it 'gathers upcoming months' do
+      starting_time = DateTime.parse("2013-06-03 00:00:00")
+      target_time   = DateTime.parse("2013-08-05 00:00:00")
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      expected = [Date.parse("2013-06-01"), Date.parse("2013-07-01"), Date.parse("2013-08-01")]
+      assert_equal expected, time_span.upcoming_months
+    end
+
+    it 'shows day count for date' do
+      time_span = TimeSpan.new(DateTime.now, DateTime.now)
+
+      assert_equal 28, time_span.days_in_month(Date.parse("2013-02-01"))
+      assert_equal 30, time_span.days_in_month(Date.parse("2013-06-01"))
+    end
+
     it 'gathers days by upcoming months' do
       starting_time = DateTime.parse("2013-06-01 00:00:00")
       target_time   = DateTime.parse("2013-12-01 00:00:00")
       time_span     = TimeSpan.new(starting_time, target_time)
 
-      assert_equal [30, 31, 30, 31, 30, 31], time_span.days_by_upcoming_months
+      assert_equal [30, 31, 31, 30, 31, 30, 31], time_span.days_by_upcoming_months
+    end
+
+    it 'gathers days by upcoming years' do
+      starting_time = DateTime.parse("2013-06-01 00:00:00")
+      target_time   = DateTime.parse("2020-12-01 00:00:00")
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      assert_equal [365, 365, 365, 366, 365, 365, 365, 366], time_span.days_by_upcoming_years
+    end
+
+    it 'calculates total days' do
+      starting_time = DateTime.parse("2013-06-01 00:00:00")
+      target_time   = DateTime.parse("2013-07-01 00:00:00")
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      assert_equal 61, time_span.total_days
+    end
+
+    it 'converts date first day in month' do
+      time_span = TimeSpan.new(DateTime.now, DateTime.now)
+
+      assert_equal Date.parse("2013-02-01"), time_span.first_day_in_month(Date.parse("2013-02-13"))
     end
 
     describe 'duration in millis' do
@@ -56,8 +150,8 @@ module Countdown
     describe 'years' do
 
       it 'should calculate 1 year' do
-        starting_time = DateTime.parse("2012-06-02 00:00:00")
-        target_time   = DateTime.parse("2013-06-02 00:00:00")
+        starting_time = DateTime.parse("2013-06-02 00:00:00")
+        target_time   = DateTime.parse("2014-06-02 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal 1, time_span.years
@@ -65,8 +159,8 @@ module Countdown
       end
 
       it 'should calculate 2 years' do
-        starting_time = DateTime.parse("2012-06-02 00:00:00")
-        target_time   = DateTime.parse("2014-06-02 00:00:00")
+        starting_time = DateTime.parse("2013-06-02 00:00:00")
+        target_time   = DateTime.parse("2015-06-02 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal 2, time_span.years
@@ -75,6 +169,21 @@ module Countdown
 
     end
 
+    describe 'leap year' do
+
+      it 'should calculate 1 year and 0 days on whole leap year' do
+        starting_time = DateTime.parse("2016-06-01 00:00:00")
+        target_time   = DateTime.parse("2017-06-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.years
+        assert_equal 0, time_span.days
+        assert_all_zero_except(time_span, :years)
+      end
+
+    end
+
+=begin
     describe 'months' do
 
       it 'should calculate 1 month' do
@@ -118,6 +227,7 @@ module Countdown
       end
 
     end
+=end
 
     describe 'days' do
 
@@ -137,6 +247,16 @@ module Countdown
 
         assert_equal 2, time_span.days
         assert_all_zero_except(time_span, :days)
+      end
+
+      it 'should calculate 0 days on whole year (not leap)' do
+        starting_time = DateTime.parse("2013-06-01 00:00:00")
+        target_time   = DateTime.parse("2014-06-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 0, time_span.days
+        assert_equal 1, time_span.years
+        assert_all_zero_except(time_span, :years)
       end
 
     end
@@ -207,6 +327,7 @@ module Countdown
 
     end
 
+=begin
     describe 'milliseconds' do
 
       it 'should calculate 1 millisecond' do
@@ -228,6 +349,7 @@ module Countdown
       end
 
     end
+=end
 
     private
 
