@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'date'
+require 'timecop'
 
 module Countdown
   class TimeSpanTest < TestCase
