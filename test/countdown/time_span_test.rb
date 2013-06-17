@@ -7,9 +7,6 @@ module Countdown
 
     before do
       @now = DateTime.now
-      @h12m30 = @now + 413 + (1.0/24)*12 + (1.0/24/2)
-
-      @time_span = TimeSpan.new(@now, @h12m30)
     end
 
     describe 'duration in millis' do
@@ -32,36 +29,198 @@ module Countdown
 
     end
 
-    it 'should calculate years' do
-      assert_equal 1, @time_span[:years]
+    it 'should calculate 0 for all time units' do
+      starting_time = DateTime.parse("2012-06-02 00:00:00")
+      target_time   = DateTime.parse("2012-06-02 00:00:00")
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      assert_all_zero_except(time_span, nil)
     end
 
-    it 'should calculate months' do
-      assert_equal 1, @time_span[:months]
+    describe 'years' do
+
+      it 'should calculate 1 year' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2013-06-02 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.years
+        assert_all_zero_except(time_span, :years)
+      end
+
+      it 'should calculate 2 years' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2014-06-02 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.years
+        assert_all_zero_except(time_span, :years)
+      end
+
     end
 
-    it 'should calculate weeks' do
-      assert_equal 3, @time_span[:weeks]
+    describe 'months' do
+
+      it 'should calculate 1 month' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-07-02 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.months
+        assert_all_zero_except(time_span, :months)
+      end
+
+      it 'should calculate 2 months' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-08-02 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.months
+        assert_all_zero_except(time_span, :months)
+      end
+
     end
 
-    it 'should calculate days' do
-      assert_equal 2, @time_span[:days]
+    describe 'weeks' do
+
+      it 'should calculate 1 week' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-07-09 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.weeks
+        assert_all_zero_except(time_span, :weeks)
+      end
+
+      it 'should calculate 2 weeks' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-08-16 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.weeks
+        assert_all_zero_except(time_span, :weeks)
+      end
+
     end
 
-    it 'should calculate hours' do
-      assert_equal 12, @time_span[:hours]
+    describe 'days' do
+
+      it 'should calculate 1 day' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-03 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.days
+        assert_all_zero_except(time_span, :days)
+      end
+
+      it 'should calculate 2 days' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-04 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.days
+        assert_all_zero_except(time_span, :days)
+      end
+
     end
 
-    it 'should calculate minutes' do
-      assert_equal 30, @time_span[:minutes]
+    describe 'hours' do
+
+      it 'should calculate 1 hour' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-02 01:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.hours
+        assert_all_zero_except(time_span, :hours)
+      end
+
+      it 'should calculate 2 hours' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-02 02:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.hours
+        assert_all_zero_except(time_span, :hours)
+      end
+
     end
 
-    it 'should calculate seconds' do
-      assert_equal 0, @time_span[:seconds]
+    describe 'minutes' do
+
+      it 'should calculate 1 minute' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-02 00:01:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.minutes
+        assert_all_zero_except(time_span, :minutes)
+      end
+
+      it 'should calculate 2 minutes' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-02 00:02:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.minutes
+        assert_all_zero_except(time_span, :minutes)
+      end
+
     end
 
-    it 'should calculate millis' do
-      assert_equal 0, @time_span[:millis]
+    describe 'seconds' do
+
+      it 'should calculate 1 seconds' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-02 00:00:01")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.seconds
+        assert_all_zero_except(time_span, :seconds)
+      end
+
+      it 'should calculate 2 seconds' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00")
+        target_time   = DateTime.parse("2012-06-02 00:00:02")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.seconds
+        assert_all_zero_except(time_span, :seconds)
+      end
+
+    end
+
+    describe 'milliseconds' do
+
+      it 'should calculate 1 millisecond' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00:000")
+        target_time   = DateTime.parse("2012-06-02 00:00:00:001")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.millis
+        assert_all_zero_except(time_span, :millis)
+      end
+
+      it 'should calculate 2 milliseconds' do
+        starting_time = DateTime.parse("2012-06-02 00:00:00:000")
+        target_time   = DateTime.parse("2012-06-02 00:00:00:002")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 2, time_span.millis
+        assert_all_zero_except(time_span, :millis)
+      end
+
+    end
+
+    private
+
+    def assert_all_zero_except(time_span, *time_units)
+      units = [:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis] - time_units
+
+      units.each do |time_unit|
+        assert_equal 0, time_span[time_unit], "#{time_unit} should be zero!"
+      end
     end
 
   end
