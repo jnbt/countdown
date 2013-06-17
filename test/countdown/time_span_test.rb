@@ -2,13 +2,13 @@ require 'test_helper'
 require 'date'
 
 module Countdown
-  class CountdownTimerTest < TestCase
+  class TimeSpanTest < TestCase
 
     before do
       now = DateTime.now
       h12m30 = now + 413 + (1.0/24)*12 + (1.0/24/2)
 
-      @timer = CountdownTimer.new(h12m30)
+      @timer = TimeSpan.new(now, h12m30)
     end
 
     it 'should calculate duration in ms' do

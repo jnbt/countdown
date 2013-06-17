@@ -1,11 +1,13 @@
 require 'date'
 
 module Countdown
-  class CountdownTimer
-    attr_reader :time, :duration_in_ms, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis
+  class TimeSpan
 
-    def initialize(time)
-      @time           = time
+    attr_reader :start_time, :target_time, :duration_in_ms, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis
+
+    def initialize(start_time=DateTime.now, target_time)
+      @start_time     = start_time
+      @target_time    = target_time
       @duration_in_ms = duration_in_ms
       @years          = duration[:years]
       @months         = duration[:months]
@@ -22,7 +24,7 @@ module Countdown
     end
 
     def duration_in_ms
-      ((time.to_time - DateTime.now.to_time).to_f.round*1000).to_i
+      ((target_time.to_time - DateTime.now.to_time).to_f.round*1000).to_i
     end
 
     private

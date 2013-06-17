@@ -1,5 +1,5 @@
 require 'countdown/version'
-require 'countdown/countdown_timer'
+require 'countdown/time_span'
 require 'countdown/content_tag'
 require 'countdown/tag_builders'
 require 'countdown/view_helpers'

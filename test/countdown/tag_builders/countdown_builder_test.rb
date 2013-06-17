@@ -12,7 +12,7 @@ module Countdown
       end
 
       it 'should initialize with default values' do
-        assert @counter.timer.is_a?(CountdownTimer)
+        assert @counter.time_span.is_a?(TimeSpan)
         assert_equal CountdownBuilder::DEFAULT_DIRECTION, @counter.direction
         assert_equal CountdownBuilder::DEFAULT_UNITS, @counter.units
         assert_equal CountdownBuilder::DEFAULT_SEPARATORS, @counter.separators
