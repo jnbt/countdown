@@ -5,7 +5,7 @@ module Countdown
 
     attr_reader :start_time, :target_time, :duration_in_ms, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis
 
-    def initialize(start_time=DateTime.now, target_time)
+    def initialize(start_time, target_time)
       @start_time     = start_time
       @target_time    = target_time
       @duration_in_ms = duration_in_ms
@@ -24,7 +24,7 @@ module Countdown
     end
 
     def duration_in_ms
-      ((target_time.to_time - DateTime.now.to_time).to_f.round*1000).to_i
+      ((target_time.to_time - start_time.to_time).to_f.round*1000).to_i
     end
 
     private
