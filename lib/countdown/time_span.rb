@@ -5,12 +5,12 @@ module Countdown
 
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    attr_reader :start_time, :target_time, :duration_in_ms, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis
+    attr_reader :start_time, :target_time, :duration_in_micros, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros
 
     def initialize(start_time, target_time)
       @start_time     = start_time
       @target_time    = target_time
-      @duration_in_ms = duration_in_ms
+      duration_in_micros = duration_in_micros
       @years          = duration[:years]
       @months         = duration[:months]
       @weeks          = duration[:weeks]
@@ -19,6 +19,7 @@ module Countdown
       @minutes        = duration[:minutes]
       @seconds        = duration[:seconds]
       @millis         = duration[:millis]
+      @micros         = duration[:micros]
     end
 
     def [](unit)
@@ -29,8 +30,8 @@ module Countdown
       @__duration ||= calculate_units
     end
 
-    def duration_in_ms
-      (target_time.to_time.to_f - start_time.to_time.to_f).round(6) * 1000
+    def duration_in_micros
+      ((target_time.to_time.to_f - start_time.to_time.to_f).round(6) * 1000000).to_i
     end
 
     def leap_years
@@ -74,7 +75,8 @@ module Countdown
     private
 
     def calculate_units
-      seconds, millis  = duration_in_ms.divmod(1000)
+      millis, micros   = duration_in_micros.divmod(1000)
+      seconds, millis  = millis.divmod(1000)
       minutes, seconds = seconds.divmod(60)
       hours, minutes   = minutes.divmod(60)
       days, hours      = hours.divmod(24)
@@ -85,7 +87,7 @@ module Countdown
       # todo: months
       weeks, days  = days.divmod(7)
 
-      {years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis}
+      {years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis, micros: micros}
     end
 
     def leap?(year)

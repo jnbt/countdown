@@ -40,22 +40,22 @@ module Countdown
 
     end
 
-    describe 'duration in millis' do
+    describe 'duration in micros' do
 
       it 'should calculate duration for 1 day in the future' do
-        assert_equal 86400000, TimeSpan.new(@now, @now+1).duration_in_ms
+        assert_equal 86400000000, TimeSpan.new(@now, @now+1).duration_in_micros
       end
 
       it 'should calculate duration for 1 day in the past' do
-        assert_equal -86400000, TimeSpan.new(@now, @now-1).duration_in_ms
+        assert_equal -86400000000, TimeSpan.new(@now, @now-1).duration_in_micros
       end
 
       it 'should calculate duration for same timestamp' do
-        assert_equal 0, TimeSpan.new(@now, @now).duration_in_ms
+        assert_equal 0, TimeSpan.new(@now, @now).duration_in_micros
       end
 
       it 'should calculate duration for last week' do
-        assert_equal 86400000, TimeSpan.new(@now-7, @now-6).duration_in_ms
+        assert_equal 86400000000, TimeSpan.new(@now-7, @now-6).duration_in_micros
       end
 
     end
@@ -107,7 +107,7 @@ module Countdown
         target_time   = DateTime.parse("2014-01-01 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -116,7 +116,7 @@ module Countdown
         target_time   = DateTime.parse("2013-02-28 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -125,7 +125,7 @@ module Countdown
         target_time   = DateTime.parse("2012-02-29 00:00:00") # leap year
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -134,7 +134,7 @@ module Countdown
         target_time   = DateTime.parse("2013-01-01 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -143,7 +143,7 @@ module Countdown
         target_time   = DateTime.parse("2015-01-01 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 3, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 3, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -152,7 +152,7 @@ module Countdown
         target_time   = DateTime.parse("2016-01-01 00:00:00") # leap year
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 4, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 4, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -161,7 +161,7 @@ module Countdown
         target_time   = DateTime.parse("2020-01-01 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 8, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 8, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -175,7 +175,7 @@ module Countdown
         target_time   = DateTime.parse("2012-02-29 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -184,7 +184,7 @@ module Countdown
         target_time   = DateTime.parse("2012-02-29 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -193,7 +193,7 @@ module Countdown
         target_time   = DateTime.parse("2012-05-31 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -202,7 +202,7 @@ module Countdown
         target_time   = DateTime.parse("2012-06-30 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        expected = {years: 0, months: 5, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0}
+        expected = {years: 0, months: 5, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
 
@@ -378,7 +378,6 @@ module Countdown
     describe 'milliseconds' do
 
       it 'should calculate 1 millisecond' do
-
         starting_time = Time.at @now.to_time.to_f
         target_time   = Time.at(starting_time.to_f+0.001)
         time_span     = TimeSpan.new(starting_time, target_time)
@@ -400,10 +399,36 @@ module Countdown
 
     end
 
+    describe 'microseconds' do
+
+      it 'should calculate 1 microsecond' do
+        starting_time = Time.at @now.to_time.to_f
+        target_time   = Time.at(starting_time.to_f, 1.0)
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        refute target_time == starting_time
+
+        assert_equal 1, time_span.micros
+        assert_all_zero_except(time_span, :micros)
+      end
+
+      it 'should calculate 235 microseconds' do
+        starting_time = Time.at @now.to_time.to_f
+        target_time   = Time.at(starting_time.to_f, 235.0)
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        refute target_time == starting_time
+
+        assert_equal 235, time_span.micros
+        assert_all_zero_except(time_span, :micros)
+      end
+
+    end
+
     private
 
     def assert_all_zero_except(time_span, *time_units)
-      units = [:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis] - time_units
+      units = [:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros] - time_units
 
       units.each do |time_unit|
         assert_equal 0, time_span[time_unit], "#{time_unit} should be zero!"
