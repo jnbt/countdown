@@ -25,12 +25,23 @@ module Countdown
       send unit
     end
 
-    def leap_years
-      upcoming_years.select{|year| Date.gregorian_leap?(year)}
+    def duration
+      @__duration ||= calculate_units
     end
 
-    def upcoming_years
-      (start_time.year..target_time.year).to_a
+    def duration_in_ms
+      ((target_time.to_time - start_time.to_time).to_f.round*1000).to_i
+    end
+
+    def leap_years
+      # TODO:
+      # Important examples: starting_time 2012-03-01 has no leap days (after February 29th!)
+      # target_time 2012-01-01 has no leap days (before February 29th!)
+      (start_time.year..target_time.year).to_a.select{|year| Date.gregorian_leap?(year)}
+    end
+
+    def leap_count
+      leap_years.size
     end
 
     # TODO: probably slow if a duration of 1000 years needs to be calculated...
@@ -52,28 +63,10 @@ module Countdown
       Date.new(date.year, date.month, 1)
     end
 
-    def days_by_upcoming_years
-      upcoming_years.map do |year|
-        Date.gregorian_leap?(year) ? 366 : 365
-      end
-    end
-
     def days_by_upcoming_months
       upcoming_months.map do |date|
         days_in_month(date)
       end
-    end
-
-    def total_days
-      days_by_upcoming_months.inject{|sum,x| sum + x }
-    end
-
-    def duration
-      @__duration ||= calculate_units
-    end
-
-    def duration_in_ms
-      ((target_time.to_time - start_time.to_time).to_f.round*1000).to_i
     end
 
     private
@@ -84,13 +77,7 @@ module Countdown
       rest, minutes = rest.divmod(60)
       days, hours   = rest.divmod(24)
 
-      p :days => days, :total_years => upcoming_years.size, :leap_years => leap_years.size
-      p (days % (365+1.0/(upcoming_years.size-1))).round(12)
-
-      # TODO:
-      # Using modulo and round does not fit really...
-      # Problem (test 'has 1 leap year within 3 years'): 1096 % (365+1.0/3) can never be zero!
-      days -= 1 if days != 0 && (days % (365+1.0/(upcoming_years.size-1))).round(12) == 0
+      days -= leap_count
 
       years, days   = days.divmod(365)
 
