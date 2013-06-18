@@ -100,6 +100,32 @@ module Countdown
 
     end
 
+    describe 'unix epoch' do
+
+      it 'should calculate dates before 1970' do
+        starting_time = DateTime.parse("1960-01-01 00:00:00")
+        target_time   = DateTime.parse("2010-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        refute target_time == starting_time
+
+        expected = {years: 50, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+
+      it 'should calculate dates after 1970' do
+        starting_time = DateTime.parse("1960-01-01 00:00:00")
+        target_time   = DateTime.parse("2050-01-01 00:00:00")
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        refute target_time == starting_time
+
+        expected = {years: 90, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0}
+        assert_equal expected.sort, time_span.duration.sort
+      end
+
+    end
+
     describe 'year edge cases' do
 
       it 'has no leap year' do
