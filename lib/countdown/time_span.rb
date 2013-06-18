@@ -30,7 +30,7 @@ module Countdown
     end
 
     def duration_in_ms
-      ((target_time.to_time - start_time.to_time).to_f.round*1000).to_i
+      (target_time.to_time.to_f - start_time.to_time.to_f).round(6) * 1000
     end
 
     def leap_years

@@ -375,21 +375,23 @@ module Countdown
 
     end
 
-=begin
     describe 'milliseconds' do
 
       it 'should calculate 1 millisecond' do
-        starting_time = DateTime.parse("2012-06-02 00:00:00:000")
-        target_time   = DateTime.parse("2012-06-02 00:00:00:001")
+
+        starting_time = Time.at @now.to_time.to_f
+        target_time   = Time.at(starting_time.to_f+0.001)
         time_span     = TimeSpan.new(starting_time, target_time)
+
+        refute target_time == starting_time
 
         assert_equal 1, time_span.millis
         assert_all_zero_except(time_span, :millis)
       end
 
       it 'should calculate 2 milliseconds' do
-        starting_time = DateTime.parse("2012-06-02 00:00:00:000")
-        target_time   = DateTime.parse("2012-06-02 00:00:00:002")
+        starting_time = Time.at @now.to_time.to_f
+        target_time   = Time.at(starting_time.to_f+0.002)
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal 2, time_span.millis
@@ -397,7 +399,6 @@ module Countdown
       end
 
     end
-=end
 
     private
 
