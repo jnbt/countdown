@@ -74,16 +74,18 @@ module Countdown
     private
 
     def calculate_units
-      rest, millis  = duration_in_ms.divmod(1000)
-      rest, seconds = rest.divmod(60)
-      rest, minutes = rest.divmod(60)
-      days, hours   = rest.divmod(24)
+      seconds, millis  = duration_in_ms.divmod(1000)
+      minutes, seconds = seconds.divmod(60)
+      hours, minutes   = minutes.divmod(60)
+      days, hours      = hours.divmod(24)
 
       days -= leap_count
 
-      years, days   = days.divmod(365)
+      years, days  = days.divmod(365)
+      # todo: months
+      weeks, days  = days.divmod(7)
 
-      {years: years, months: 0, weeks: 0, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis}
+      {years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis}
     end
 
     def leap?(year)

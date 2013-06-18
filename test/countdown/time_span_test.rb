@@ -253,12 +253,13 @@ module Countdown
       end
 
     end
+=end
 
     describe 'weeks' do
 
       it 'should calculate 1 week' do
         starting_time = DateTime.parse("2012-06-02 00:00:00")
-        target_time   = DateTime.parse("2012-07-09 00:00:00")
+        target_time   = DateTime.parse("2012-06-09 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal 1, time_span.weeks
@@ -267,7 +268,7 @@ module Countdown
 
       it 'should calculate 2 weeks' do
         starting_time = DateTime.parse("2012-06-02 00:00:00")
-        target_time   = DateTime.parse("2012-08-16 00:00:00")
+        target_time   = DateTime.parse("2012-06-16 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal 2, time_span.weeks
@@ -275,7 +276,6 @@ module Countdown
       end
 
     end
-=end
 
     describe 'days' do
 
