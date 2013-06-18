@@ -5,12 +5,12 @@ module Countdown
 
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    attr_reader :start_time, :target_time, :duration_in_micros, :millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros
+    attr_reader :start_time, :target_time, :duration_in_nanos, :millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos
 
     def initialize(start_time, target_time)
       @start_time     = start_time
       @target_time    = target_time
-      duration_in_micros = duration_in_micros
+      @duration_in_nanos = duration_in_nanos
       @millenniums    = duration[:millenniums]
       @centuries      = duration[:centuries]
       @decades        = duration[:decades]
@@ -23,6 +23,7 @@ module Countdown
       @seconds        = duration[:seconds]
       @millis         = duration[:millis]
       @micros         = duration[:micros]
+      @nanos          = duration[:nanos]
     end
 
     def [](unit)
@@ -33,8 +34,8 @@ module Countdown
       @__duration ||= calculate_units
     end
 
-    def duration_in_micros
-      ((target_time.to_time.to_f - start_time.to_time.to_f).round(6) * 1000000).to_i
+    def duration_in_nanos
+      ((target_time.to_time.to_r - start_time.to_time.to_r).round(9) * 1000000000).to_i
     end
 
     def leap_years
@@ -78,7 +79,8 @@ module Countdown
     private
 
     def calculate_units
-      millis, micros   = duration_in_micros.divmod(1000)
+      micros, nanos    = duration_in_nanos.divmod(1000)
+      millis, micros   = micros.divmod(1000)
       seconds, millis  = millis.divmod(1000)
       minutes, seconds = seconds.divmod(60)
       hours, minutes   = minutes.divmod(60)
@@ -95,7 +97,7 @@ module Countdown
 
       weeks, days  = days.divmod(7)
 
-      {millenniums: millenniums, centuries: centuries, decades: decades, years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis, micros: micros}
+      {millenniums: millenniums, centuries: centuries, decades: decades, years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis, micros: micros, nanos: nanos}
     end
 
     def leap?(year)
