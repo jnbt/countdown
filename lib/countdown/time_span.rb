@@ -34,10 +34,12 @@ module Countdown
     end
 
     def leap_years
-      # TODO:
-      # Important examples: starting_time 2012-03-01 has no leap days (after February 29th!)
-      # target_time 2012-01-01 has no leap days (before February 29th!)
-      (start_time.year..target_time.year).to_a.select{|year| Date.gregorian_leap?(year)}
+      leap_years = (start_time.year..target_time.year).to_a.select{|year| leap?(year)}
+
+      leap_years.shift if leap?(start_time.year) && start_time >= Date.new(start_time.year, 2, 29) # starting_time >= 2012-02-29 has no leap days (after February 29th!)
+      leap_years.pop if leap?(target_time.year) && target_time < Date.new(target_time.year, 2, 28) # target_time <= 2012-02-28 has no leap days (before February 29th!)
+
+      leap_years
     end
 
     def leap_count
@@ -82,6 +84,10 @@ module Countdown
       years, days   = days.divmod(365)
 
       {years: years, months: 0, weeks: 0, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis}
+    end
+
+    def leap?(year)
+      Date.gregorian_leap?(year)
     end
 
   end
