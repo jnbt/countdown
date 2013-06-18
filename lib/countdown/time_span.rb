@@ -5,12 +5,13 @@ module Countdown
 
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    attr_reader :start_time, :target_time, :duration_in_micros, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros
+    attr_reader :start_time, :target_time, :duration_in_micros, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros
 
     def initialize(start_time, target_time)
       @start_time     = start_time
       @target_time    = target_time
       duration_in_micros = duration_in_micros
+      @centuries      = duration[:centuries]
       @decades        = duration[:decades]
       @years          = duration[:years]
       @months         = duration[:months]
@@ -84,12 +85,15 @@ module Countdown
 
       days -= leap_count
 
-      years, days  = days.divmod(365)
-      decades, years  = years.divmod(10)
+      years, days         = days.divmod(365)
+      decades, years      = years.divmod(10)
+      centuries, decades  = decades.divmod(10)
+
       # todo: months
+
       weeks, days  = days.divmod(7)
 
-      {decades: decades, years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis, micros: micros}
+      {centuries: centuries, decades: decades, years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis, micros: micros}
     end
 
     def leap?(year)
