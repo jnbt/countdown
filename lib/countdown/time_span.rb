@@ -57,7 +57,7 @@ module Countdown
 
     def days_in_month(date)
       month = date.month
-      return 29 if month == 2 && Date.gregorian_leap?(date.year)
+      return 29 if month == 2 && leap?(date.year)
       COMMON_YEAR_DAYS_IN_MONTH[month]
     end
 
