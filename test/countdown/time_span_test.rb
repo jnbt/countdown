@@ -9,10 +9,26 @@ module Countdown
       @now = DateTime.now
     end
 
-    it 'should calculate 0 for all time units' do
-      time_span     = TimeSpan.new(@now, @now)
+    it 'tests something' do
 
-      assert_all_zero_except(time_span, nil)
+    end
+
+    it 'should calculate all time units (in the future)' do
+      starting_time = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 2216234.383)
+      target_time   = Time.at(DateTime.parse("5447-12-12 23:11:12").to_time, 3153476.737)
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      expected = {millenniums: 3, centuries: 4, decades: 3, years: 4, months: 0, weeks: 25, days: 3, hours: 10, minutes: 36, seconds: 16, millis: 937, micros: 242, nanos: 354}
+      assert_equal expected.sort, time_span.duration.sort
+    end
+
+    it 'should calculate all time units backwards when target_time is before starting_time' do
+      starting_time = Time.at(DateTime.parse("5447-12-12 23:11:12").to_time, 3153476.737)
+      target_time   = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 2216234.383)
+      time_span     = TimeSpan.new(starting_time, target_time)
+
+      expected = {millenniums: -3, centuries: -4, decades: -3, years: -4, months: 0, weeks: -25, days: -3, hours: -10, minutes: -36, seconds: -16, millis: -937, micros: -242, nanos: -354}
+      assert_equal expected.sort, time_span.duration.sort
     end
 
     describe "day helpers" do
@@ -25,8 +41,8 @@ module Countdown
       end
 
       it 'gathers days by upcoming months' do
-        starting_time = DateTime.parse("2013-06-01 00:00:00")
-        target_time   = DateTime.parse("2013-12-01 00:00:00")
+        starting_time = DateTime.parse("2013-06-17 00:00:00")
+        target_time   = DateTime.parse("2013-12-02 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal [30, 31, 31, 30, 31, 30, 31], time_span.days_by_upcoming_months
@@ -46,8 +62,8 @@ module Countdown
         assert_equal 86400000000000, TimeSpan.new(@now, @now+1).duration_in_nanos
       end
 
-      it 'should calculate duration for 1 day in the past' do
-        assert_equal -86400000000000, TimeSpan.new(@now, @now-1).duration_in_nanos
+      it 'should calculate positive duration for 1 day in the past' do
+        assert_equal 86400000000000, TimeSpan.new(@now, @now-1).duration_in_nanos
       end
 
       it 'should calculate duration for same timestamp' do
@@ -113,7 +129,7 @@ module Countdown
         assert_equal expected.sort, time_span.duration.sort
       end
 
-      it 'should calculate dates after 1970' do
+      it 'should calculate dates after 2039' do
         starting_time = DateTime.parse("1960-01-01 00:00:00")
         target_time   = DateTime.parse("2050-01-01 00:00:00")
         time_span     = TimeSpan.new(starting_time, target_time)
@@ -193,9 +209,9 @@ module Countdown
 
     end
 
-=begin
-    describe 'month edge cases' do
 
+    describe 'month edge cases' do
+=begin
       it 'shows 1 month although months have different total days' do
         starting_time = DateTime.parse("2012-01-31 00:00:00")
         target_time   = DateTime.parse("2012-02-29 00:00:00")
@@ -213,7 +229,7 @@ module Countdown
         expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
-
+=end
       it 'shows 1 month although months have different total days (30 -> 31)' do
         starting_time = DateTime.parse("2012-04-30 00:00:00")
         target_time   = DateTime.parse("2012-05-31 00:00:00")
@@ -222,7 +238,7 @@ module Countdown
         expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 1, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
-
+=begin
       it 'shows 5 months although months have different total days' do
         starting_time = DateTime.parse("2012-01-31 00:00:00")
         target_time   = DateTime.parse("2012-06-30 00:00:00")
@@ -231,9 +247,9 @@ module Countdown
         expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 5, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
         assert_equal expected.sort, time_span.duration.sort
       end
-
-    end
 =end
+    end
+
 
     describe 'millenniums' do
 
@@ -323,7 +339,6 @@ module Countdown
 
     end
 
-=begin
     describe 'months' do
 
       it 'should calculate 1 month' do
@@ -335,6 +350,7 @@ module Countdown
         assert_all_zero_except(time_span, :months)
       end
 
+=begin
       it 'should calculate 2 months' do
         starting_time = DateTime.parse("2012-06-02 00:00:00")
         target_time   = DateTime.parse("2012-08-02 00:00:00")
@@ -343,9 +359,9 @@ module Countdown
         assert_equal 2, time_span.months
         assert_all_zero_except(time_span, :months)
       end
-
-    end
 =end
+    end
+
 
     describe 'weeks' do
 
@@ -486,6 +502,15 @@ module Countdown
         time_span     = TimeSpan.new(starting_time, target_time)
 
         assert_equal 2, time_span.millis
+        assert_all_zero_except(time_span, :millis)
+      end
+
+      it 'should calculate 4 milliseconds' do
+        starting_time = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 101000.0)
+        target_time   = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 618000.0)
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 517, time_span.millis
         assert_all_zero_except(time_span, :millis)
       end
 

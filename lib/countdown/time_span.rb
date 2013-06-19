@@ -5,25 +5,19 @@ module Countdown
 
     COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    attr_reader :start_time, :target_time, :duration_in_nanos, :millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos
+    attr_reader :reverse,
+                :start_time,
+                :target_time,
+                :duration_in_nanos,
+                :millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos
 
     def initialize(start_time, target_time)
-      @start_time     = start_time
-      @target_time    = target_time
-      @duration_in_nanos = duration_in_nanos
-      @millenniums    = duration[:millenniums]
-      @centuries      = duration[:centuries]
-      @decades        = duration[:decades]
-      @years          = duration[:years]
-      @months         = duration[:months]
-      @weeks          = duration[:weeks]
-      @days           = duration[:days]
-      @hours          = duration[:hours]
-      @minutes        = duration[:minutes]
-      @seconds        = duration[:seconds]
-      @millis         = duration[:millis]
-      @micros         = duration[:micros]
-      @nanos          = duration[:nanos]
+      @reverse           = target_time < start_time
+      @start_time        = reverse ? target_time : start_time
+      @target_time       = reverse ? start_time : target_time
+      @duration_in_nanos = set_duration_in_nanos
+
+      calculate_units
     end
 
     def [](unit)
@@ -31,10 +25,10 @@ module Countdown
     end
 
     def duration
-      @__duration ||= calculate_units
+      @__duration ||= format_units
     end
 
-    def duration_in_nanos
+    def set_duration_in_nanos
       ((target_time.to_time.to_r - start_time.to_time.to_r).round(9) * 1000000000).to_i
     end
 
@@ -51,7 +45,7 @@ module Countdown
       leap_years.size
     end
 
-    # TODO: probably slow if a duration of 1000 years needs to be calculated...
+    # TODO: slow if a duration of 1000 years needs to be calculated...
     def upcoming_months
       dates = []
       first_day_in_month(start_time.to_date).upto(first_day_in_month(target_time)) do |date|
@@ -76,32 +70,79 @@ module Countdown
       end
     end
 
+    def months_for_days(days)
+      days.divmod(30)
+    end
+
     private
 
     def calculate_units
-      micros, nanos    = duration_in_nanos.divmod(1000)
-      millis, micros   = micros.divmod(1000)
-      seconds, millis  = millis.divmod(1000)
-      minutes, seconds = seconds.divmod(60)
-      hours, minutes   = minutes.divmod(60)
-      days, hours      = hours.divmod(24)
+      remaining_micros, @nanos    = duration_in_nanos.divmod(1000)
+      remaining_millis, @micros   = remaining_micros.divmod(1000)
+      remaining_seconds, @millis  = remaining_millis.divmod(1000)
+      remaining_minutes, @seconds = remaining_seconds.divmod(60)
+      remaining_hours, @minutes   = remaining_minutes.divmod(60)
+      remaining_days, @hours      = remaining_hours.divmod(24)
 
-      days -= leap_count
+      remaining_days -= leap_count
 
-      years, days             = days.divmod(365)
-      decades, years          = years.divmod(10)
-      centuries, decades      = decades.divmod(10)
-      millenniums, centuries  = centuries.divmod(10)
+      remaining_years, days        = remaining_days.divmod(365)
+      remaining_decades, @years     = remaining_years.divmod(10)
+      remaining_centuries, @decades = remaining_decades.divmod(10)
+      @millenniums, @centuries       = remaining_centuries.divmod(10)
 
-      # todo: months
 
-      weeks, days  = days.divmod(7)
+      #years, months = years.divmod(12)
+      @months = 0
 
-      {millenniums: millenniums, centuries: centuries, decades: decades, years: years, months: 0, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, millis: millis, micros: micros, nanos: nanos}
+      @weeks, @days  = days.divmod(7)
+
+      minusify_units
+    end
+
+    # Countdown with negative values because target_time is before start_time.
+    def reverse?
+      reverse
     end
 
     def leap?(year)
       Date.gregorian_leap?(year)
+    end
+
+    def format_units
+      {
+          millenniums: millenniums,
+          centuries: centuries,
+          decades: decades,
+          years: years,
+          months: months,
+          weeks: weeks,
+          days: days,
+          hours: hours,
+          minutes: minutes,
+          seconds: seconds,
+          millis: millis,
+          micros: micros,
+          nanos: nanos
+      }
+    end
+
+    def minusify_units
+      if reverse?
+        @millenniums = -millenniums
+        @centuries   = -centuries
+        @decades     = -decades
+        @years       = -years
+        @months      = -months
+        @weeks       = -weeks
+        @days        = -days
+        @hours       = -hours
+        @minutes     = -minutes
+        @seconds     = -seconds
+        @millis      = -millis
+        @micros      = -micros
+        @nanos       = -nanos
+      end
     end
 
   end
