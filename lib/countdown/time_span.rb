@@ -21,10 +21,6 @@ module Countdown
       calculate_units
     end
 
-    def [](unit)
-      send unit
-    end
-
     def duration
       format_units
     end

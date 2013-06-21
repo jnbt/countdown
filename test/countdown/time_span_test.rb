@@ -98,7 +98,6 @@ module Countdown
         assert_equal [1, 0], time_span.days_to_months_and_days(remaining_days)
       end
 
-      # This is the problem! fails with [1, 0] see test above!
       it 'converts days to months and days by remaining_days given 1 month and 1 day' do
         starting_time = DateTime.parse("2012-06-01 00:00:00")
         target_time   = DateTime.parse("2012-07-02 00:00:00")
@@ -109,7 +108,6 @@ module Countdown
         assert_equal [1, 1], time_span.days_to_months_and_days(remaining_days)
       end
 
-      # This is the problem! fails with [1, 0] see test above!
       it 'converts days to months and days by remaining_days given 1 month and 2 days' do
         starting_time = DateTime.parse("2012-06-01 00:00:00")
         target_time   = DateTime.parse("2012-07-03 00:00:00")
