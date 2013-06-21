@@ -909,7 +909,7 @@ module Countdown
       units = [:millenniums, :decades, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos] - time_units
       not_zero = []
       units.each do |time_unit|
-        not_zero << time_unit if time_span[time_unit] != 0
+        not_zero << time_unit if time_span.send(time_unit) != 0
       end
 
       assert not_zero.empty?, "All units except #{time_units} should be 0: #{time_span.duration}"
