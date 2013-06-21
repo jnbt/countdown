@@ -10,14 +10,14 @@ module TimeSpanner
         @now = DateTime.now
       end
 
-      describe 'nanos' do
+      describe 'duration' do
 
         it 'should calculate duration for 1 day in the future' do
-          assert_equal 86400000000000, TimeSpan.new(@now, @now+1).nanos
+          assert_equal 86400000000000, TimeSpan.new(@now, @now+1).duration
         end
 
         it 'should calculate duration for 1 day in the past' do
-          assert_equal -86400000000000, TimeSpan.new(@now, @now-1).nanos
+          assert_equal -86400000000000, TimeSpan.new(@now, @now-1).duration
         end
 
         it 'should calculate duration for same timestamp' do
@@ -25,7 +25,7 @@ module TimeSpanner
         end
 
         it 'should calculate duration for last week' do
-          assert_equal 86400000000000, TimeSpan.new(@now-7, @now-6).nanos
+          assert_equal 86400000000000, TimeSpan.new(@now-7, @now-6).duration
         end
 
       end

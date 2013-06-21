@@ -9,12 +9,49 @@ module TimeSpanner
 
       attr_reader :from, :to
 
+      attr_reader :nanos
+      attr_reader :micros
+      attr_reader :millis
+      attr_reader :seconds
+      attr_reader :minutes
+      attr_reader :hours
+      attr_reader :days
+      attr_reader :weeks
+      attr_reader :months
+      attr_reader :years
+      attr_reader :decades
+      attr_reader :centuries
+      attr_reader :millenniums
+
       def initialize(from, to)
         @from = from
         @to   = to
+
+        calculate
       end
 
-      def nanos
+      def calculate
+        remaining_micros, @nanos    = duration.divmod(1000)
+        remaining_millis, @micros   = remaining_micros.divmod(1000)
+        remaining_seconds, @millis  = remaining_millis.divmod(1000)
+        remaining_minutes, @seconds = remaining_seconds.divmod(60)
+        remaining_hours, @minutes   = remaining_minutes.divmod(60)
+        remaining_days, @hours      = remaining_hours.divmod(24)
+
+        remaining_days -= DateHelper.leaps from, to
+
+        remaining_years, remaining_days = remaining_days.divmod(365)
+
+        @months, days = TimeSpan.months_and_days(to, remaining_days)
+
+        remaining_decades, @years     = remaining_years.divmod(10)
+        remaining_centuries, @decades = remaining_decades.divmod(10)
+        @millenniums, @centuries      = remaining_centuries.divmod(10)
+
+        @weeks, @days  = days.divmod(7)
+      end
+
+      def duration
         (to.to_time.to_r - from.to_time.to_r).round(9) * 1000000000
       end
 

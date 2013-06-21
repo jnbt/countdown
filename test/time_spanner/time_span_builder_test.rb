@@ -42,7 +42,7 @@ module TimeSpanner
         target_time   = DateTime.parse("3000-01-01 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.millenniums
+        assert_equal 1, time_span.duration[:millenniums]
         assert_all_zero_except(time_span, :millenniums)
 
         Timecop.travel(Time.at(starting_time.to_f, 0.001)) do
@@ -50,19 +50,19 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.millenniums
-          assert_equal 9, time_span.centuries
-          assert_equal 9, time_span.decades
-          assert_equal 9, time_span.years
-          assert_equal 11, time_span.months
-          assert_equal 0, time_span.weeks
-          assert_equal 0, time_span.days
-          assert_equal 23, time_span.hours
-          assert_equal 59, time_span.minutes
-          assert_equal 59, time_span.seconds
-          assert_equal 999, time_span.millis
-          assert_equal 999, time_span.micros
-          assert_equal 999, time_span.nanos
+          assert_equal 0, time_span.duration[:millenniums]
+          assert_equal 9, time_span.duration[:centuries]
+          assert_equal 9, time_span.duration[:decades]
+          assert_equal 9, time_span.duration[:years]
+          assert_equal 11, time_span.duration[:months]
+          assert_equal 0, time_span.duration[:weeks]
+          assert_equal 0, time_span.duration[:days]
+          assert_equal 23, time_span.duration[:hours]
+          assert_equal 59, time_span.duration[:minutes]
+          assert_equal 59, time_span.duration[:seconds]
+          assert_equal 999, time_span.duration[:millis]
+          assert_equal 999, time_span.duration[:micros]
+          assert_equal 999, time_span.duration[:nanos]
         end
       end
 
@@ -71,8 +71,8 @@ module TimeSpanner
         target_time   = DateTime.parse("3000-01-01 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.millenniums
-        assert_equal 0, time_span.centuries
+        assert_equal 1, time_span.duration[:millenniums]
+        assert_equal 0, time_span.duration[:centuries]
 
 
         Timecop.travel(starting_time+1) do
@@ -80,8 +80,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.millenniums
-          assert_equal 9, time_span.centuries
+          assert_equal 0, time_span.duration[:millenniums]
+          assert_equal 9, time_span.duration[:centuries]
         end
       end
 
@@ -90,8 +90,8 @@ module TimeSpanner
         target_time   = DateTime.parse("2000-01-01 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.centuries
-        assert_equal 0, time_span.decades
+        assert_equal 1, time_span.duration[:centuries]
+        assert_equal 0, time_span.duration[:decades]
 
 
         Timecop.travel(starting_time+1) do
@@ -99,8 +99,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.centuries
-          assert_equal 9, time_span.decades
+          assert_equal 0, time_span.duration[:centuries]
+          assert_equal 9, time_span.duration[:decades]
         end
       end
 
@@ -109,8 +109,8 @@ module TimeSpanner
         target_time   = DateTime.parse("1920-01-01 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.decades
-        assert_equal 0, time_span.years
+        assert_equal 1, time_span.duration[:decades]
+        assert_equal 0, time_span.duration[:years]
 
 
         Timecop.travel(starting_time+1) do
@@ -118,8 +118,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.decades
-          assert_equal 9, time_span.years
+          assert_equal 0, time_span.duration[:decades]
+          assert_equal 9, time_span.duration[:years]
         end
       end
 
@@ -128,8 +128,8 @@ module TimeSpanner
         target_time   = DateTime.parse("1911-01-01 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.years
-        assert_equal 0, time_span.months
+        assert_equal 1, time_span.duration[:years]
+        assert_equal 0, time_span.duration[:months]
 
 
         Timecop.travel(starting_time+1) do
@@ -137,8 +137,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.years
-          assert_equal 11, time_span.months
+          assert_equal 0, time_span.duration[:years]
+          assert_equal 11, time_span.duration[:months]
         end
       end
 
@@ -147,8 +147,8 @@ module TimeSpanner
         target_time   = DateTime.parse("2013-02-01 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.months
-        assert_equal 0, time_span.weeks
+        assert_equal 1, time_span.duration[:months]
+        assert_equal 0, time_span.duration[:weeks]
 
 
         Timecop.travel(starting_time+1) do
@@ -156,8 +156,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.months
-          assert_equal 4, time_span.weeks
+          assert_equal 0, time_span.duration[:months]
+          assert_equal 4, time_span.duration[:weeks]
         end
       end
 
@@ -166,8 +166,8 @@ module TimeSpanner
         target_time   = DateTime.parse("2013-01-08 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.weeks
-        assert_equal 0, time_span.days
+        assert_equal 1, time_span.duration[:weeks]
+        assert_equal 0, time_span.duration[:days]
 
 
         Timecop.travel(starting_time+1) do
@@ -175,8 +175,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.weeks
-          assert_equal 6, time_span.days
+          assert_equal 0, time_span.duration[:weeks]
+          assert_equal 6, time_span.duration[:days]
         end
       end
 
@@ -185,8 +185,8 @@ module TimeSpanner
         target_time   = DateTime.parse("2013-01-02 00:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.days
-        assert_equal 0, time_span.hours
+        assert_equal 1, time_span.duration[:days]
+        assert_equal 0, time_span.duration[:hours]
 
 
         Timecop.travel(starting_time+1) do
@@ -194,8 +194,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.days
-          assert_equal 23, time_span.hours
+          assert_equal 0, time_span.duration[:days]
+          assert_equal 23, time_span.duration[:hours]
         end
       end
 
@@ -204,8 +204,8 @@ module TimeSpanner
         target_time   = DateTime.parse("2013-01-01 23:00:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.hours
-        assert_equal 0, time_span.minutes
+        assert_equal 1, time_span.duration[:hours]
+        assert_equal 0, time_span.duration[:minutes]
 
 
         Timecop.travel(starting_time+1) do
@@ -213,8 +213,8 @@ module TimeSpanner
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.hours
-          assert_equal 59, time_span.minutes
+          assert_equal 0, time_span.duration[:hours]
+          assert_equal 59, time_span.duration[:minutes]
         end
       end
 
@@ -223,16 +223,16 @@ module TimeSpanner
         target_time   = DateTime.parse("2013-01-01 22:02:00").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.minutes
-        assert_equal 0, time_span.seconds
+        assert_equal 1, time_span.duration[:minutes]
+        assert_equal 0, time_span.duration[:seconds]
 
         Timecop.travel(Time.at(starting_time.to_f, 100000.0)) do
           starting_time = Time.at Time.now.to_time.to_f
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.minutes
-          assert_equal 59, time_span.seconds
+          assert_equal 0, time_span.duration[:minutes]
+          assert_equal 59, time_span.duration[:seconds]
         end
       end
 
@@ -241,16 +241,16 @@ module TimeSpanner
         target_time   = DateTime.parse("2013-01-01 22:01:01").to_time
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.seconds
-        assert_equal 0, time_span.millis
+        assert_equal 1, time_span.duration[:seconds]
+        assert_equal 0, time_span.duration[:millis]
 
         Timecop.travel(Time.at(starting_time.to_f, 100.0)) do
           starting_time = Time.at Time.now.to_time.to_f
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.seconds
-          assert_equal 999, time_span.millis
+          assert_equal 0, time_span.duration[:seconds]
+          assert_equal 999, time_span.duration[:millis]
         end
       end
 
@@ -259,16 +259,16 @@ module TimeSpanner
         target_time   = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f, 1000.0)
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.millis
-        assert_equal 0, time_span.micros
+        assert_equal 1, time_span.duration[:millis]
+        assert_equal 0, time_span.duration[:micros]
 
         Timecop.travel(Time.at(starting_time.to_f, 0.1)) do
           starting_time = Time.at(starting_time.to_f, 0.1)
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.millis
-          assert_equal 999, time_span.micros
+          assert_equal 0, time_span.duration[:millis]
+          assert_equal 999, time_span.duration[:micros]
         end
       end
 
@@ -277,16 +277,16 @@ module TimeSpanner
         target_time   = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f, 1.0)
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.micros
-        assert_equal 0, time_span.nanos
+        assert_equal 1, time_span.duration[:micros]
+        assert_equal 0, time_span.duration[:nanos]
 
         Timecop.travel(Time.at(starting_time.to_f, 0.001)) do
           starting_time = Time.at(starting_time.to_f, 0.001)
           target_time   = target_time
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 0, time_span.micros
-          assert_equal 999, time_span.nanos
+          assert_equal 0, time_span.duration[:micros]
+          assert_equal 999, time_span.duration[:nanos]
         end
       end
 
@@ -327,7 +327,7 @@ module TimeSpanner
           target_time   = DateTime.parse("2013-03-31 02:01:00 CEST")
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 2, time_span.minutes
+          assert_equal 2, time_span.duration[:minutes]
           assert_all_zero_except(time_span, :minutes)
         end
 
@@ -336,7 +336,7 @@ module TimeSpanner
           target_time   = DateTime.parse("2013-10-31 03:01:00 CEST")
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-          assert_equal 2, time_span.minutes
+          assert_equal 2, time_span.duration[:minutes]
           assert_all_zero_except(time_span, :minutes)
         end
 
@@ -351,7 +351,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2000-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.millenniums
+        assert_equal 1, time_span.duration[:millenniums]
         assert_all_zero_except(time_span, :millenniums)
       end
 
@@ -360,7 +360,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2000-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.millenniums
+        assert_equal 2, time_span.duration[:millenniums]
         assert_all_zero_except(time_span, :millenniums)
       end
 
@@ -373,7 +373,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2100-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.centuries
+        assert_equal 1, time_span.duration[:centuries]
         assert_all_zero_except(time_span, :centuries)
       end
 
@@ -382,7 +382,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2100-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.centuries
+        assert_equal 2, time_span.duration[:centuries]
         assert_all_zero_except(time_span, :centuries)
       end
 
@@ -395,7 +395,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2020-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.decades
+        assert_equal 1, time_span.duration[:decades]
         assert_all_zero_except(time_span, :decades)
       end
 
@@ -404,7 +404,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2030-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.decades
+        assert_equal 2, time_span.duration[:decades]
         assert_all_zero_except(time_span, :decades)
       end
 
@@ -417,7 +417,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2014-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.years
+        assert_equal 1, time_span.duration[:years]
         assert_all_zero_except(time_span, :years)
       end
 
@@ -426,11 +426,11 @@ module TimeSpanner
         target_time   = DateTime.parse("2015-06-02 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.years
+        assert_equal 2, time_span.duration[:years]
         assert_all_zero_except(time_span, :years)
       end
 
-      #TODO: remove when DurationHelper.years() does the calculation
+      #TODO: remove when DurationHelper.duration[:years]() does the calculation
       describe 'leaps' do
 
         it 'has no leap year' do
@@ -508,7 +508,7 @@ module TimeSpanner
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_all_zero_except(time_span, :months)
-        assert_equal 1, time_span.months
+        assert_equal 1, time_span.duration[:months]
       end
 
       it 'should calculate 2 months' do
@@ -517,7 +517,7 @@ module TimeSpanner
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_all_zero_except(time_span, :months)
-        assert_equal 2, time_span.months
+        assert_equal 2, time_span.duration[:months]
       end
 
     end
@@ -529,7 +529,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-09 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.weeks
+        assert_equal 1, time_span.duration[:weeks]
         assert_all_zero_except(time_span, :weeks)
       end
 
@@ -538,7 +538,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-16 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.weeks
+        assert_equal 2, time_span.duration[:weeks]
         assert_all_zero_except(time_span, :weeks)
       end
 
@@ -551,7 +551,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-03 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.days
+        assert_equal 1, time_span.duration[:days]
         assert_all_zero_except(time_span, :days)
       end
 
@@ -560,7 +560,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-04 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.days
+        assert_equal 2, time_span.duration[:days]
         assert_all_zero_except(time_span, :days)
       end
 
@@ -569,8 +569,8 @@ module TimeSpanner
         target_time   = DateTime.parse("2014-06-01 00:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 0, time_span.days
-        assert_equal 1, time_span.years
+        assert_equal 0, time_span.duration[:days]
+        assert_equal 1, time_span.duration[:years]
         assert_all_zero_except(time_span, :years)
       end
 
@@ -583,7 +583,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-02 01:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.hours
+        assert_equal 1, time_span.duration[:hours]
         assert_all_zero_except(time_span, :hours)
       end
 
@@ -592,7 +592,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-02 02:00:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.hours
+        assert_equal 2, time_span.duration[:hours]
         assert_all_zero_except(time_span, :hours)
       end
 
@@ -605,7 +605,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-02 00:01:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.minutes
+        assert_equal 1, time_span.duration[:minutes]
         assert_all_zero_except(time_span, :minutes)
       end
 
@@ -614,7 +614,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-02 00:02:00")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.minutes
+        assert_equal 2, time_span.duration[:minutes]
         assert_all_zero_except(time_span, :minutes)
       end
 
@@ -627,7 +627,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-02 00:00:01")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 1, time_span.seconds
+        assert_equal 1, time_span.duration[:seconds]
         assert_all_zero_except(time_span, :seconds)
       end
 
@@ -636,7 +636,7 @@ module TimeSpanner
         target_time   = DateTime.parse("2012-06-02 00:00:02")
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.seconds
+        assert_equal 2, time_span.duration[:seconds]
         assert_all_zero_except(time_span, :seconds)
       end
 
@@ -651,7 +651,7 @@ module TimeSpanner
 
         refute target_time == starting_time
 
-        assert_equal 1, time_span.millis
+        assert_equal 1, time_span.duration[:millis]
         assert_all_zero_except(time_span, :millis)
       end
 
@@ -660,7 +660,7 @@ module TimeSpanner
         target_time   = Time.at(starting_time.to_f, 2000.0)
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 2, time_span.millis
+        assert_equal 2, time_span.duration[:millis]
         assert_all_zero_except(time_span, :millis)
       end
 
@@ -669,7 +669,7 @@ module TimeSpanner
         target_time   = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 618000.0)
         time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
-        assert_equal 517, time_span.millis
+        assert_equal 517, time_span.duration[:millis]
         assert_all_zero_except(time_span, :millis)
       end
 
@@ -684,7 +684,7 @@ module TimeSpanner
 
         refute target_time == starting_time
 
-        assert_equal 1, time_span.micros
+        assert_equal 1, time_span.duration[:micros]
         assert_all_zero_except(time_span, :micros)
       end
 
@@ -695,7 +695,7 @@ module TimeSpanner
 
         refute target_time == starting_time
 
-        assert_equal 235, time_span.micros
+        assert_equal 235, time_span.duration[:micros]
         assert_all_zero_except(time_span, :micros)
       end
 
@@ -710,7 +710,7 @@ module TimeSpanner
 
         refute target_time == starting_time
 
-        assert_equal 1, time_span.nanos
+        assert_equal 1, time_span.duration[:nanos]
         assert_all_zero_except(time_span, :nanos)
       end
 
@@ -721,7 +721,7 @@ module TimeSpanner
 
         refute target_time == starting_time
 
-        assert_equal 235, time_span.nanos
+        assert_equal 235, time_span.duration[:nanos]
         assert_all_zero_except(time_span, :nanos)
       end
 
@@ -729,14 +729,14 @@ module TimeSpanner
 
     private
 
-    def assert_all_zero_except(time_span, *time_units)
+    def assert_all_zero_except(time_spanner, *time_units)
       units = [:millenniums, :decades, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos] - time_units
       not_zero = []
       units.each do |time_unit|
-        not_zero << time_unit if time_span.send(time_unit) != 0
+        not_zero << time_unit if time_spanner.time_span.instance_variable_get(:"@#{time_unit}") != 0
       end
 
-      assert not_zero.empty?, "All units except #{time_units} should be 0: #{time_span.duration}"
+      assert not_zero.empty?, "All units except #{time_units} should be 0: #{time_spanner.duration}"
     end
 
   end
