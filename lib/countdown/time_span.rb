@@ -26,7 +26,7 @@ module Countdown
     end
 
     def duration
-      @__duration ||= format_units
+      format_units
     end
 
     def set_duration_in_nanos

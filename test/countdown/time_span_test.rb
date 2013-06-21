@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'date'
+require 'timecop'
 
 module Countdown
   class TimeSpanTest < TestCase
@@ -151,70 +152,321 @@ module Countdown
         assert_equal Date.parse("2013-02-01"), time_span.first_day_in_month(Date.parse("2013-02-13"))
       end
 
+      describe 'duration in nanos' do
+
+        it 'should calculate duration for 1 day in the future' do
+          assert_equal 86400000000000, TimeSpan.new(@now, @now+1).duration_in_nanos
+        end
+
+        it 'should calculate positive duration for 1 day in the past' do
+          assert_equal 86400000000000, TimeSpan.new(@now, @now-1).duration_in_nanos
+        end
+
+        it 'should calculate duration for same timestamp' do
+          assert_equal 0, TimeSpan.new(@now, @now).duration_in_nanos
+        end
+
+        it 'should calculate duration for last week' do
+          assert_equal 86400000000000, TimeSpan.new(@now-7, @now-6).duration_in_nanos
+        end
+
+      end
+
+      describe 'collects leap years' do
+
+        it 'collects 0 leap years on leap start year' do
+          starting_time = DateTime.parse("2012-03-13 00:00:00") # leap year but after February the 29th
+          target_time   = DateTime.parse("2015-06-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert time_span.leap_years.empty?
+          assert_equal 0, time_span.leap_count
+        end
+
+        it 'collects 0 leap years on leap target year' do
+          starting_time = DateTime.parse("2011-01-01 00:00:00")
+          target_time   = DateTime.parse("2012-02-27 00:00:00") # leap year but before February the 29th
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert time_span.leap_years.empty?
+          assert_equal 0, time_span.leap_count
+        end
+
+        it 'collects 1 leap year' do
+          starting_time = DateTime.parse("2016-01-01 00:00:00") # leap year
+          target_time   = DateTime.parse("2017-06-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal [2016], time_span.leap_years
+          assert_equal 1, time_span.leap_count
+        end
+
+        it 'collects 2 leap years' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+          target_time   = DateTime.parse("2016-06-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal [2012, 2016], time_span.leap_years
+          assert_equal 2, time_span.leap_count
+        end
+
+      end
+
     end
 
-    describe 'travels' do
+    describe 'unit switches' do
 
-
-
-    end
-
-    describe 'duration in nanos' do
-
-      it 'should calculate duration for 1 day in the future' do
-        assert_equal 86400000000000, TimeSpan.new(@now, @now+1).duration_in_nanos
-      end
-
-      it 'should calculate positive duration for 1 day in the past' do
-        assert_equal 86400000000000, TimeSpan.new(@now, @now-1).duration_in_nanos
-      end
-
-      it 'should calculate duration for same timestamp' do
-        assert_equal 0, TimeSpan.new(@now, @now).duration_in_nanos
-      end
-
-      it 'should calculate duration for last week' do
-        assert_equal 86400000000000, TimeSpan.new(@now-7, @now-6).duration_in_nanos
-      end
-
-    end
-
-    describe 'collects leap years' do
-
-      it 'collects 0 leap years on leap start year' do
-        starting_time = DateTime.parse("2012-03-13 00:00:00") # leap year but after February the 29th
-        target_time   = DateTime.parse("2015-06-01 00:00:00")
+      it 'switches everything' do
+        starting_time = DateTime.parse("2000-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("3000-01-01 00:00:00").to_time
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        assert time_span.leap_years.empty?
-        assert_equal 0, time_span.leap_count
+        assert_equal 1, time_span.millenniums
+        assert_all_zero_except(time_span, :millenniums)
+
+        Timecop.travel(Time.at(starting_time.to_f, 0.001)) do
+          starting_time = Time.at(starting_time.to_f, 0.001)
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.millenniums
+          assert_equal 9, time_span.centuries
+          assert_equal 9, time_span.decades
+          assert_equal 9, time_span.years
+          assert_equal 11, time_span.months
+          assert_equal 0, time_span.weeks
+          assert_equal 0, time_span.days
+          assert_equal 23, time_span.hours
+          assert_equal 59, time_span.minutes
+          assert_equal 59, time_span.seconds
+          assert_equal 999, time_span.millis
+          assert_equal 999, time_span.micros
+          assert_equal 999, time_span.nanos
+        end
       end
 
-      it 'collects 0 leap years on leap target year' do
-        starting_time = DateTime.parse("2011-01-01 00:00:00")
-        target_time   = DateTime.parse("2012-02-27 00:00:00") # leap year but before February the 29th
+      it 'switches from millenniums to centuries' do
+        starting_time = DateTime.parse("2000-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("3000-01-01 00:00:00").to_time
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        assert time_span.leap_years.empty?
-        assert_equal 0, time_span.leap_count
+        assert_equal 1, time_span.millenniums
+        assert_equal 0, time_span.centuries
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.millenniums
+          assert_equal 9, time_span.centuries
+        end
       end
 
-      it 'collects 1 leap year' do
-        starting_time = DateTime.parse("2016-01-01 00:00:00") # leap year
-        target_time   = DateTime.parse("2017-06-01 00:00:00")
+      it 'switches from centuries to decades' do
+        starting_time = DateTime.parse("1900-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("2000-01-01 00:00:00").to_time
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        assert_equal [2016], time_span.leap_years
-        assert_equal 1, time_span.leap_count
+        assert_equal 1, time_span.centuries
+        assert_equal 0, time_span.decades
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.centuries
+          assert_equal 9, time_span.decades
+        end
       end
 
-      it 'collects 2 leap years' do
-        starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
-        target_time   = DateTime.parse("2016-06-01 00:00:00")
+      it 'switches from decades to years' do
+        starting_time = DateTime.parse("1910-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("1920-01-01 00:00:00").to_time
         time_span     = TimeSpan.new(starting_time, target_time)
 
-        assert_equal [2012, 2016], time_span.leap_years
-        assert_equal 2, time_span.leap_count
+        assert_equal 1, time_span.decades
+        assert_equal 0, time_span.years
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.decades
+          assert_equal 9, time_span.years
+        end
+      end
+
+      it 'switches from years to months' do
+        starting_time = DateTime.parse("1910-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("1911-01-01 00:00:00").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.years
+        assert_equal 0, time_span.months
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.years
+          assert_equal 11, time_span.months
+        end
+      end
+
+      it 'switches from months to weeks' do
+        starting_time = DateTime.parse("2013-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("2013-02-01 00:00:00").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.months
+        assert_equal 0, time_span.weeks
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.months
+          assert_equal 4, time_span.weeks
+        end
+      end
+
+      it 'switches from weeks to days' do
+        starting_time = DateTime.parse("2013-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("2013-01-08 00:00:00").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.weeks
+        assert_equal 0, time_span.days
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.weeks
+          assert_equal 6, time_span.days
+        end
+      end
+
+      it 'switches from days to hours' do
+        starting_time = DateTime.parse("2013-01-01 00:00:00").to_time
+        target_time   = DateTime.parse("2013-01-02 00:00:00").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.days
+        assert_equal 0, time_span.hours
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.days
+          assert_equal 23, time_span.hours
+        end
+      end
+
+      it 'switches from hours to minutes' do
+        starting_time = DateTime.parse("2013-01-01 22:00:00").to_time
+        target_time   = DateTime.parse("2013-01-01 23:00:00").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.hours
+        assert_equal 0, time_span.minutes
+
+
+        Timecop.travel(starting_time+1) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.hours
+          assert_equal 59, time_span.minutes
+        end
+      end
+
+      it 'switches from minutes to seconds' do
+        starting_time = DateTime.parse("2013-01-01 22:01:00").to_time
+        target_time   = DateTime.parse("2013-01-01 22:02:00").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.minutes
+        assert_equal 0, time_span.seconds
+
+        Timecop.travel(Time.at(starting_time.to_f, 100000.0)) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.minutes
+          assert_equal 59, time_span.seconds
+        end
+      end
+
+      it 'switches from seconds to millis' do
+        starting_time = DateTime.parse("2013-01-01 22:01:00").to_time
+        target_time   = DateTime.parse("2013-01-01 22:01:01").to_time
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.seconds
+        assert_equal 0, time_span.millis
+
+        Timecop.travel(Time.at(starting_time.to_f, 100.0)) do
+          starting_time = Time.at Time.now.to_time.to_f
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.seconds
+          assert_equal 999, time_span.millis
+        end
+      end
+
+      it 'switches from millis to micros' do
+        starting_time = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f)
+        target_time   = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f, 1000.0)
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.millis
+        assert_equal 0, time_span.micros
+
+        Timecop.travel(Time.at(starting_time.to_f, 0.1)) do
+          starting_time = Time.at(starting_time.to_f, 0.1)
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.millis
+          assert_equal 999, time_span.micros
+        end
+      end
+
+      it 'switches from micro- to nanoseconds' do
+        starting_time = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f)
+        target_time   = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f, 1.0)
+        time_span     = TimeSpan.new(starting_time, target_time)
+
+        assert_equal 1, time_span.micros
+        assert_equal 0, time_span.nanos
+
+        Timecop.travel(Time.at(starting_time.to_f, 0.001)) do
+          starting_time = Time.at(starting_time.to_f, 0.001)
+          target_time   = target_time
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          assert_equal 0, time_span.micros
+          assert_equal 999, time_span.nanos
+        end
       end
 
     end
