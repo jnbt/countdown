@@ -16,7 +16,7 @@ module Countdown
         @steps      = options.delete(:steps) || DEFAULT_STEPS
         @units      = options.delete(:units) || DEFAULT_UNITS
         @separators = options.delete(:separators) || DEFAULT_SEPARATORS
-        @time_span  = TimeSpan.new(DateTime.now, time).duration
+        @time_span  = TimeSpanner.new(DateTime.now, time).duration
       end
 
       def attributes

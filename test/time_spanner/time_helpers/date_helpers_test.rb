@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'date'
 
-module Countdown
+module TimeSpanner
   module TimeHelpers
     module DateHelper
 

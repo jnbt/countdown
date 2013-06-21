@@ -1,21 +1,20 @@
-require 'countdown/time_helpers/date_helper'
-require 'countdown/timeframe'
+require 'time_spanner/time_helpers/date_helper'
+require 'time_spanner/time_helpers/time_span'
 
-module Countdown
-  class TimeSpan
-    include TimeHelpers
+module TimeSpanner
+  class TimeSpanBuilder
+    include TimeSpanner::TimeHelpers
 
     attr_reader :reverse,
                 :start_time,
                 :target_time,
                 :millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos
 
-
     # TODO: test reversing
-    def initialize(start_time, target_time)
-      @reverse           = target_time < start_time
-      @start_time        = reverse ? target_time : start_time
-      @target_time       = reverse ? start_time : target_time
+    def initialize(start_time, target_time, options={})
+      @reverse     = target_time < start_time
+      @start_time  = reverse ? target_time : start_time
+      @target_time = reverse ? start_time : target_time
 
       calculate_units
     end
@@ -27,7 +26,7 @@ module Countdown
     private
 
     def calculate_units
-      nanos = Timeframe.new(start_time, target_time).nanos
+      nanos = TimeSpan.new(start_time, target_time).nanos
 
       remaining_micros, @nanos    = nanos.divmod(1000)
       remaining_millis, @micros   = remaining_micros.divmod(1000)
@@ -40,7 +39,7 @@ module Countdown
 
       remaining_years, remaining_days = remaining_days.divmod(365)
 
-      @months, days = Timeframe.months_and_days(target_time, remaining_days)
+      @months, days = TimeSpan.months_and_days(target_time, remaining_days)
 
       remaining_decades, @years     = remaining_years.divmod(10)
       remaining_centuries, @decades = remaining_decades.divmod(10)

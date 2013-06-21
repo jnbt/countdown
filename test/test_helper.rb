@@ -1,6 +1,7 @@
 require 'minitest/autorun'
 require 'minitest/spec'
 require 'minitest/reporters'
+require 'time_spanner'
 require 'countdown'
 
 MiniTest::Reporters.use!

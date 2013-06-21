@@ -1,7 +1,7 @@
 require 'date'
 require 'time'
 
-module Countdown
+module TimeSpanner
   module TimeHelpers
     module DateHelper
 
