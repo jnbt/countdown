@@ -1,4 +1,6 @@
 require 'countdown/version'
+require 'countdown/time_helpers'
+require 'countdown/timeframe'
 require 'countdown/time_span'
 require 'countdown/content_tag'
 require 'countdown/tag_builders'

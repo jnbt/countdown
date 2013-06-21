@@ -35,183 +35,6 @@ module Countdown
       assert_equal expected.sort, time_span.duration.sort
     end
 
-    describe "day helpers" do
-
-      it 'converts days to months and days by remaining_days given 0 days' do
-        starting_time = DateTime.parse("2013-01-31 00:00:00")
-        target_time   = DateTime.parse("2013-01-31 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 0
-
-        assert_equal [0, 0], time_span.days_to_months_and_days(remaining_days)
-      end
-
-      it 'converts days to months and days by remaining_days given 1 day' do
-        starting_time = DateTime.parse("2013-01-31 00:00:00")
-        target_time   = DateTime.parse("2013-02-01 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 1
-
-        assert_equal [0, 1], time_span.days_to_months_and_days(remaining_days)
-      end
-
-      it 'converts days to months and days by remaining_days given 29 days' do
-        starting_time = DateTime.parse("2012-06-02 00:00:00")
-        target_time   = DateTime.parse("2012-07-01 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 29
-
-        assert_equal [0, 29], time_span.days_to_months_and_days(remaining_days) # fails with 1 day ahead [1, 1]
-      end
-
-      it 'converts days to months and days by remaining_days given 30 days' do
-        starting_time = DateTime.parse("2012-06-02 00:00:00")
-        target_time   = DateTime.parse("2012-07-02 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 30
-
-        assert_equal [1, 0], time_span.days_to_months_and_days(remaining_days) # fails with 1 day ahead [1, 1]
-      end
-
-      it 'converts days to months and days by remaining_days given 30 days' do
-        starting_time = DateTime.parse("2012-01-16 00:00:00")
-        target_time   = DateTime.parse("2012-02-16 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 31
-
-        assert_equal [1, 0], time_span.days_to_months_and_days(remaining_days) # fails with 1 day ahead [1, 1]
-      end
-
-      # Should be equal in duration compared to 'converts days to months and days by remaining_days given 30 days'
-      it 'converts days to months and days by remaining_days given 1 month' do
-        starting_time = DateTime.parse("2012-06-01 00:00:00")
-        target_time   = DateTime.parse("2012-07-01 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 30
-
-        assert_equal [1, 0], time_span.days_to_months_and_days(remaining_days)
-      end
-
-      it 'converts days to months and days by remaining_days given 1 month and 1 day' do
-        starting_time = DateTime.parse("2012-06-01 00:00:00")
-        target_time   = DateTime.parse("2012-07-02 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 31
-
-        assert_equal [1, 1], time_span.days_to_months_and_days(remaining_days)
-      end
-
-      it 'converts days to months and days by remaining_days given 1 month and 2 days' do
-        starting_time = DateTime.parse("2012-06-01 00:00:00")
-        target_time   = DateTime.parse("2012-07-03 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 32
-
-        assert_equal [1, 2], time_span.days_to_months_and_days(remaining_days)
-      end
-
-      it 'converts days to months and days by remaining_days given 94 days' do #fails
-        starting_time = DateTime.parse("2013-06-01 00:00:00")
-        target_time   = DateTime.parse("2013-09-03 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        remaining_days  = 94
-
-        assert_equal [3, 2], time_span.days_to_months_and_days(remaining_days)
-      end
-
-      it 'shows day count for date' do
-        time_span = TimeSpan.new(@now, @now)
-
-        assert_equal 28, time_span.days_in_month(Date.parse("2013-02-01"))
-        assert_equal 29, time_span.days_in_month(Date.parse("2012-02-01"))
-        assert_equal 30, time_span.days_in_month(Date.parse("2013-06-01"))
-      end
-
-      it 'gathers days by upcoming months' do
-        starting_time = DateTime.parse("2013-06-17 00:00:00")
-        target_time   = DateTime.parse("2013-12-02 00:00:00")
-        time_span     = TimeSpan.new(starting_time, target_time)
-
-        assert_equal [13, 1, 31, 31, 30, 31, 30], time_span.days_by_upcoming_months(starting_time, target_time)
-      end
-
-      it 'converts date first day in month' do
-        time_span = TimeSpan.new(@now, @now)
-
-        assert_equal Date.parse("2013-02-01"), time_span.first_day_in_month(Date.parse("2013-02-13"))
-      end
-
-      describe 'duration in nanos' do
-
-        it 'should calculate duration for 1 day in the future' do
-          assert_equal 86400000000000, TimeSpan.new(@now, @now+1).duration_in_nanos
-        end
-
-        it 'should calculate positive duration for 1 day in the past' do
-          assert_equal 86400000000000, TimeSpan.new(@now, @now-1).duration_in_nanos
-        end
-
-        it 'should calculate duration for same timestamp' do
-          assert_equal 0, TimeSpan.new(@now, @now).duration_in_nanos
-        end
-
-        it 'should calculate duration for last week' do
-          assert_equal 86400000000000, TimeSpan.new(@now-7, @now-6).duration_in_nanos
-        end
-
-      end
-
-      describe 'collects leap years' do
-
-        it 'collects 0 leap years on leap start year' do
-          starting_time = DateTime.parse("2012-03-13 00:00:00") # leap year but after February the 29th
-          target_time   = DateTime.parse("2015-06-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          assert time_span.leap_years.empty?
-          assert_equal 0, time_span.leap_count
-        end
-
-        it 'collects 0 leap years on leap target year' do
-          starting_time = DateTime.parse("2011-01-01 00:00:00")
-          target_time   = DateTime.parse("2012-02-27 00:00:00") # leap year but before February the 29th
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          assert time_span.leap_years.empty?
-          assert_equal 0, time_span.leap_count
-        end
-
-        it 'collects 1 leap year' do
-          starting_time = DateTime.parse("2016-01-01 00:00:00") # leap year
-          target_time   = DateTime.parse("2017-06-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          assert_equal [2016], time_span.leap_years
-          assert_equal 1, time_span.leap_count
-        end
-
-        it 'collects 2 leap years' do
-          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
-          target_time   = DateTime.parse("2016-06-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          assert_equal [2012, 2016], time_span.leap_years
-          assert_equal 2, time_span.leap_count
-        end
-
-      end
-
-    end
-
     describe 'unit switches' do
 
       it 'switches everything' do
@@ -519,73 +342,6 @@ module Countdown
 
       end
 
-      describe 'leap years' do
-
-        it 'has no leap year' do
-          starting_time = DateTime.parse("2013-01-01 00:00:00")
-          target_time   = DateTime.parse("2014-01-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-        it 'should be 1 year on exact leap date (start is leap)' do
-          starting_time = DateTime.parse("2012-02-29 00:00:00") # leap year
-          target_time   = DateTime.parse("2013-02-28 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-        it 'should be 1 year on exact leap date (target is leap)' do
-          starting_time = DateTime.parse("2011-02-28 00:00:00")
-          target_time   = DateTime.parse("2012-02-29 00:00:00") # leap year
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-        it 'has 1 leap year' do
-          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
-          target_time   = DateTime.parse("2013-01-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-        it 'has 1 leap year within 3 years' do
-          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
-          target_time   = DateTime.parse("2015-01-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 3, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-        it 'has 2 leap years within 4 years' do
-          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
-          target_time   = DateTime.parse("2016-01-01 00:00:00") # leap year
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 4, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-        it 'has 3 leap years within 8 years' do
-          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
-          target_time   = DateTime.parse("2020-01-01 00:00:00")
-          time_span     = TimeSpan.new(starting_time, target_time)
-
-          expected = {millenniums: 0, centuries: 0, decades: 0, years: 8, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-          assert_equal expected.sort, time_span.duration.sort
-        end
-
-      end
-
     end
 
     describe 'millenniums' do
@@ -672,6 +428,74 @@ module Countdown
 
         assert_equal 2, time_span.years
         assert_all_zero_except(time_span, :years)
+      end
+
+      #TODO: remove when DurationHelper.years() does the calculation
+      describe 'leaps' do
+
+        it 'has no leap year' do
+          starting_time = DateTime.parse("2013-01-01 00:00:00")
+          target_time   = DateTime.parse("2014-01-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
+        it 'should be 1 year on exact leap date (start is leap)' do
+          starting_time = DateTime.parse("2012-02-29 00:00:00") # leap year
+          target_time   = DateTime.parse("2013-02-28 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
+        it 'should be 1 year on exact leap date (target is leap)' do
+          starting_time = DateTime.parse("2011-02-28 00:00:00")
+          target_time   = DateTime.parse("2012-02-29 00:00:00") # leap year
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
+        it 'has 1 leap year' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+          target_time   = DateTime.parse("2013-01-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 1, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
+        it 'has 1 leap year within 3 years' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+          target_time   = DateTime.parse("2015-01-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 3, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
+        it 'has 2 leap years within 4 years' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+          target_time   = DateTime.parse("2016-01-01 00:00:00") # leap year
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 4, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
+        it 'has 3 leap years within 8 years' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00") # leap year
+          target_time   = DateTime.parse("2020-01-01 00:00:00")
+          time_span     = TimeSpan.new(starting_time, target_time)
+
+          expected = {millenniums: 0, centuries: 0, decades: 0, years: 8, months: 0, weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+          assert_equal expected.sort, time_span.duration.sort
+        end
+
       end
 
     end
