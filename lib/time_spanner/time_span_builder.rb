@@ -6,18 +6,18 @@ module TimeSpanner
   class TimeSpanBuilder
     include TimeSpanner::TimeHelpers
 
-    attr_reader :reverse, :start_time, :target_time, :time_span
+    attr_reader :reverse, :start_time, :target_time, :duration
 
     # TODO: test reversing
     def initialize(start_time, target_time, options={})
       @reverse     = target_time < start_time
       @start_time  = reverse ? target_time : start_time
       @target_time = reverse ? start_time : target_time
-      @time_span   = TimeSpan.new(@start_time, @target_time) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
+      @duration    = TimeSpan.new(@start_time, @target_time) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
     end
 
-    def duration
-      @__duration ||= format_units
+    def time_span
+      @__time_span ||= format_units
     end
 
     private
@@ -30,35 +30,35 @@ module TimeSpanner
     def format_units
       unless reverse?
         {
-            millenniums: time_span.millenniums,
-            centuries: time_span.centuries,
-            decades: time_span.decades,
-            years: time_span.years,
-            months: time_span.months,
-            weeks: time_span.weeks,
-            days: time_span.days,
-            hours: time_span.hours,
-            minutes: time_span.minutes,
-            seconds: time_span.seconds,
-            millis: time_span.millis,
-            micros: time_span.micros,
-            nanos: time_span.nanos
+            millenniums: duration.millenniums,
+            centuries: duration.centuries,
+            decades: duration.decades,
+            years: duration.years,
+            months: duration.months,
+            weeks: duration.weeks,
+            days: duration.days,
+            hours: duration.hours,
+            minutes: duration.minutes,
+            seconds: duration.seconds,
+            millis: duration.millis,
+            micros: duration.micros,
+            nanos: duration.nanos
         }
       else
         {
-            millenniums: -time_span.millenniums,
-            centuries: -time_span.centuries,
-            decades: -time_span.decades,
-            years: -time_span.years,
-            months: -time_span.months,
-            weeks: -time_span.weeks,
-            days: -time_span.days,
-            hours: -time_span.hours,
-            minutes: -time_span.minutes,
-            seconds: -time_span.seconds,
-            millis: -time_span.millis,
-            micros: -time_span.micros,
-            nanos: -time_span.nanos
+            millenniums: -duration.millenniums,
+            centuries: -duration.centuries,
+            decades: -duration.decades,
+            years: -duration.years,
+            months: -duration.months,
+            weeks: -duration.weeks,
+            days: -duration.days,
+            hours: -duration.hours,
+            minutes: -duration.minutes,
+            seconds: -duration.seconds,
+            millis: -duration.millis,
+            micros: -duration.micros,
+            nanos: -duration.nanos
         }
       end
     end
