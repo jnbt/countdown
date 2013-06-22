@@ -12,7 +12,7 @@ module TimeSpanner
         preserve_time_class time, Date.new(time.year, time.month, 1)
       end
 
-      def self.to_last_day(time)
+      def self.to_last_day(time) #TODO: rename to day_count
         year  = time.year
         month = time.month
         day = if month == 2 && leap?(year)
@@ -41,7 +41,7 @@ module TimeSpanner
         Date.gregorian_leap?(year)
       end
 
-      def self.leaps(from, to)
+      def self.leap_count(from, to)
         leap_years(from, to).size
       end
 

@@ -38,9 +38,8 @@ module TimeSpanner
 
         it 'should calculate 0 nanoseconds' do
           starting_time = Time.at @now.to_time.to_f
-          target_time   = Time.at(starting_time.to_f, 0)
+          target_time   = starting_time
 
-          assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_nanos
         end
 
@@ -48,7 +47,6 @@ module TimeSpanner
           starting_time = Time.at @now.to_time.to_f
           target_time   = Time.at(starting_time.to_f, 0.001)
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_nanos
         end
 
@@ -65,7 +63,7 @@ module TimeSpanner
 
         it 'should calculate 0 microseconds' do
           starting_time = Time.at @now.to_time.to_f
-          target_time   = Time.at(starting_time.to_f, 0.0)
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_micros
@@ -82,7 +80,6 @@ module TimeSpanner
           starting_time = Time.at @now.to_time.to_f
           target_time   = Time.at(starting_time.to_f, 1.0)
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_micros
         end
 
@@ -99,7 +96,7 @@ module TimeSpanner
 
         it 'should calculate 0 milliseconds' do
           starting_time = Time.at @now.to_time.to_f
-          target_time   = Time.at(starting_time.to_f, 0.0)
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_millis
@@ -116,7 +113,6 @@ module TimeSpanner
           starting_time = Time.at @now.to_time.to_f
           target_time   = Time.at(starting_time.to_f, 1000.0)
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_millis
         end
 
@@ -133,7 +129,7 @@ module TimeSpanner
 
         it 'should calculate 0 seconds' do
           starting_time = DateTime.parse("2012-06-02 00:00:00")
-          target_time   = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_seconds
@@ -150,7 +146,6 @@ module TimeSpanner
           starting_time = DateTime.parse("2012-06-02 00:00:00")
           target_time   = DateTime.parse("2012-06-02 00:00:01")
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_seconds
         end
 
@@ -167,7 +162,7 @@ module TimeSpanner
 
         it 'should calculate 0 minutes' do
           starting_time = DateTime.parse("2012-06-02 00:00:00")
-          target_time   = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_minutes
@@ -184,7 +179,6 @@ module TimeSpanner
           starting_time = DateTime.parse("2012-06-02 00:00:00")
           target_time   = DateTime.parse("2012-06-02 00:01:00")
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_minutes
         end
 
@@ -201,7 +195,7 @@ module TimeSpanner
 
         it 'should calculate 0 hours' do
           starting_time = DateTime.parse("2012-06-02 00:00:00")
-          target_time   = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_hours
@@ -218,7 +212,6 @@ module TimeSpanner
           starting_time = DateTime.parse("2012-06-02 00:00:00")
           target_time   = DateTime.parse("2012-06-02 01:00:00")
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_hours
         end
 
@@ -235,7 +228,7 @@ module TimeSpanner
 
         it 'should calculate 0 days' do
           starting_time = DateTime.parse("2012-06-02 00:00:00")
-          target_time   = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_days
@@ -252,7 +245,6 @@ module TimeSpanner
           starting_time = DateTime.parse("2012-06-02 00:00:00")
           target_time   = DateTime.parse("2012-06-03 00:00:00")
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_days
         end
 
@@ -275,7 +267,7 @@ module TimeSpanner
 
         it 'should calculate 0 weeks' do
           starting_time = DateTime.parse("2012-06-02 00:00:00")
-          target_time   = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
 
           assert target_time == starting_time
           assert_equal 0, TimeSpan.new(starting_time, target_time).total_weeks
@@ -292,15 +284,75 @@ module TimeSpanner
           starting_time = DateTime.parse("2012-06-02 00:00:00")
           target_time   = starting_time + 7
 
-          refute target_time == starting_time
           assert_equal 1, TimeSpan.new(starting_time, target_time).total_weeks
         end
 
-        it 'should calculate 2 weeks' do
+        it 'should calculate 235 weeks' do
           starting_time = DateTime.parse("2012-06-02 00:00:00")
           target_time   = starting_time + 7*235
 
           assert_equal 235, TimeSpan.new(starting_time, target_time).total_weeks
+        end
+
+      end
+
+      describe "total months" do
+
+        it 'should calculate 0 months' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
+
+          assert target_time == starting_time
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_months
+        end
+
+        it 'should calculate 0 months on 28 days (February)' do #fails
+          starting_time = DateTime.parse("2013-02-01 00:00:00")
+          target_time   = DateTime.parse("2013-02-28 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_months
+        end
+
+        it 'should calculate 0 months on 29 days (February leap)' do
+          starting_time = DateTime.parse("2012-02-01 00:00:00")
+          target_time   = DateTime.parse("2012-02-29 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_months #fails
+        end
+
+        it 'should calculate 0 months on 29 days (month with 30 days)' do
+          starting_time = DateTime.parse("2012-06-01 00:00:00")
+          target_time   = DateTime.parse("2012-06-30 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_months
+        end
+
+        it 'should calculate 0 months on 30 days (month with 31 days)' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00")
+          target_time   = DateTime.parse("2012-01-31 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_months
+        end
+
+        it 'should calculate 0 months when target day is smaller than starting day' do
+          starting_time = DateTime.parse("2012-06-03 00:00:00")
+          target_time   = DateTime.parse("2012-07-02 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_months
+        end
+
+        it 'should calculate 1 month' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = DateTime.parse("2012-07-02 00:00:00")
+
+          assert_equal 1, TimeSpan.new(starting_time, target_time).total_months
+        end
+
+        it 'should calculate 123 months' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = DateTime.parse("2022-09-02 00:00:00")
+
+          assert_equal 123, TimeSpan.new(starting_time, target_time).total_months
         end
 
       end
@@ -319,66 +371,67 @@ module TimeSpanner
       describe 'months and days' do
 
         it 'converts days to months and days by remaining_days given 0 days' do
-          target_time    = DateTime.parse("2013-01-31 00:00:00")
-          remaining_days = 0
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from    = DateTime.parse("2013-01-31 00:00:00")
+          to      = DateTime.parse("2013-01-31 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [0, 0], months_days
         end
 
         it 'converts days to months and days by remaining_days given 1 day' do
-          target_time    = DateTime.parse("2013-02-01 00:00:00")
-          remaining_days = 1
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2013-01-31 00:00:00")
+          to   = DateTime.parse("2013-02-01 00:00:00")
+
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [0, 1], months_days
         end
 
         it 'converts days to months and days by remaining_days given 29 days' do
-          target_time    = DateTime.parse("2012-07-01 00:00:00")
-          remaining_days = 29
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2012-07-01 00:00:00")
+          to   = DateTime.parse("2012-07-30 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [0, 29], months_days
         end
 
         it 'converts days to months and days by remaining_days given 30 days' do
-          target_time    = DateTime.parse("2012-07-02 00:00:00")
-          remaining_days = 30
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2012-06-02 00:00:00")
+          to   = DateTime.parse("2012-07-02 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [1, 0], months_days
         end
 
         # Should be equal in duration compared to 'converts days to months and days by remaining_days given 30 days'
         it 'converts days to months and days by remaining_days given 1 month' do
-          target_time    = DateTime.parse("2012-07-01 00:00:00")
-          remaining_days = 30
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2012-06-01 00:00:00")
+          to   = DateTime.parse("2012-07-01 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [1, 0], months_days
         end
 
         it 'converts days to months and days by remaining_days given 1 month and 1 day' do
-          target_time    = DateTime.parse("2012-07-02 00:00:00")
-          remaining_days = 31
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2012-06-01 00:00:00")
+          to   = DateTime.parse("2012-07-02 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [1, 1], months_days
         end
 
         it 'converts days to months and days by remaining_days given 1 month and 2 days' do
-          target_time    = DateTime.parse("2012-07-03 00:00:00")
-          remaining_days = 32
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2012-06-01 00:00:00")
+          to   = DateTime.parse("2012-07-03 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [1, 2], months_days
         end
 
         it 'converts days to months and days by remaining_days given 94 days' do
-          target_time    = DateTime.parse("2013-09-03 00:00:00")
-          remaining_days = 94
-          months_days    = TimeSpan.months_and_days(target_time, remaining_days)
+          from = DateTime.parse("2013-06-01 00:00:00")
+          to   = DateTime.parse("2013-09-03 00:00:00")
+          months_days = TimeSpan.months_and_days(from, to)
 
           assert_equal [3, 2], months_days
         end

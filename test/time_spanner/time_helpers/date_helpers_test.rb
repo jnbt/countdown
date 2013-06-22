@@ -28,14 +28,14 @@ module TimeSpanner
             starting_time = DateTime.parse("2012-03-13 00:00:00") # leap year but after February the 29th
             target_time   = DateTime.parse("2016-02-27 00:00:00") # leap year but before February the 29th
 
-            assert_equal 0, DateHelper.leaps(starting_time, target_time)
+            assert_equal 0, DateHelper.leap_count(starting_time, target_time)
           end
 
           it 'counts 2 leap years' do
             starting_time = DateTime.parse("2011-02-13 00:00:00")
             target_time   = DateTime.parse("2017-06-01 00:00:00")
 
-            assert_equal 2, DateHelper.leaps(starting_time, target_time)
+            assert_equal 2, DateHelper.leap_count(starting_time, target_time)
           end
 
           it 'collects 0 leap years on leap start year' do

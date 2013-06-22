@@ -66,7 +66,13 @@ module TimeSpanner
       end
 
       def total_months
-        0
+        months = (to.year * 12 + to.month) - (from.year * 12 + from.month)
+
+        # In order to make this example work: "2013-02-10 00:00:00" to "2013-06-02 00:00:00"
+        # we need to substract 1 from months if target_date's day is smaller than current_date's day
+        # It should be 3 months and 20 days and not 4 months!
+        months -= 1 if to.day < from.day
+        months
       end
 
       def calculate
@@ -81,7 +87,7 @@ module TimeSpanner
 
         remaining_years, remaining_days = remaining_days.divmod(365)
 
-        @months, days = TimeSpan.months_and_days(to, remaining_days)
+        @months, days = TimeSpan.months_and_days(to.to_date-remaining_days, to)
 
         remaining_decades, @years     = remaining_years.divmod(10)
         remaining_centuries, @decades = remaining_decades.divmod(10)
@@ -123,15 +129,12 @@ module TimeSpanner
         days_by_upcoming_months.inject { |sum, x| sum + x }
       end
 
-      # Return Array with months and remaining days given a target date and remaining_days to it
-      # remaining_days must be within 0 and 364
-      # TODO: better supply a from time instead of remaining_days
-      def self.months_and_days(to, remaining_days)
+      def self.months_and_days(from, to)
         #TODO: all we should do here is return: [months_in_timeframe, days_in_timeframe]
         # Months calculation:
 
-        target_date  = to
-        current_date = target_date.to_time - remaining_days * 86400 #TODO: Time.at(target_date.to_time - from.to_seconds)
+        target_date  = to.to_date
+        current_date = from.to_date
 
         months = (target_date.year * 12 + target_date.month) - (current_date.year * 12 + current_date.month) #TODO: own method to calculate months
 
@@ -140,10 +143,11 @@ module TimeSpanner
         # It should be 3 months and 20 days and not 4 months!
         months -= 1 if target_date.day < current_date.day
 
-        return [0, remaining_days] if months == 0 # no day calculation needed since we have less days than 1 month has
+        return [0, target_date - current_date] if months == 0 # no day calculation needed since we have less days than 1 month has
 
         # Days calculation: #TODO: own method to calculate days
-
+        remaining_days = target_date - current_date
+        p :remaining_days => remaining_days, :days_in_timeframe => days_in_timeframe(current_date, target_date)
         days = remaining_days - days_in_timeframe(current_date, target_date) # substract days for all months from remaining_days
 
         [months, days]
@@ -152,7 +156,7 @@ module TimeSpanner
       private
 
       def leaps
-        DateHelper.leaps from, to
+        DateHelper.leap_count from, to
       end
 
     end
