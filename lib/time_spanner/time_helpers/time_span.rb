@@ -1,6 +1,7 @@
 require 'date'
 require 'time'
 require 'time_spanner/time_helpers/date_helper'
+require 'time_spanner/time_helpers/duration_helper'
 
 module TimeSpanner
   module TimeHelpers
@@ -66,13 +67,7 @@ module TimeSpanner
       end
 
       def total_months
-        months = (to.year * 12 + to.month) - (from.year * 12 + from.month)
-
-        # In order to make this example work: "2013-02-10 00:00:00" to "2013-06-02 00:00:00"
-        # we need to substract 1 from months if target_date's day is smaller than current_date's day
-        # It should be 3 months and 20 days and not 4 months!
-        months -= 1 if to.day < from.day
-        months
+        DurationHelper.months from, to
       end
 
       def calculate
@@ -130,25 +125,11 @@ module TimeSpanner
       end
 
       def self.months_and_days(from, to)
-        #TODO: all we should do here is return: [months_in_timeframe, days_in_timeframe]
-        # Months calculation:
+        months = DurationHelper.months(from, to)
 
-        target_date  = to.to_date
-        current_date = from.to_date
+        return [0, to.to_date - from.to_date] if months == 0 # no day calculation needed since we have less days than 1 month has
 
-        months = (target_date.year * 12 + target_date.month) - (current_date.year * 12 + current_date.month) #TODO: own method to calculate months
-
-        # in order to make this example work: "2013-02-10 00:00:00" to "2013-06-02 00:00:00"
-        # we need to substract 1 from months if target_date's day is smaller than current_date's day
-        # It should be 3 months and 20 days and not 4 months!
-        months -= 1 if target_date.day < current_date.day
-
-        return [0, target_date - current_date] if months == 0 # no day calculation needed since we have less days than 1 month has
-
-        # Days calculation: #TODO: own method to calculate days
-        remaining_days = target_date - current_date
-        p :remaining_days => remaining_days, :days_in_timeframe => days_in_timeframe(current_date, target_date)
-        days = remaining_days - days_in_timeframe(current_date, target_date) # substract days for all months from remaining_days
+        days = (to.to_date - from.to_date) - days_in_timeframe(from, to) # substract days for all months from remaining_days
 
         [months, days]
       end

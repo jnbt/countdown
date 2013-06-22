@@ -9,10 +9,10 @@ module TimeSpanner
       COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
       def self.to_first_day(time)
-        preserve_time_class time, Date.new(time.year, time.month, 1)
+        preserve_time_class time, Date.new(time.year, time.month, 1) #TODO: rename to first_date
       end
 
-      def self.to_last_day(time) #TODO: rename to day_count
+      def self.to_last_day(time) #TODO: rename to last_date
         year  = time.year
         month = time.month
         day = if month == 2 && leap?(year)

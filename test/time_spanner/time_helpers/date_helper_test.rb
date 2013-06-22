@@ -5,7 +5,7 @@ module TimeSpanner
   module TimeHelpers
     module DateHelper
 
-      class DateHelpersTest < TestCase
+      class DateHelperTest < TestCase
 
         it 'gives last day for date' do
           assert_equal 28, DateHelper.last_day(Date.parse("2013-02-01"))

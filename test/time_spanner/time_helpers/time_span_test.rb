@@ -403,7 +403,7 @@ module TimeSpanner
           assert_equal [1, 0], months_days
         end
 
-        # Should be equal in duration compared to 'converts days to months and days by remaining_days given 30 days'
+
         it 'converts days to months and days by remaining_days given 1 month' do
           from = DateTime.parse("2012-06-01 00:00:00")
           to   = DateTime.parse("2012-07-01 00:00:00")
