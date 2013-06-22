@@ -7,6 +7,8 @@ module TimeSpanner
 
     class TimeSpan
 
+      DEFAULT_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :nanos]
+
       attr_reader :from, :to
 
       attr_reader :nanos
@@ -23,22 +25,59 @@ module TimeSpanner
       attr_reader :centuries
       attr_reader :millenniums
 
-      def initialize(from, to)
-        @from = from
-        @to   = to
+      def initialize(from, to, *args)
+        @from  = from
+        @to    = to
+        @units = args || DEFAULT_UNITS
 
         calculate
       end
 
+      def total_nanos
+        (duration.round(9) * 1000000000).to_i
+      end
+
+      def total_micros
+        total_nanos / 1000
+      end
+
+      def total_millis
+        total_micros / 1000
+      end
+
+      def total_seconds
+        total_millis / 1000
+      end
+
+      def total_minutes
+        (total_seconds / 60.0).to_i
+      end
+
+      def total_hours
+        (total_minutes / 60).to_i
+      end
+
+      def total_days
+        (total_hours / 24.0 - leaps).to_i
+      end
+
+      def total_weeks
+        ((total_days + leaps) / 7.0).to_i
+      end
+
+      def total_months
+        0
+      end
+
       def calculate
-        remaining_micros, @nanos    = duration.divmod(1000)
+        remaining_micros, @nanos    = total_nanos.divmod(1000)
         remaining_millis, @micros   = remaining_micros.divmod(1000)
         remaining_seconds, @millis  = remaining_millis.divmod(1000)
         remaining_minutes, @seconds = remaining_seconds.divmod(60)
         remaining_hours, @minutes   = remaining_minutes.divmod(60)
         remaining_days, @hours      = remaining_hours.divmod(24)
 
-        remaining_days -= DateHelper.leaps from, to
+        remaining_days -= leaps
 
         remaining_years, remaining_days = remaining_days.divmod(365)
 
@@ -52,7 +91,7 @@ module TimeSpanner
       end
 
       def duration
-        (to.to_time.to_r - from.to_time.to_r).round(9) * 1000000000
+        to.to_time.to_r - from.to_time.to_r
       end
 
       # Calculate remaining days for given timeframe
@@ -108,6 +147,12 @@ module TimeSpanner
         days = remaining_days - days_in_timeframe(current_date, target_date) # substract days for all months from remaining_days
 
         [months, days]
+      end
+
+      private
+
+      def leaps
+        DateHelper.leaps from, to
       end
 
     end
