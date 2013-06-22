@@ -50,19 +50,19 @@ module TimeSpanner
       end
 
       def total_minutes
-        (total_seconds / 60.0).to_i
+        total_seconds / 60
       end
 
       def total_hours
-        (total_minutes / 60).to_i
+        total_minutes / 60
       end
 
       def total_days
-        (total_hours / 24.0 - leaps).to_i
+        total_hours / 24 - leaps
       end
 
       def total_weeks
-        ((total_days + leaps) / 7.0).to_i
+        (total_days + leaps) / 7
       end
 
       def total_months
