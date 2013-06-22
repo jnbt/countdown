@@ -250,7 +250,7 @@ module TimeSpanner
           time_span     = TimeSpanBuilder.new(starting_time, target_time)
 
           assert_equal 0, time_span.duration[:seconds]
-          assert_equal 999, time_span.duration[:millis]
+          assert_equal 999, time_span.duration[:millis] #TODO: sometimes fails with inaccurate nanos (999-997)
         end
       end
 
