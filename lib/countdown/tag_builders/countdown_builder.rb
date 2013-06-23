@@ -7,7 +7,7 @@ module Countdown
       DEFAULT_DIRECTION  = :down
       DEFAULT_STEPS      = :seconds
       DEFAULT_UNITS      = [:days, :hours, :minutes, :seconds]
-      DEFAULT_SEPARATORS = { years: {value: "Y"}, months: {value: "M"}, weeks: {value: "w"}, days: {value: "d"}, hours: {value: "h"}, minutes: {value: "m"}, seconds: {value: "s"}, millis: {value: "ms"} }
+      DEFAULT_SEPARATORS = { years: {value: 'Y'}, months: {value: 'M'}, weeks: {value: 'w'}, days: {value: 'd'}, hours: {value: 'h'}, minutes: {value: 'm'}, seconds: {value: 's'}, millis: {value: 'ms'} }
 
       attr_reader :direction, :steps, :units, :separators, :time_span
 
@@ -20,7 +20,7 @@ module Countdown
       end
 
       def attributes
-        { :class => "countdown", :'data-direction' => direction.to_s, :'data-steps' => steps.to_s }
+        { :class => 'countdown', :'data-direction' => direction.to_s, :'data-steps' => steps.to_s }
       end
 
       def to_html

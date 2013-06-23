@@ -10,16 +10,16 @@ module TimeSpanner
     end
 
     it 'should calculate no time units on zero duration' do
-      starting_time = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 0.0)
-      target_time   = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 0.0)
+      starting_time = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 0.0)
+      target_time   = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 0.0)
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       assert_all_zero_except(time_span_builder, nil)
     end
 
     it 'should calculate days (in the future)' do
-      starting_time = Date.parse("2013-06-17")
-      target_time   = Date.parse("2013-06-20")
+      starting_time = Date.parse('2013-06-17')
+      target_time   = Date.parse('2013-06-20')
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 0, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
@@ -27,8 +27,8 @@ module TimeSpanner
     end
 
     it 'should calculate days and weeks (in the future)' do
-      starting_time = Date.parse("2013-06-10")
-      target_time   = Date.parse("2013-06-20")
+      starting_time = Date.parse('2013-06-10')
+      target_time   = Date.parse('2013-06-20')
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
@@ -36,8 +36,8 @@ module TimeSpanner
     end
 
     it 'should calculate days/weeks/months (in the future)' do
-      starting_time = Date.parse("2013-06-10")
-      target_time   = Date.parse("2013-08-20")
+      starting_time = Date.parse('2013-06-10')
+      target_time   = Date.parse('2013-08-20')
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 2, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
@@ -45,8 +45,8 @@ module TimeSpanner
     end
 
     it 'should calculate all time units (in the future)' do
-      starting_time = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 2216234.383)
-      target_time   = Time.at(DateTime.parse("5447-12-12 23:11:12").to_time, 3153476.737)
+      starting_time = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 2216234.383)
+      target_time   = Time.at(DateTime.parse('5447-12-12 23:11:12').to_time, 3153476.737)
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       expected = {millenniums: 3, centuries: 4, decades: 3, years: 4, months: 5, weeks: 3, days: 4, hours: 10, minutes: 36, seconds: 16, millis: 937, micros: 242, nanos: 354}
@@ -54,8 +54,8 @@ module TimeSpanner
     end
 
     it 'should calculate all time units backwards when target_time is before starting_time' do
-      starting_time = Time.at(DateTime.parse("5447-12-12 23:11:12").to_time, 3153476.737)
-      target_time   = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 2216234.383)
+      starting_time = Time.at(DateTime.parse('5447-12-12 23:11:12').to_time, 3153476.737)
+      target_time   = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 2216234.383)
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       expected = {millenniums: -3, centuries: -4, decades: -3, years: -4, months: -5, weeks: -3, days: -4, hours: -10, minutes: -36, seconds: -16, millis: -937, micros: -242, nanos: -354}
@@ -65,8 +65,8 @@ module TimeSpanner
     describe 'unit switches' do
 
       it 'switches everything' do
-        starting_time = DateTime.parse("2000-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("3000-01-01 00:00:00").to_time
+        starting_time = DateTime.parse('2000-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('3000-01-01 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:millenniums]
@@ -94,8 +94,8 @@ module TimeSpanner
       end
 
       it 'switches from millenniums to centuries' do
-        starting_time = DateTime.parse("2000-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("3000-01-01 00:00:00").to_time
+        starting_time = DateTime.parse('2000-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('3000-01-01 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:millenniums]
@@ -113,8 +113,8 @@ module TimeSpanner
       end
 
       it 'switches from centuries to decades' do
-        starting_time = DateTime.parse("1900-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("2000-01-01 00:00:00").to_time
+        starting_time = DateTime.parse('1900-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('2000-01-01 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:centuries]
@@ -132,8 +132,8 @@ module TimeSpanner
       end
 
       it 'switches from decades to years' do
-        starting_time = DateTime.parse("1910-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("1920-01-01 00:00:00").to_time
+        starting_time = DateTime.parse('1910-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('1920-01-01 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:decades]
@@ -151,8 +151,8 @@ module TimeSpanner
       end
 
       it 'switches from years to months' do
-        starting_time = DateTime.parse("1910-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("1911-01-01 00:00:00").to_time
+        starting_time = DateTime.parse('1910-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('1911-01-01 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:years]
@@ -170,8 +170,8 @@ module TimeSpanner
       end
 
       it 'switches from months to weeks' do
-        starting_time = DateTime.parse("2013-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("2013-02-01 00:00:00").to_time
+        starting_time = DateTime.parse('2013-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('2013-02-01 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:months]
@@ -189,8 +189,8 @@ module TimeSpanner
       end
 
       it 'switches from weeks to days' do
-        starting_time = DateTime.parse("2013-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("2013-01-08 00:00:00").to_time
+        starting_time = DateTime.parse('2013-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('2013-01-08 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:weeks]
@@ -208,8 +208,8 @@ module TimeSpanner
       end
 
       it 'switches from days to hours' do
-        starting_time = DateTime.parse("2013-01-01 00:00:00").to_time
-        target_time   = DateTime.parse("2013-01-02 00:00:00").to_time
+        starting_time = DateTime.parse('2013-01-01 00:00:00').to_time
+        target_time   = DateTime.parse('2013-01-02 00:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:days]
@@ -227,8 +227,8 @@ module TimeSpanner
       end
 
       it 'switches from hours to minutes' do
-        starting_time = DateTime.parse("2013-01-01 22:00:00").to_time
-        target_time   = DateTime.parse("2013-01-01 23:00:00").to_time
+        starting_time = DateTime.parse('2013-01-01 22:00:00').to_time
+        target_time   = DateTime.parse('2013-01-01 23:00:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:hours]
@@ -246,8 +246,8 @@ module TimeSpanner
       end
 
       it 'switches from minutes to seconds' do
-        starting_time = DateTime.parse("2013-01-01 22:01:00").to_time
-        target_time   = DateTime.parse("2013-01-01 22:02:00").to_time
+        starting_time = DateTime.parse('2013-01-01 22:01:00').to_time
+        target_time   = DateTime.parse('2013-01-01 22:02:00').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:minutes]
@@ -264,8 +264,8 @@ module TimeSpanner
       end
 
       it 'switches from seconds to millis' do
-        starting_time = DateTime.parse("2013-01-01 22:01:00").to_time
-        target_time   = DateTime.parse("2013-01-01 22:01:01").to_time
+        starting_time = DateTime.parse('2013-01-01 22:01:00').to_time
+        target_time   = DateTime.parse('2013-01-01 22:01:01').to_time
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:seconds]
@@ -282,8 +282,8 @@ module TimeSpanner
       end
 
       it 'switches from millis to micros' do
-        starting_time = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f)
-        target_time   = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f, 1000.0)
+        starting_time = Time.at(DateTime.parse('2013-01-01 22:01:00').to_time.to_f)
+        target_time   = Time.at(DateTime.parse('2013-01-01 22:01:00').to_time.to_f, 1000.0)
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:millis]
@@ -300,8 +300,8 @@ module TimeSpanner
       end
 
       it 'switches from micro- to nanoseconds' do
-        starting_time = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f)
-        target_time   = Time.at(DateTime.parse("2013-01-01 22:01:00").to_time.to_f, 1.0)
+        starting_time = Time.at(DateTime.parse('2013-01-01 22:01:00').to_time.to_f)
+        target_time   = Time.at(DateTime.parse('2013-01-01 22:01:00').to_time.to_f, 1.0)
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
         assert_equal 1, time_span_builder.time_span[:micros]
@@ -324,8 +324,8 @@ module TimeSpanner
       describe 'unix epoch' do
 
         it 'should calculate dates before 1970' do
-          starting_time = DateTime.parse("1960-01-01 00:00:00")
-          target_time   = DateTime.parse("2010-01-01 00:00:00")
+          starting_time = DateTime.parse('1960-01-01 00:00:00')
+          target_time   = DateTime.parse('2010-01-01 00:00:00')
           time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
           refute target_time == starting_time
@@ -335,8 +335,8 @@ module TimeSpanner
         end
 
         it 'should calculate dates after 2039' do
-          starting_time = DateTime.parse("1960-01-01 00:00:00")
-          target_time   = DateTime.parse("2050-01-01 00:00:00")
+          starting_time = DateTime.parse('1960-01-01 00:00:00')
+          target_time   = DateTime.parse('2050-01-01 00:00:00')
           time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
           refute target_time == starting_time
@@ -350,8 +350,8 @@ module TimeSpanner
       describe 'time zone switches' do
 
         it 'switches to summer time' do
-          starting_time = DateTime.parse("2013-03-31 01:59:00 CEST")
-          target_time   = DateTime.parse("2013-03-31 02:01:00 CEST")
+          starting_time = DateTime.parse('2013-03-31 01:59:00 CEST')
+          target_time   = DateTime.parse('2013-03-31 02:01:00 CEST')
           time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
           assert_equal 2, time_span_builder.time_span[:minutes]
@@ -359,8 +359,8 @@ module TimeSpanner
         end
 
         it 'switches to winter time' do
-          starting_time = DateTime.parse("2013-10-31 02:59:00 CEST")
-          target_time   = DateTime.parse("2013-10-31 03:01:00 CEST")
+          starting_time = DateTime.parse('2013-10-31 02:59:00 CEST')
+          target_time   = DateTime.parse('2013-10-31 03:01:00 CEST')
           time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
           assert_equal 2, time_span_builder.time_span[:minutes]
