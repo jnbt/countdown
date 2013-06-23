@@ -1,5 +1,5 @@
 module TimeSpanner
-  module TimeHelpers
+  module TimeUnits
 
     class TimeUnitCollection
       include Enumerable
@@ -8,8 +8,10 @@ module TimeSpanner
       DEFAULT_ORDER = AVAILABLE_UNITS
 
       attr_accessor :units
+      attr_reader :duration
 
-      def initialize
+      def initialize(duration)
+        @duration = duration
         @units = []
       end
 
@@ -31,27 +33,13 @@ module TimeSpanner
         units.map(&:name).join('_').to_sym
       end
 
-    end
-
-    class TimeUnit
-      include Comparable
-
-      DEFAULT_ORDER = TimeUnitCollection::DEFAULT_ORDER
-
-      attr_reader :name, :position, :duration
-
-      def initialize(name, duration=nil)
-        @duration = duration
-        @position = 1
-        @name = name
-      end
-
-      def amount
-        @duration / 24 # If this is an hour
-      end
-
-      def <=>(other)
-        DEFAULT_ORDER.index(name) <=> DEFAULT_ORDER.index(other.name)
+      # Does not work yet
+      def calculate
+        rest = duration
+        each do |unit|
+          unit.calculate(rest)
+          rest = unit.rest
+        end
       end
 
     end

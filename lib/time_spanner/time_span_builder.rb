@@ -46,7 +46,7 @@ module TimeSpanner
 
     def validate_units!
       units.each do |unit|
-        raise InvalidUnitError, "Unit '#{unit}' is not a valid time unit." unless TimeUnitCollection::AVAILABLE_UNITS.include? unit
+        raise InvalidUnitError, "Unit '#{unit}' is not a valid time unit." unless TimeUnits::TimeUnitCollection::AVAILABLE_UNITS.include? unit
       end
     end
 

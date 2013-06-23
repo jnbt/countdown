@@ -1,13 +1,13 @@
 require 'time_spanner/time_helpers/date_helper'
 require 'time_spanner/time_helpers/duration_helper'
-require 'time_spanner/time_helpers/time_unit_collection'
+require 'time_spanner/time_units/time_unit_collection'
 
 module TimeSpanner
   module TimeHelpers
 
     class TimeSpan
 
-      DEFAULT_UNITS = TimeUnitCollection::AVAILABLE_UNITS
+      DEFAULT_UNITS = TimeUnits::TimeUnitCollection::AVAILABLE_UNITS
 
       attr_reader :from, :to, :unit_collection
 
@@ -29,7 +29,7 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collection = TimeUnitCollection.new
+        @unit_collection = TimeUnits::TimeUnitCollection.new total_nanos
 
         add_units_by_names unit_names
         unit_collection.sort!
@@ -38,7 +38,7 @@ module TimeSpanner
 
       def add_units_by_names(unit_names)
         unit_names.each do |name|
-          unit_collection << TimeUnit.new(name)
+          unit_collection << TimeUnits::TimeUnit.new(name)
         end
       end
 
