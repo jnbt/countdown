@@ -31,7 +31,11 @@ module TimeSpanner
         @to    = to
         @units = args || DEFAULT_UNITS
 
-        calculate
+        calculate_all_units #TODO: conditional based on given units
+      end
+
+      def duration
+        to.to_time.to_r - from.to_time.to_r
       end
 
       def total_nanos
@@ -70,7 +74,23 @@ module TimeSpanner
         DurationHelper.months from, to
       end
 
-      def calculate
+      def total_years
+        total_days / 365
+      end
+
+      def total_decades
+        total_years / 10
+      end
+
+      def total_centuries
+        total_decades / 10
+      end
+
+      def total_millenniums
+        total_centuries / 10
+      end
+
+      def calculate_all_units
         remaining_micros, @nanos    = total_nanos.divmod(1000)
         remaining_millis, @micros   = remaining_micros.divmod(1000)
         remaining_seconds, @millis  = remaining_millis.divmod(1000)
@@ -91,13 +111,6 @@ module TimeSpanner
         @weeks, @days  = days.divmod(7)
       end
 
-      def duration
-        to.to_time.to_r - from.to_time.to_r
-      end
-
-      def self.months_and_days(from, to)
-        DurationHelper.months_with_days(from, to)
-      end
 
       private
 

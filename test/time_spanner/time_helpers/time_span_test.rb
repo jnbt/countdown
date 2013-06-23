@@ -357,6 +357,145 @@ module TimeSpanner
 
       end
 
+      describe "total years" do
+
+        it 'should calculate 0 years' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
+
+          assert target_time == starting_time
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_years
+        end
+
+        it 'should calculate 0 years on 364 days' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00")
+          target_time   = DateTime.parse("2012-12-31 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_years
+        end
+
+        it 'should calculate 1 year' do
+          starting_time = DateTime.parse("2013-06-02 00:00:00")
+          target_time   = DateTime.parse("2014-06-02 00:00:00")
+
+          assert_equal 1, TimeSpan.new(starting_time, target_time).total_years
+        end
+
+        it 'should calculate 1 year on leap year' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00")
+          target_time   = DateTime.parse("2013-01-01 00:00:00")
+
+          assert_equal 1, TimeSpan.new(starting_time, target_time).total_years
+        end
+
+        it 'should calculate 99 years' do
+          starting_time = DateTime.parse("2008-02-01 00:00:00")
+          target_time   = DateTime.parse("2107-02-01 00:00:00")
+
+          assert_equal 99, TimeSpan.new(starting_time, target_time).total_years
+        end
+
+      end
+
+      describe "total decades" do
+
+        it 'should calculate 0 decades' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
+
+          assert target_time == starting_time
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_decades
+        end
+
+        it 'should calculate 0 decades on 9 years' do
+          starting_time = DateTime.parse("2012-01-01 00:00:00")
+          target_time   = DateTime.parse("2021-01-01 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_decades
+        end
+
+        it 'should calculate 1 decade' do
+          starting_time = DateTime.parse("2013-06-02 00:00:00")
+          target_time   = DateTime.parse("2023-06-02 00:00:00")
+
+          assert_equal 1, TimeSpan.new(starting_time, target_time).total_decades
+        end
+
+        it 'should calculate 9 decades' do
+          starting_time = DateTime.parse("2008-02-01 00:00:00")
+          target_time   = DateTime.parse("2098-02-01 00:00:00")
+
+          assert_equal 9, TimeSpan.new(starting_time, target_time).total_decades
+        end
+
+      end
+
+      describe "total centuries" do
+
+        it 'should calculate 0 centuries' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
+
+          assert target_time == starting_time
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_centuries
+        end
+
+        it 'should calculate 0 centuries on 9 decades' do
+          starting_time = DateTime.parse("2008-02-01 00:00:00")
+          target_time   = DateTime.parse("2098-02-01 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_centuries
+        end
+
+        it 'should calculate 1 century' do
+          starting_time = DateTime.parse("1845-06-02 00:00:00")
+          target_time   = DateTime.parse("1945-06-02 00:00:00")
+
+          assert_equal 1, TimeSpan.new(starting_time, target_time).total_centuries
+        end
+
+        it 'should calculate 9 centuries' do
+          starting_time = DateTime.parse("2008-02-01 00:00:00")
+          target_time   = DateTime.parse("2908-02-01 00:00:00")
+
+          assert_equal 9, TimeSpan.new(starting_time, target_time).total_centuries
+        end
+
+      end
+
+      describe "total millenniums" do
+
+        it 'should calculate 0 millenniums' do
+          starting_time = DateTime.parse("2012-06-02 00:00:00")
+          target_time   = starting_time
+
+          assert target_time == starting_time
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_millenniums
+        end
+
+        it 'should calculate 0 millenniums on 9 centuries' do
+          starting_time = DateTime.parse("2008-02-01 00:00:00")
+          target_time   = DateTime.parse("2908-02-01 00:00:00")
+
+          assert_equal 0, TimeSpan.new(starting_time, target_time).total_millenniums
+        end
+
+        it 'should calculate 1 millennium' do
+          starting_time = DateTime.parse("1845-06-02 00:00:00")
+          target_time   = DateTime.parse("2845-06-02 00:00:00")
+
+          assert_equal 1, TimeSpan.new(starting_time, target_time).total_millenniums
+        end
+
+        it 'should calculate 9 millenniums' do
+          starting_time = DateTime.parse("2008-02-01 00:00:00")
+          target_time   = DateTime.parse("11008-02-01 00:00:00")
+
+          assert_equal 9, TimeSpan.new(starting_time, target_time).total_millenniums
+        end
+
+      end
+
     end
 
   end
