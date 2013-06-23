@@ -9,7 +9,7 @@ module TimeSpanner
 
       DEFAULT_UNITS = TimeUnitCollection::AVAILABLE_UNITS
 
-      attr_reader :from, :to, :units
+      attr_reader :from, :to, :unit_collection
 
       attr_reader :nanos
       attr_reader :micros
@@ -25,30 +25,38 @@ module TimeSpanner
       attr_reader :centuries
       attr_reader :millenniums
 
-      def initialize(from, to, units=[])
-        @from           = from
-        @to             = to
+      def initialize(from, to, unit_names=[])
+        @from = from
+        @to   = to
 
-        unit_collection = TimeUnitCollection.new(units)
-        @units          = unit_collection.sort.map(&:name)
+        @unit_collection = TimeUnitCollection.new
 
+        add_units_by_names unit_names
+        unit_collection.sort!
         delegate_calculation
       end
 
+      def add_units_by_names(unit_names)
+        unit_names.each do |name|
+          unit_collection << TimeUnit.new(name)
+        end
+      end
+
       def delegate_calculation
-        case units
-          when TimeUnitCollection::AVAILABLE_UNITS
+        # unit_collection.calculate
+        case unit_collection.identifier
+          when :millenniums_centuries_decades_years_months_weeks_days_hours_minutes_seconds_millis_micros_nanos
             calculate_all_units
-          when [:nanos]
+          when :nanos
             @nanos = total_nanos
-          when [:days]
+          when :days
             @days = total_days
-          when [:months]
+          when :months
             @months = total_months
-          when [:months, :days, :hours]
+          when :months_days_hours
             calculate_hours_with_days_with_months
-          when ([:days, :months] - units).empty?
-            @days, @months = DurationHelper.months_with_days(from, to).reverse
+          when :months_days
+            @months, @days = DurationHelper.months_with_days(from, to)
         end
       end
 

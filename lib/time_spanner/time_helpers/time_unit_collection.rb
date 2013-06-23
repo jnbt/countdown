@@ -1,5 +1,3 @@
-require 'time_spanner/time_helpers'
-
 module TimeSpanner
   module TimeHelpers
 
@@ -9,16 +7,28 @@ module TimeSpanner
       AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos]
       DEFAULT_ORDER = AVAILABLE_UNITS
 
-      attr_reader :units
+      attr_accessor :units
 
-      def initialize(unit_names)
-        @units = unit_names.map {|name| TimeUnit.new(name) }
+      def initialize
+        @units = []
+      end
+
+      def <<(unit)
+        units << unit
       end
 
       def each
         units.each do |unit|
           yield unit
         end
+      end
+
+      def sort!
+        self.units = units.sort
+      end
+
+      def identifier
+        units.map(&:name).join('_').to_sym
       end
 
     end
@@ -28,10 +38,16 @@ module TimeSpanner
 
       DEFAULT_ORDER = TimeUnitCollection::DEFAULT_ORDER
 
-      attr_reader :name
+      attr_reader :name, :position, :duration
 
-      def initialize(name)
+      def initialize(name, duration=nil)
+        @duration = duration
+        @position = 1
         @name = name
+      end
+
+      def amount
+        @duration / 24 # If this is an hour
       end
 
       def <=>(other)
