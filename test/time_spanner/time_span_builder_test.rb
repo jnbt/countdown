@@ -9,6 +9,30 @@ module TimeSpanner
       @now = DateTime.now
     end
 
+    it 'should validate time units' do
+      assert_raises InvalidUnitError do
+        TimeSpanBuilder.new(@now, @now, [:days, :something])
+      end
+    end
+
+    it 'should use default units when if no units are given (no parameter given)' do
+      time_span_builder = TimeSpanBuilder.new(@now, @now)
+
+      assert_equal TimeSpanBuilder::DEFAULT_UNITS, time_span_builder.units
+    end
+
+    it 'should use default units when if no units are given (nil given)' do
+      time_span_builder = TimeSpanBuilder.new(@now, @now, nil)
+
+      assert_equal TimeSpanBuilder::DEFAULT_UNITS, time_span_builder.units
+    end
+
+    it 'should use default units when if no units are given (empty Array given)' do
+      time_span_builder = TimeSpanBuilder.new(@now, @now, [])
+
+      assert_equal TimeSpanBuilder::DEFAULT_UNITS, time_span_builder.units
+    end
+
     it 'should calculate no time units on zero duration' do
       starting_time = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 0.0)
       target_time   = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 0.0)
@@ -17,49 +41,89 @@ module TimeSpanner
       assert_all_zero_except(time_span_builder, nil)
     end
 
-    it 'should calculate days (in the future)' do
-      starting_time = Date.parse('2013-06-17')
-      target_time   = Date.parse('2013-06-20')
+    it 'should switch time span when target time is smaller than start time' do
+      starting_time = DateTime.parse('2013-06-17 12:34:56')
+      target_time   = DateTime.parse('2013-04-17 12:34:56')
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
-      expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 0, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-      assert_equal expected.sort, time_span_builder.time_span.sort
+      assert_equal target_time, time_span_builder.start_time
+      assert_equal starting_time, time_span_builder.target_time
     end
 
-    it 'should calculate days and weeks (in the future)' do
-      starting_time = Date.parse('2013-06-10')
-      target_time   = Date.parse('2013-06-20')
-      time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
-
-      expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-      assert_equal expected.sort, time_span_builder.time_span.sort
-    end
-
-    it 'should calculate days/weeks/months (in the future)' do
-      starting_time = Date.parse('2013-06-10')
-      target_time   = Date.parse('2013-08-20')
-      time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
-
-      expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 2, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
-      assert_equal expected.sort, time_span_builder.time_span.sort
-    end
-
-    it 'should calculate all time units (in the future)' do
-      starting_time = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 2216234.383)
-      target_time   = Time.at(DateTime.parse('5447-12-12 23:11:12').to_time, 3153476.737)
-      time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
-
-      expected = {millenniums: 3, centuries: 4, decades: 3, years: 4, months: 5, weeks: 3, days: 4, hours: 10, minutes: 36, seconds: 16, millis: 937, micros: 242, nanos: 354}
-      assert_equal expected.sort, time_span_builder.time_span.sort
-    end
-
-    it 'should calculate all time units backwards when target_time is before starting_time' do
+    it 'should minusify time units when target time is smaller than start time' do
       starting_time = Time.at(DateTime.parse('5447-12-12 23:11:12').to_time, 3153476.737)
       target_time   = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 2216234.383)
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
       expected = {millenniums: -3, centuries: -4, decades: -3, years: -4, months: -5, weeks: -3, days: -4, hours: -10, minutes: -36, seconds: -16, millis: -937, micros: -242, nanos: -354}
       assert_equal expected.sort, time_span_builder.time_span.sort
+    end
+
+    describe 'output all time units' do
+
+      it 'should output days (in the future)' do
+        starting_time = Date.parse('2013-06-17')
+        target_time   = Date.parse('2013-06-20')
+        time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+        expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 0, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+        assert_equal expected.sort, time_span_builder.time_span.sort
+      end
+
+      it 'should output days and weeks (in the future)' do
+        starting_time = Date.parse('2013-06-10')
+        target_time   = Date.parse('2013-06-20')
+        time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+        expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+        assert_equal expected.sort, time_span_builder.time_span.sort
+      end
+
+      it 'should output days/weeks/months (in the future)' do
+        starting_time = Date.parse('2013-06-10')
+        target_time   = Date.parse('2013-08-20')
+        time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+        expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 2, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+        assert_equal expected.sort, time_span_builder.time_span.sort
+      end
+
+      it 'should output all time units (in the future)' do
+        starting_time = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 2216234.383)
+        target_time   = Time.at(DateTime.parse('5447-12-12 23:11:12').to_time, 3153476.737)
+        time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+        expected = {millenniums: 3, centuries: 4, decades: 3, years: 4, months: 5, weeks: 3, days: 4, hours: 10, minutes: 36, seconds: 16, millis: 937, micros: 242, nanos: 354}
+
+        assert_equal expected.sort, time_span_builder.time_span.sort
+      end
+
+    end
+
+    describe 'output only 1 unit' do
+
+      it 'should output only nanos' do
+        starting_time = Time.at @now.to_time.to_f
+        target_time   = Time.at(starting_time.to_f, 0.235)
+        time_span_builder = TimeSpanBuilder.new(starting_time, target_time, [:nanos])
+
+        expected = {nanos: 235}
+        assert_equal expected.sort, time_span_builder.time_span.sort
+      end
+
+    end
+
+    describe 'output multiple units' do
+
+      it 'should output only nanos' do
+        starting_time = DateTime.parse('2013-06-10 00:20:00')
+        target_time   = DateTime.parse('2013-07-13 02:20:00')
+        time_span_builder = TimeSpanBuilder.new(starting_time, target_time, [:days, :hours, :months])
+
+        expected = {hours: 2, days: 3, months: 1}
+        assert_equal expected.sort, time_span_builder.time_span.sort
+      end
+
     end
 
     describe 'unit switches' do

@@ -8,7 +8,8 @@ module TimeSpanner
 
     class TimeSpan
 
-      DEFAULT_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :nanos]
+      AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos]
+      DEFAULT_UNITS   = AVAILABLE_UNITS
 
       attr_reader :from, :to
 
@@ -26,10 +27,10 @@ module TimeSpanner
       attr_reader :centuries
       attr_reader :millenniums
 
-      def initialize(from, to, *args)
+      def initialize(from, to, units=[])
         @from  = from
         @to    = to
-        @units = args || DEFAULT_UNITS
+        @units = units && !units.empty? ? units : DEFAULT_UNITS
 
         calculate_all_units #TODO: conditional based on given units
       end

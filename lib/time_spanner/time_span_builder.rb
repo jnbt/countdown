@@ -5,62 +5,53 @@ module TimeSpanner
   class TimeSpanBuilder
     include TimeSpanner::TimeHelpers
 
-    attr_reader :reverse, :start_time, :target_time, :duration
+    DEFAULT_UNITS = TimeSpan::DEFAULT_UNITS
 
-    # TODO: test reversing
-    def initialize(start_time, target_time, options={})
-      @reverse     = target_time < start_time
-      @start_time  = reverse ? target_time : start_time
-      @target_time = reverse ? start_time : target_time
-      @duration    = TimeSpan.new(@start_time, @target_time) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
+    attr_reader :units, :unit_container, :reverse, :start_time, :target_time, :duration
+
+    def initialize(start_time, target_time, units=[])
+      validate_units!(units)
+
+      @units          = set_units(units)
+      @unit_container = {}
+      @reverse        = target_time < start_time
+      @start_time     = reverse ? target_time : start_time
+      @target_time    = reverse ? start_time : target_time
+      @duration       = TimeSpan.new(@start_time, @target_time, units) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
     end
 
     def time_span
-      @__time_span ||= format_units
+      @__time_span ||= build
     end
 
     private
+
+    def build
+      units.each do |unit|
+        value_for_unit = duration.instance_variable_get(:"@#{unit}")
+        unit_container[unit] = reverse? ? -value_for_unit : value_for_unit
+      end
+      unit_container
+    end
 
     # Countdown with negative values because target_time is before start_time.
     def reverse?
       reverse
     end
 
-    def format_units
-      unless reverse?
-        {
-            millenniums: duration.millenniums,
-            centuries: duration.centuries,
-            decades: duration.decades,
-            years: duration.years,
-            months: duration.months,
-            weeks: duration.weeks,
-            days: duration.days,
-            hours: duration.hours,
-            minutes: duration.minutes,
-            seconds: duration.seconds,
-            millis: duration.millis,
-            micros: duration.micros,
-            nanos: duration.nanos
-        }
-      else
-        {
-            millenniums: -duration.millenniums,
-            centuries: -duration.centuries,
-            decades: -duration.decades,
-            years: -duration.years,
-            months: -duration.months,
-            weeks: -duration.weeks,
-            days: -duration.days,
-            hours: -duration.hours,
-            minutes: -duration.minutes,
-            seconds: -duration.seconds,
-            millis: -duration.millis,
-            micros: -duration.micros,
-            nanos: -duration.nanos
-        }
+    def set_units(units)
+      units.nil? || units.empty? ? DEFAULT_UNITS : units
+    end
+
+    def validate_units!(units)
+      if units
+        units.each do |unit|
+          raise(InvalidUnitError, "Unit '#{unit}' is not a valid time unit.") if !TimeSpan::AVAILABLE_UNITS.include? unit
+        end
       end
     end
 
   end
+
+  class InvalidUnitError < StandardError; end
 end
