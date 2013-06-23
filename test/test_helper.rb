@@ -4,7 +4,7 @@ require 'minitest/reporters'
 require 'time_spanner'
 require 'countdown'
 
-MiniTest::Reporters.use!
+#MiniTest::Reporters.use!
 
 class TestCase < Minitest::Spec
 end

@@ -17,12 +17,39 @@ module TimeSpanner
       assert_all_zero_except(time_span_builder, nil)
     end
 
+    it 'should calculate days (in the future)' do
+      starting_time = Date.parse("2013-06-17")
+      target_time   = Date.parse("2013-06-20")
+      time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+      expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 0, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+      assert_equal expected.sort, time_span_builder.time_span.sort
+    end
+
+    it 'should calculate days and weeks (in the future)' do
+      starting_time = Date.parse("2013-06-10")
+      target_time   = Date.parse("2013-06-20")
+      time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+      expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 0, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+      assert_equal expected.sort, time_span_builder.time_span.sort
+    end
+
+    it 'should calculate days/weeks/months (in the future)' do
+      starting_time = Date.parse("2013-06-10")
+      target_time   = Date.parse("2013-08-20")
+      time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
+
+      expected = {millenniums: 0, centuries: 0, decades: 0, years: 0, months: 2, weeks: 1, days: 3, hours: 0, minutes: 0, seconds: 0, millis: 0, micros: 0, nanos: 0}
+      assert_equal expected.sort, time_span_builder.time_span.sort
+    end
+
     it 'should calculate all time units (in the future)' do
       starting_time = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 2216234.383)
       target_time   = Time.at(DateTime.parse("5447-12-12 23:11:12").to_time, 3153476.737)
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
-      expected = {millenniums: 3, centuries: 4, decades: 3, years: 4, months: 5, weeks: 1, days: 5, hours: 10, minutes: 36, seconds: 16, millis: 937, micros: 242, nanos: 354}
+      expected = {millenniums: 3, centuries: 4, decades: 3, years: 4, months: 5, weeks: 3, days: 4, hours: 10, minutes: 36, seconds: 16, millis: 937, micros: 242, nanos: 354}
       assert_equal expected.sort, time_span_builder.time_span.sort
     end
 
@@ -31,7 +58,7 @@ module TimeSpanner
       target_time   = Time.at(DateTime.parse("2013-06-17 12:34:56").to_time, 2216234.383)
       time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
-      expected = {millenniums: -3, centuries: -4, decades: -3, years: -4, months: -5, weeks: -1, days: -5, hours: -10, minutes: -36, seconds: -16, millis: -937, micros: -242, nanos: -354}
+      expected = {millenniums: -3, centuries: -4, decades: -3, years: -4, months: -5, weeks: -3, days: -4, hours: -10, minutes: -36, seconds: -16, millis: -937, micros: -242, nanos: -354}
       assert_equal expected.sort, time_span_builder.time_span.sort
     end
 
@@ -55,8 +82,8 @@ module TimeSpanner
           assert_equal 9, time_span_builder.time_span[:decades]
           assert_equal 9, time_span_builder.time_span[:years]
           assert_equal 11, time_span_builder.time_span[:months]
-          assert_equal 0, time_span_builder.time_span[:weeks]
-          assert_equal 0, time_span_builder.time_span[:days]
+          assert_equal 4, time_span_builder.time_span[:weeks]
+          assert_equal 2, time_span_builder.time_span[:days]
           assert_equal 23, time_span_builder.time_span[:hours]
           assert_equal 59, time_span_builder.time_span[:minutes]
           assert_equal 59, time_span_builder.time_span[:seconds]
@@ -496,28 +523,6 @@ module TimeSpanner
           assert_equal expected.sort, time_span_builder.time_span.sort
         end
 
-      end
-
-    end
-
-    describe 'months' do
-
-      it 'should calculate 1 month' do
-        starting_time = DateTime.parse("2012-06-01 00:00:00")
-        target_time   = DateTime.parse("2012-07-01 00:00:00")
-        time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
-
-        assert_all_zero_except(time_span_builder, :months)
-        assert_equal 1, time_span_builder.time_span[:months]
-      end
-
-      it 'should calculate 2 months' do
-        starting_time = DateTime.parse("2012-06-01 00:00:00")
-        target_time   = DateTime.parse("2012-08-01 00:00:00")
-        time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
-
-        assert_all_zero_except(time_span_builder, :months)
-        assert_equal 2, time_span_builder.time_span[:months]
       end
 
     end
