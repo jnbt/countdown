@@ -1,14 +1,13 @@
 require 'time_spanner/time_helpers/date_helper'
 require 'time_spanner/time_helpers/duration_helper'
-require 'time_spanner/time_helpers/unit_collection'
+require 'time_spanner/time_helpers/time_unit_collection'
 
 module TimeSpanner
   module TimeHelpers
 
     class TimeSpan
 
-      AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos]
-      DEFAULT_UNITS   = AVAILABLE_UNITS
+      DEFAULT_UNITS = TimeUnitCollection::AVAILABLE_UNITS
 
       attr_reader :from, :to, :units
 
@@ -30,16 +29,15 @@ module TimeSpanner
         @from           = from
         @to             = to
 
-        unit_collection = UnitCollection.new(units)
-        @units          = unit_collection.sort!
+        unit_collection = TimeUnitCollection.new(units)
+        @units          = unit_collection.sort.map(&:name)
 
         delegate_calculation
       end
 
       def delegate_calculation
-
         case units
-          when AVAILABLE_UNITS
+          when TimeUnitCollection::AVAILABLE_UNITS
             calculate_all_units
           when [:nanos]
             @nanos = total_nanos
@@ -47,7 +45,7 @@ module TimeSpanner
             @days = total_days
           when [:months]
             @months = total_months
-          when [:days, :hours, :months]
+          when [:months, :days, :hours]
             calculate_hours_with_days_with_months
           when ([:days, :months] - units).empty?
             @days, @months = DurationHelper.months_with_days(from, to).reverse
