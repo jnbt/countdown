@@ -7,17 +7,16 @@ module TimeSpanner
 
     DEFAULT_UNITS = TimeSpan::DEFAULT_UNITS
 
-    attr_reader :units, :unit_container, :reverse, :start_time, :target_time, :duration
+    attr_reader :units, :reverse, :start_time, :target_time, :duration
 
-    def initialize(start_time, target_time, units=[])
-      validate_units!(units)
-
-      @units          = set_units(units)
-      @unit_container = {}
+    def initialize(start_time, target_time, time_units=[])
       @reverse        = target_time < start_time
       @start_time     = reverse ? target_time : start_time
       @target_time    = reverse ? start_time : target_time
-      @duration       = TimeSpan.new(@start_time, @target_time, units) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
+      @units          = set_units(time_units)
+
+      validate_units!
+      @duration = TimeSpan.new(@start_time, @target_time, units) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
     end
 
     def time_span
@@ -27,6 +26,8 @@ module TimeSpanner
     private
 
     def build
+      unit_container = {}
+
       units.each do |unit|
         value_for_unit = duration.instance_variable_get(:"@#{unit}")
         unit_container[unit] = reverse? ? -value_for_unit : value_for_unit
@@ -40,14 +41,12 @@ module TimeSpanner
     end
 
     def set_units(units)
-      units.nil? || units.empty? ? DEFAULT_UNITS : units
+      !units || units.empty? ? DEFAULT_UNITS : units
     end
 
-    def validate_units!(units)
-      if units
-        units.each do |unit|
-          raise(InvalidUnitError, "Unit '#{unit}' is not a valid time unit.") if !TimeSpan::AVAILABLE_UNITS.include? unit
-        end
+    def validate_units!
+      units.each do |unit|
+        raise InvalidUnitError, "Unit '#{unit}' is not a valid time unit." unless TimeSpan::AVAILABLE_UNITS.include? unit
       end
     end
 

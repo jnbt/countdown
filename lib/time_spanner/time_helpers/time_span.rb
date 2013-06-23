@@ -1,7 +1,6 @@
-require 'date'
-require 'time'
 require 'time_spanner/time_helpers/date_helper'
 require 'time_spanner/time_helpers/duration_helper'
+require 'time_spanner/time_helpers/unit_collection'
 
 module TimeSpanner
   module TimeHelpers
@@ -11,7 +10,7 @@ module TimeSpanner
       AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos]
       DEFAULT_UNITS   = AVAILABLE_UNITS
 
-      attr_reader :from, :to
+      attr_reader :from, :to, :units
 
       attr_reader :nanos
       attr_reader :micros
@@ -28,11 +27,31 @@ module TimeSpanner
       attr_reader :millenniums
 
       def initialize(from, to, units=[])
-        @from  = from
-        @to    = to
-        @units = units && !units.empty? ? units : DEFAULT_UNITS
+        @from           = from
+        @to             = to
 
-        calculate_all_units #TODO: conditional based on given units
+        unit_collection = UnitCollection.new(units)
+        @units          = unit_collection.sort!
+
+        delegate_calculation
+      end
+
+      def delegate_calculation
+
+        case units
+          when AVAILABLE_UNITS
+            calculate_all_units
+          when [:nanos]
+            @nanos = total_nanos
+          when [:days]
+            @days = total_days
+          when [:months]
+            @months = total_months
+          when [:days, :hours, :months]
+            calculate_hours_with_days_with_months
+          when ([:days, :months] - units).empty?
+            @days, @months = DurationHelper.months_with_days(from, to).reverse
+        end
       end
 
       def duration
@@ -110,6 +129,12 @@ module TimeSpanner
         @millenniums, @centuries      = remaining_centuries.divmod(10)
 
         @weeks, @days  = days.divmod(7)
+      end
+
+      def calculate_hours_with_days_with_months
+        remaining_days, @hours = total_hours.divmod(24)
+        remaining_days -= leaps
+        @months, @days = DurationHelper.months_with_days(to.to_date-remaining_days, to)
       end
 
 

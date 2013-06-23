@@ -115,7 +115,7 @@ module TimeSpanner
 
     describe 'output multiple units' do
 
-      it 'should output only nanos' do
+      it 'should output hours with days and months' do
         starting_time = DateTime.parse('2013-06-10 00:20:00')
         target_time   = DateTime.parse('2013-07-13 02:20:00')
         time_span_builder = TimeSpanBuilder.new(starting_time, target_time, [:days, :hours, :months])
