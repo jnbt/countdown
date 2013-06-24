@@ -41,9 +41,10 @@ module TimeSpanner
     end
 
     def set_units(units)
-      !units || units.empty? ? DEFAULT_UNITS : units
+      !units || units.compact.empty? ? DEFAULT_UNITS : units
     end
 
+    # TODO: should TimeUnitCollection validate it's unit_names instead?
     def validate_units!
       units.each do |unit|
         raise InvalidUnitError, "Unit '#{unit}' is not a valid time unit." unless TimeUnits::TimeUnitCollection::AVAILABLE_UNITS.include? unit

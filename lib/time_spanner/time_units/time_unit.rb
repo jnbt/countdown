@@ -24,7 +24,7 @@ module TimeSpanner
       end
 
       def to_sym
-        self.class.name.downcase.to_sym
+        self.class.name.split('::').last.downcase.to_sym
       end
 
     end

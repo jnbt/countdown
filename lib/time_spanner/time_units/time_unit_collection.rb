@@ -19,7 +19,7 @@ module TimeSpanner
       end
 
       def add_units_by_names
-        unit_names.reject { |unit| ![:hours, :minutes].include?(unit) }.each do |name| #TODO: use all unit_names
+        unit_names.each do |name|
           add unit_by_name(name)
         end
       end
@@ -53,7 +53,8 @@ module TimeSpanner
 
       # TODO: remove
       def identifier
-        units.map(&:name).join('_').to_sym
+        unit_names.join('_').to_sym
+        #units.map(&:name).join('_').to_sym
       end
 
     end
