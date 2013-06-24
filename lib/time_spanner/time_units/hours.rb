@@ -1,10 +1,10 @@
 module TimeSpanner
   module TimeUnits
 
-    class Hour < TimeUnit
+    class Hours < TimeUnit
 
-      def initialize(name)
-        super name
+      def initialize
+        super
         @position = 8
       end
 

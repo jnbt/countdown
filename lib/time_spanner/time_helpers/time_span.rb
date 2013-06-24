@@ -29,17 +29,10 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collection = TimeUnits::TimeUnitCollection.new total_nanos
+        @unit_collection = TimeUnits::TimeUnitCollection.new(total_nanos, unit_names)
 
-        add_units_by_names unit_names
         unit_collection.sort!
         delegate_calculation
-      end
-
-      def add_units_by_names(unit_names)
-        unit_names.each do |name|
-          unit_collection << TimeUnits::TimeUnit.new(name)
-        end
       end
 
       def delegate_calculation

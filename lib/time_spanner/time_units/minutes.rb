@@ -1,12 +1,10 @@
 module TimeSpanner
   module TimeUnits
 
-    class Minute < TimeUnit
+    class Minutes < TimeUnit
 
-      alias :seconds :rest
-
-      def initialize(name)
-        super name
+      def initialize
+        super
         @position = 9
       end
 
