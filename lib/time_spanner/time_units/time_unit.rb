@@ -4,8 +4,6 @@ module TimeSpanner
     class TimeUnit
       include Comparable
 
-      DEFAULT_ORDER = TimeUnitCollection::DEFAULT_ORDER
-
       attr_reader :name, :position
       attr_accessor :amount, :rest
 
@@ -20,7 +18,7 @@ module TimeSpanner
       end
 
       def <=>(other)
-        DEFAULT_ORDER.index(name) <=> DEFAULT_ORDER.index(other.name)
+        position <=> other.position
       end
 
       def to_sym
