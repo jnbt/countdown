@@ -3,15 +3,16 @@ module TimeSpanner
 
     class TimeUnit
       include Comparable
+      include TimeHelpers
 
-      attr_reader   :position, :duration_multiplier
+      attr_reader   :position, :nano_multiplier
       attr_accessor :amount, :rest
 
-      def initialize(position, duration_multiplier)
-        @duration_multiplier = duration_multiplier
-        @position            = position
-        @amount              = 0
-        @rest                = 0
+      def initialize(position, nano_multiplier)
+        @nano_multiplier  = nano_multiplier
+        @position         = position
+        @amount           = 0
+        @rest             = 0
       end
 
       def calculate(duration)
@@ -22,14 +23,20 @@ module TimeSpanner
         position <=> other.position
       end
 
+
       private
 
+      # The rest is needed to perform the calculation on the succeeding time units.
       def calculate_rest(nanoseconds)
-        self.rest = nanoseconds - amount_to_nanoseconds
+        self.rest = nanoseconds - amount_in_nanoseconds
       end
 
-      def amount_to_nanoseconds
-        amount * duration_multiplier
+      def amount_in_nanoseconds
+        amount * nano_multiplier
+      end
+
+      def leaps(from, to)
+        DateHelper.leap_count from, to
       end
 
     end

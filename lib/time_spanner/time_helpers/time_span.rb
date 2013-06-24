@@ -31,7 +31,7 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collection = TimeUnits::TimeUnitCollection.new(total_nanoseconds, unit_names)
+        @unit_collection = TimeUnits::TimeUnitCollection.new(from, to, total_nanoseconds, unit_names)
 
         delegate_calculation
       end

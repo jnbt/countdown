@@ -8,9 +8,11 @@ module TimeSpanner
       DEFAULT_ORDER   = AVAILABLE_UNITS
 
       attr_accessor :units
-      attr_reader   :duration, :unit_names
+      attr_reader   :duration, :unit_names, :from, :to
 
-      def initialize(duration, unit_names)
+      def initialize(from, to, duration, unit_names)
+        @from       = from
+        @to         = to
         @duration   = duration
         @unit_names = unit_names
         @units      = []
@@ -33,14 +35,13 @@ module TimeSpanner
           #when :years then Year.new
           #when :months then Month.new
           #when :weeks then Week.new
-          #when :millenniums then Millenium.new
-          #when :days then Day.new
-          when :hours then Hour.new
-          when :minutes then Minute.new
-          #when :seconds : Second.new
-          #when :milliseconds : Millisecond.new
-          #when :microseconds : Microsecond.new
-          when :nanoseconds then Nanosecond.new
+          when :days         then Day.new(from, to)
+          when :hours        then Hour.new
+          when :minutes      then Minute.new
+          when :seconds      then Second.new
+          when :milliseconds then Millisecond.new
+          when :microseconds then Microsecond.new
+          when :nanoseconds  then Nanosecond.new
         end
       end
 

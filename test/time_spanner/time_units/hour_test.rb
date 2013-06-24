@@ -32,13 +32,14 @@ module TimeSpanner
 
       it 'calculates with rest' do
         starting_time = DateTime.parse('2013-04-03 00:00:00')
-        target_time   = DateTime.parse('2013-04-03 02:45:00')
+        target_hours  = DateTime.parse('2013-04-03 02:00:00')
+        target_time   = Time.at(target_hours.to_time.to_r, 0.999)
 
         nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
         @hour.calculate(nanoseconds)
 
         assert_equal 2, @hour.amount
-        assert_equal 2700000000000, @hour.rest
+        assert_equal 999, @hour.rest
       end
 
     end

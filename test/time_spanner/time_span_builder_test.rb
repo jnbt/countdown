@@ -335,13 +335,13 @@ module TimeSpanner
         assert_equal 1, time_span_builder.time_span[:seconds]
         assert_equal 0, time_span_builder.time_span[:milliseconds]
 
-        Timecop.travel(Time.at(starting_time.to_f, 100.0)) do
-          starting_time = Time.at Time.now.to_time.to_f
+        Timecop.travel(Time.at(starting_time.to_r, 100.0)) do
+          starting_time = Time.at Time.now.to_time.to_r
           target_time   = target_time
           time_span_builder = TimeSpanBuilder.new(starting_time, target_time)
 
           assert_equal 0, time_span_builder.time_span[:seconds]
-          assert_equal 999, time_span_builder.time_span[:milliseconds] #TODO: sometimes fails with inaccurate nanoseconds
+          assert_equal 999, time_span_builder.time_span[:milliseconds] # TODO: Occasionally fails with inaccurate nanos (are floats used anywhere in this chain?)
         end
       end
 

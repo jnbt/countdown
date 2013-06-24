@@ -31,14 +31,15 @@ module TimeSpanner
       end
 
       it 'calculates with rest' do
-        starting_time = Time.at Time.now.to_f
-        target_time   = Time.at(starting_time.to_f, 2187223.999)
+        starting_time  = Time.at Time.now.to_r
+        target_seconds = Time.at(starting_time.to_r, 2000000.0)
+        target_time    = Time.at(target_seconds.to_time.to_r, 0.999)
 
         nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
         @second.calculate(nanoseconds)
 
         assert_equal 2, @second.amount
-        assert_equal 187223999, @second.rest
+        assert_equal 999, @second.rest
       end
 
     end
