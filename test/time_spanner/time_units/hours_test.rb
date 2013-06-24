@@ -22,9 +22,9 @@ module TimeSpanner
         starting_time = DateTime.parse('2013-04-03 00:00:00')
         target_time   = DateTime.parse('2013-04-03 02:00:00')
 
-        nanos = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
+        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
 
-        @hours.calculate(nanos)
+        @hours.calculate(nanoseconds)
 
         assert_equal 2, @hours.amount
         assert_equal 0, @hours.rest
@@ -34,8 +34,8 @@ module TimeSpanner
         starting_time = DateTime.parse('2013-04-03 00:00:00')
         target_time   = DateTime.parse('2013-04-03 02:45:00')
 
-        nanos = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
-        @hours.calculate(nanos)
+        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        @hours.calculate(nanoseconds)
 
         assert_equal 2, @hours.amount
         assert_equal 2700000000000, @hours.rest

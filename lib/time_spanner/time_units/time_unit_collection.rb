@@ -4,7 +4,7 @@ module TimeSpanner
     class TimeUnitCollection
       include Enumerable
 
-      AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis, :micros, :nanos]
+      AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
       DEFAULT_ORDER   = AVAILABLE_UNITS
 
       attr_accessor :units

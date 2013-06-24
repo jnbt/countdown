@@ -9,9 +9,9 @@ module TimeSpanner
       end
 
       def calculate(duration)
-        rest, nanos    = duration.divmod(1000)
-        rest, micros   = rest.divmod(1000)
-        seconds, millis = rest.divmod(1000)
+        rest, nanoseconds    = duration.divmod(1000)
+        rest, microseconds   = rest.divmod(1000)
+        seconds, milliseconds = rest.divmod(1000)
 
         self.amount, rest = seconds.divmod(60)
         self.rest = calculate_rest(duration)
@@ -19,11 +19,11 @@ module TimeSpanner
 
       private
 
-      def calculate_rest(nanos)
-        nanos - amount_to_nanos
+      def calculate_rest(nanoseconds)
+        nanoseconds - amount_to_nanoseconds
       end
 
-      def amount_to_nanos
+      def amount_to_nanoseconds
         self.amount * 60000000000
       end
 

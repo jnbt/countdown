@@ -69,7 +69,7 @@ It is updated every second and the generated html looks like this:
 
 Define how often the counter should be updated.
 Possible steps are:
-<pre>:millis, :seconds, :minutes, :hours, :days</pre>
+<pre>:milliseconds, :seconds, :minutes, :hours, :days</pre>
 
 Default is <pre>:seconds</pre>
 
@@ -78,7 +78,7 @@ Default is <pre>:seconds</pre>
 Define which time units should be displayed and how they should be ordered.
 
 Available keys are:
-<pre>:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis</pre>
+<pre>:years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds</pre>
 
 Default is
 ```ruby
@@ -89,11 +89,11 @@ Default is
 Define how different time units are separated from each other.
 
 Available keys are:
-<pre>:years, :months, :weeks, :days, :hours, :minutes, :seconds, :millis</pre>
+<pre>:years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds</pre>
 
 Default is
 ```ruby
-{ years: 'Y', months: 'M', weeks: 'w' days: 'd', hours: 'h', minutes: 'm', seconds: 's', millis: 'ms' }
+{ years: 'Y', months: 'M', weeks: 'w' days: 'd', hours: 'h', minutes: 'm', seconds: 's', milliseconds: 'ms' }
 ```
 You can singularize separators by supplying a hash e.g
 ```ruby

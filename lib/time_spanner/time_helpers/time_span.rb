@@ -11,9 +11,9 @@ module TimeSpanner
 
       attr_reader :from, :to, :unit_collection
 
-      attr_reader :nanos
-      attr_reader :micros
-      attr_reader :millis
+      attr_reader :nanoseconds
+      attr_reader :microseconds
+      attr_reader :milliseconds
       attr_reader :seconds
       attr_reader :minutes
       attr_reader :hours
@@ -29,7 +29,7 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collection = TimeUnits::TimeUnitCollection.new(total_nanos, unit_names)
+        @unit_collection = TimeUnits::TimeUnitCollection.new(total_nanoseconds, unit_names)
 
         unit_collection.sort!
         delegate_calculation
@@ -38,10 +38,10 @@ module TimeSpanner
       def delegate_calculation
         # unit_collection.calculate
         case unit_collection.identifier
-          when :millenniums_centuries_decades_years_months_weeks_days_hours_minutes_seconds_millis_micros_nanos
+          when :millenniums_centuries_decades_years_months_weeks_days_hours_minutes_seconds_milliseconds_microseconds_nanoseconds
             calculate_all_units
-          when :nanos
-            @nanos = total_nanos
+          when :nanoseconds
+            @nanoseconds = total_nanoseconds
           when :days
             @days = total_days
           when :months
@@ -57,20 +57,20 @@ module TimeSpanner
         to.to_time.to_r - from.to_time.to_r
       end
 
-      def total_nanos
+      def total_nanoseconds
         (duration.round(9) * 1000000000).to_i
       end
 
-      def total_micros
-        total_nanos / 1000
+      def total_microseconds
+        total_nanoseconds / 1000
       end
 
-      def total_millis
-        total_micros / 1000
+      def total_milliseconds
+        total_microseconds / 1000
       end
 
       def total_seconds
-        total_millis / 1000
+        total_milliseconds / 1000
       end
 
       def total_minutes
@@ -110,9 +110,9 @@ module TimeSpanner
       end
 
       def calculate_all_units
-        remaining_micros, @nanos    = total_nanos.divmod(1000)
-        remaining_millis, @micros   = remaining_micros.divmod(1000)
-        remaining_seconds, @millis  = remaining_millis.divmod(1000)
+        remaining_microseconds, @nanoseconds    = total_nanoseconds.divmod(1000)
+        remaining_milliseconds, @microseconds   = remaining_microseconds.divmod(1000)
+        remaining_seconds, @milliseconds  = remaining_milliseconds.divmod(1000)
         remaining_minutes, @seconds = remaining_seconds.divmod(60)
         remaining_hours, @minutes   = remaining_minutes.divmod(60)
         remaining_days, @hours      = remaining_hours.divmod(24)

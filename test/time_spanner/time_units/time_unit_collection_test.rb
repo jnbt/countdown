@@ -9,7 +9,6 @@ module TimeSpanner
 
       it 'initializes' do
         collection = TimeUnitCollection.new(3453453, [:hours])
-        p collection.units
 
         assert_equal 1, collection.units.size
       end
@@ -18,8 +17,8 @@ module TimeSpanner
         starting_time = DateTime.parse('2013-04-03 00:00:00')
         target_time   = DateTime.parse('2013-04-03 02:00:00')
 
-        nanos      = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
-        collection = TimeUnitCollection.new(nanos, [:hours])
+        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        collection  = TimeUnitCollection.new(nanoseconds, [:hours])
 
         collection.calculate
 
@@ -30,8 +29,8 @@ module TimeSpanner
         starting_time = DateTime.parse('2013-04-03 00:00:00')
         target_time   = DateTime.parse('2013-04-03 02:45:00')
 
-        nanos      = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
-        collection = TimeUnitCollection.new(nanos, [:hours, :minutes])
+        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        collection  = TimeUnitCollection.new(nanoseconds, [:hours, :minutes])
 
         collection.sort!
         collection.calculate

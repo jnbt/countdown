@@ -7,7 +7,7 @@ module Countdown
       DEFAULT_DIRECTION  = :down
       DEFAULT_STEPS      = :seconds
       DEFAULT_UNITS      = [:days, :hours, :minutes, :seconds]
-      DEFAULT_SEPARATORS = { years: {value: 'Y'}, months: {value: 'M'}, weeks: {value: 'w'}, days: {value: 'd'}, hours: {value: 'h'}, minutes: {value: 'm'}, seconds: {value: 's'}, millis: {value: 'ms'} }
+      DEFAULT_SEPARATORS = { years: {value: 'Y'}, months: {value: 'M'}, weeks: {value: 'w'}, days: {value: 'd'}, hours: {value: 'h'}, minutes: {value: 'm'}, seconds: {value: 's'}, milliseconds: {value: 'ms'} }
 
       attr_reader :direction, :steps, :units, :separators, :time_span
 
