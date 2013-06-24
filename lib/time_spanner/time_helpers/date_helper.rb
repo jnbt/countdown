@@ -5,14 +5,16 @@ module TimeSpanner
   module TimeHelpers
     module DateHelper
 
-      VALID_DATE_CLASSES        = ['Date', 'DateTime', 'Time']
       COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+      VALID_DATE_CLASSES        = ['Date', 'DateTime', 'Time']
 
+      #TODO: rename to first_date
       def self.to_first_day(time)
-        preserve_time_class time, Date.new(time.year, time.month, 1) #TODO: rename to first_date
+        preserve_time_class time, Date.new(time.year, time.month, 1)
       end
 
-      def self.to_last_day(time) #TODO: rename to last_date
+      #TODO: rename to last_date
+      def self.to_last_day(time)
         year  = time.year
         month = time.month
         day = if month == 2 && leap?(year)
@@ -21,13 +23,14 @@ module TimeSpanner
                 COMMON_YEAR_DAYS_IN_MONTH[month]
               end
 
-        self.preserve_time_class time, Date.new(year, month, day)
+        preserve_time_class time, Date.new(year, month, day)
       end
 
       def self.last_day(time)
         to_last_day(time).day
       end
 
+      #TODO: refactor
       def self.leap_years(from, to)
         leap_years = (from.year..to.year).to_a.select{|year| leap?(year)}
 
@@ -45,23 +48,23 @@ module TimeSpanner
         leap_years(from, to).size
       end
 
+
+      private
+
       def self.preserve_time_class(initial_time, new_time)
-        unless [initial_time, new_time].any? { |time| VALID_DATE_CLASSES.include? time.class.name }
-          raise "Invalid class given. Allowed: #{VALID_DATE_CLASSES}"
-        end
+        raise "Invalid time class given. Allowed: #{VALID_DATE_CLASSES}" unless valid_time_classes?(initial_time, new_time)
 
         case initial_time.class
-          when Time
-            new_time.to_time
-
-          when DateTime
-            new_time.to_datetime
-
-          else # Date
-            new_time.to_date
+          when Time     then new_time.to_time
+          when DateTime then new_time.to_datetime
+          else               new_time.to_date
         end
       end
-    end
 
+      def self.valid_time_classes?(*classes)
+        classes.all? { |time| VALID_DATE_CLASSES.include? time.class.name }
+      end
+
+    end
   end
 end

@@ -35,10 +35,6 @@ module TimeSpanner
         amount * nano_multiplier
       end
 
-      def leaps(from, to)
-        DateHelper.leap_count from, to
-      end
-
     end
   end
 
