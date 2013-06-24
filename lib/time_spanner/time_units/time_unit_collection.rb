@@ -16,7 +16,6 @@ module TimeSpanner
         @units      = []
 
         add_units_by_names
-        sort!
         calculate
       end
 
@@ -27,8 +26,22 @@ module TimeSpanner
       end
 
       def unit_by_name(name)
-        class_name = name.to_s.capitalize.chop # will not work on :centuries
-        TimeUnits.const_get(class_name).new if TimeUnits.const_defined?(class_name)
+        case name
+          #when :millenniums then Millenium.new
+          #when :centuries then Century.new
+          #when :decades then Decade.new
+          #when :years then Year.new
+          #when :months then Month.new
+          #when :weeks then Week.new
+          #when :millenniums then Millenium.new
+          #when :days then Day.new
+          when :hours then Hour.new
+          when :minutes then Minute.new
+          #when :seconds : Second.new
+          #when :milliseconds : Millisecond.new
+          #when :microseconds : Microsecond.new
+          when :nanoseconds then Nanosecond.new
+        end
       end
 
       def add(unit)
@@ -41,11 +54,14 @@ module TimeSpanner
         end
       end
 
+      # Units must be sorted to be able to perform a calculation chain.
       def sort!
         self.units = units.sort
       end
 
+      # Calculate units in chain.
       def calculate
+        sort!
         rest = duration
         each do |unit|
           unit.calculate(rest)
@@ -56,7 +72,6 @@ module TimeSpanner
       # TODO: remove
       def identifier
         unit_names.join('_').to_sym
-        #units.map(&:name).join('_').to_sym
       end
 
     end
