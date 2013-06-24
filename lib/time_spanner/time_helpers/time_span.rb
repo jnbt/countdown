@@ -2,6 +2,8 @@ require 'time_spanner/time_helpers/date_helper'
 require 'time_spanner/time_helpers/duration_helper'
 require 'time_spanner/time_units/time_unit_collection'
 
+
+#TODO: Remove class when Units are implemented.
 module TimeSpanner
   module TimeHelpers
 
