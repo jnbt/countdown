@@ -16,6 +16,8 @@ module TimeSpanner
         @units      = []
 
         add_units_by_names
+        sort!
+        calculate
       end
 
       def add_units_by_names

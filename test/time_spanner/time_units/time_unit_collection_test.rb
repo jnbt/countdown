@@ -20,8 +20,6 @@ module TimeSpanner
         nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
         collection  = TimeUnitCollection.new(nanoseconds, [:hours])
 
-        collection.calculate
-
         assert_equal 2, collection.units.first.amount
       end
 
@@ -32,11 +30,15 @@ module TimeSpanner
         nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
         collection  = TimeUnitCollection.new(nanoseconds, [:hours, :minutes])
 
-        collection.sort!
-        collection.calculate
-
         assert_equal 2, collection.units.first.amount
         assert_equal 45, collection.units.last.amount
+      end
+
+      it 'should sort' do
+        collection  = TimeUnitCollection.new(345346435657567567, [:minutes, :hours])
+
+        assert collection.units.first.is_a?(Hour)
+        assert collection.units.last.is_a?(Minute)
       end
 
     end

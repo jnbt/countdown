@@ -31,7 +31,6 @@ module TimeSpanner
 
         @unit_collection = TimeUnits::TimeUnitCollection.new(total_nanoseconds, unit_names)
 
-        unit_collection.sort!
         delegate_calculation
       end
 

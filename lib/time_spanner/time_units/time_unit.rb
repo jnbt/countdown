@@ -24,7 +24,7 @@ module TimeSpanner
       end
 
       def to_sym
-        self.class.name.split('::').last.downcase.to_sym
+        "#{self.class.name.split('::').last.downcase}s".to_sym # Will not work on century!
       end
 
     end
