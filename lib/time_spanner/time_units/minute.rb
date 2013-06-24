@@ -4,8 +4,7 @@ module TimeSpanner
     class Minute < TimeUnit
 
       def initialize
-        super
-        @position = 9
+        super(9)
       end
 
       def calculate(duration)

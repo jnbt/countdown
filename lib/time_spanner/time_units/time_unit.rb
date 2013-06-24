@@ -7,10 +7,11 @@ module TimeSpanner
       attr_reader :name, :position
       attr_accessor :amount, :rest
 
-      def initialize
-        @name   = to_sym
-        @amount = 0
-        @rest   = 0
+      def initialize(position)
+        @position = position
+        @name     = to_sym
+        @amount   = 0
+        @rest     = 0
       end
 
       def calculate(duration)

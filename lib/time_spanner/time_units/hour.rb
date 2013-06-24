@@ -4,8 +4,7 @@ module TimeSpanner
     class Hour < TimeUnit
 
       def initialize
-        super
-        @position = 8
+        super(8)
       end
 
       def calculate(duration)

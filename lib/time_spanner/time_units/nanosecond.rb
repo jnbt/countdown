@@ -4,8 +4,7 @@ module TimeSpanner
     class Nanosecond < TimeUnit
 
       def initialize
-        super
-        @position = 13
+        super(13)
       end
 
       def calculate(duration)
