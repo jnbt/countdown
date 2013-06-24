@@ -5,17 +5,17 @@ module TimeSpanner
   module TimeUnits
     include TimeHelpers
 
-    class HoursTest < TestCase
+    class HourTest < TestCase
 
       before do
-        @hours = Hours.new
+        @hour = Hour.new
       end
 
       it 'initializes' do
-        assert @hours.kind_of?(TimeUnit)
-        assert_equal 8, @hours.position
-        assert_equal 0, @hours.amount
-        assert_equal 0, @hours.rest
+        assert @hour.kind_of?(TimeUnit)
+        assert_equal 8, @hour.position
+        assert_equal 0, @hour.amount
+        assert_equal 0, @hour.rest
       end
 
       it 'calculates without rest' do
@@ -24,10 +24,10 @@ module TimeSpanner
 
         nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
 
-        @hours.calculate(nanoseconds)
+        @hour.calculate(nanoseconds)
 
-        assert_equal 2, @hours.amount
-        assert_equal 0, @hours.rest
+        assert_equal 2, @hour.amount
+        assert_equal 0, @hour.rest
       end
 
       it 'calculates with rest' do
@@ -35,10 +35,10 @@ module TimeSpanner
         target_time   = DateTime.parse('2013-04-03 02:45:00')
 
         nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
-        @hours.calculate(nanoseconds)
+        @hour.calculate(nanoseconds)
 
-        assert_equal 2, @hours.amount
-        assert_equal 2700000000000, @hours.rest
+        assert_equal 2, @hour.amount
+        assert_equal 2700000000000, @hour.rest
       end
 
     end

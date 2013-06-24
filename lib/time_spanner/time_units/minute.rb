@@ -1,20 +1,19 @@
 module TimeSpanner
   module TimeUnits
 
-    class Hours < TimeUnit
+    class Minute < TimeUnit
 
       def initialize
         super
-        @position = 8
+        @position = 9
       end
 
       def calculate(duration)
-        rest, nanoseconds   = duration.divmod(1000)
-        rest, microseconds  = rest.divmod(1000)
-        rest, milliseconds  = rest.divmod(1000)
-        minutes, seconds = rest.divmod(60)
+        rest, nanoseconds    = duration.divmod(1000)
+        rest, microseconds   = rest.divmod(1000)
+        seconds, milliseconds = rest.divmod(1000)
 
-        self.amount, rest = minutes.divmod(60)
+        self.amount, rest = seconds.divmod(60)
         self.rest = calculate_rest(duration)
       end
 
@@ -25,7 +24,7 @@ module TimeSpanner
       end
 
       def amount_to_nanoseconds
-        self.amount * 3600000000000
+        self.amount * 60000000000
       end
 
     end

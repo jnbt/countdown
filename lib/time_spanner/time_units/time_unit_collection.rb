@@ -25,7 +25,7 @@ module TimeSpanner
       end
 
       def unit_by_name(name)
-        class_name = name.to_s.capitalize
+        class_name = name.to_s.capitalize.chop # will not work on :centuries
         TimeUnits.const_get(class_name).new if TimeUnits.const_defined?(class_name)
       end
 
