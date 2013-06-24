@@ -4,13 +4,14 @@ module TimeSpanner
     class TimeUnit
       include Comparable
 
-      attr_reader   :position
+      attr_reader   :position, :duration_multiplier
       attr_accessor :amount, :rest
 
-      def initialize(position)
-        @position = position
-        @amount   = 0
-        @rest     = 0
+      def initialize(position, duration_multiplier)
+        @duration_multiplier = duration_multiplier
+        @position            = position
+        @amount              = 0
+        @rest                = 0
       end
 
       def calculate(duration)
@@ -19,6 +20,16 @@ module TimeSpanner
 
       def <=>(other)
         position <=> other.position
+      end
+
+      private
+
+      def calculate_rest(nanoseconds)
+        self.rest = nanoseconds - amount_to_nanoseconds
+      end
+
+      def amount_to_nanoseconds
+        amount * duration_multiplier
       end
 
     end

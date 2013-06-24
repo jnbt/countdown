@@ -1,0 +1,46 @@
+require 'test_helper'
+require 'date'
+
+module TimeSpanner
+  module TimeUnits
+    include TimeHelpers
+
+    class MicrosecondTest < TestCase
+
+      before do
+        @microsecond = Microsecond.new
+      end
+
+      it 'initializes' do
+        assert @microsecond.kind_of?(TimeUnit)
+        assert_equal 12, @microsecond.position
+        assert_equal 0, @microsecond.amount
+        assert_equal 0, @microsecond.rest
+      end
+
+      it 'calculates' do
+        starting_time = Time.at Time.now.to_f
+        target_time   = Time.at(starting_time.to_f, 2.0)
+
+        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+
+        @microsecond.calculate(nanoseconds)
+
+        assert_equal 2, @microsecond.amount
+        assert_equal 0, @microsecond.rest
+      end
+
+      it 'calculates with rest' do
+        starting_time = Time.at Time.now.to_f
+        target_time   = Time.at(starting_time.to_f, 2.234)
+
+        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        @microsecond.calculate(nanoseconds)
+
+        assert_equal 2, @microsecond.amount
+        assert_equal 234, @microsecond.rest
+      end
+
+    end
+  end
+end
