@@ -18,17 +18,27 @@ module TimeSpanner
         assert_equal 0, @hour.rest
       end
 
-      it 'calculates' do
+      it 'calculates without rest' do
         starting_time = DateTime.parse('2013-04-03 00:00:00')
         target_time   = DateTime.parse('2013-04-03 02:00:00')
 
-        minutes = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
+        nanos = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
 
-        @hour.calculate(minutes)
+        @hour.calculate(nanos)
 
         assert_equal 2, @hour.amount
         assert_equal 0, @hour.rest
-        assert_equal 0, @hour.minutes
+      end
+
+      it 'calculates with rest' do
+        starting_time = DateTime.parse('2013-04-03 00:00:00')
+        target_time   = DateTime.parse('2013-04-03 02:45:00')
+
+        nanos      = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
+        @hour.calculate(nanos)
+
+        assert_equal 2, @hour.amount
+        assert_equal 2700000000000, @hour.rest
       end
 
     end

@@ -34,16 +34,16 @@ module TimeSpanner
 
         nanos      = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanos
         collection = TimeUnitCollection.new nanos
-        collection << Hour.new(:hour)
-        collection << Minute.new(:minute)
+        collection << hour = Hour.new(:hour)
+        collection << minute = Minute.new(:minute)
         collection.sort!
 
         collection.calculate
 
-        assert_equal 2, collection.units.first.amount
-        assert_equal 45, collection.units.first.rest
-        #assert_equal 45, collection.units.last.amount
-        #assert_equal 0, collection.units.last.rest
+        assert_equal 2, hour.amount
+        assert_equal 2700000000000, hour.rest
+        assert_equal 45, minute.amount
+        assert_equal 0, minute.rest
       end
 
     end
