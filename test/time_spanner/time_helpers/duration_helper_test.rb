@@ -7,6 +7,22 @@ module TimeSpanner
 
       class DurationHelperTest < TestCase
 
+        describe 'days' do
+
+          it 'calculates 0 days for given time span (same date)' do
+            assert_equal 0, DurationHelper.days(Date.parse('2013-02-01'), Date.parse('2013-02-01'))
+          end
+
+          it 'calculates 1 day for given time span' do
+            assert_equal 1, DurationHelper.days(Date.parse('2013-03-20'), Date.parse('2013-03-21'))
+          end
+
+          it 'calculates 2 days for given time span (2 days and something)' do
+            assert_equal 2, DurationHelper.days(Date.parse('2013-03-20'), Date.parse('2013-03-22'))
+          end
+
+        end
+
         describe 'months' do
 
           it 'calculates 0 months for given time span (same date)' do

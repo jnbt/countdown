@@ -48,7 +48,7 @@ module TimeSpanner
           #when :centuries then Century.new
           #when :decades then Decade.new
           #when :years then Year.new
-          #when :months then Month.new
+          #when :months       then Month.new
           when :weeks        then Week.new
           when :days         then Day.new(from, to)
           when :hours        then Hour.new

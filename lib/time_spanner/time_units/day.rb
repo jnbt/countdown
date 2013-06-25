@@ -13,14 +13,8 @@ module TimeSpanner
         @leaps = DateHelper.leap_count from, to
       end
 
-      def calculate(duration)
-        rest, nanoseconds  = duration.divmod(1000)
-        rest, microseconds = rest.divmod(1000)
-        rest, milliseconds = rest.divmod(1000)
-        rest, seconds      = rest.divmod(60)
-        rest, minutes      = rest.divmod(60)
-        days, rest         = rest.divmod(24)
-        self.amount        = days - leaps
+      def calculate(duration) # duration equals to - from!
+        self.amount = DurationHelper.days(from, to) - leaps
 
         calculate_rest(duration - leaps * nano_multiplier)
       end
