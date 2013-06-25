@@ -3,7 +3,6 @@ require 'date'
 
 module TimeSpanner
   module TimeUnits
-    include TimeHelpers
 
     class TimeUnitCollectionTest < TestCase
 

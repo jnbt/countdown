@@ -3,9 +3,9 @@ require 'date'
 
 module TimeSpanner
   module TimeUnits
-    include TimeHelpers
 
     class DayTest < TestCase
+      include TimeHelpers
 
       before do
         starting_time = DateTime.parse('2013-04-03 00:00:00').to_time
@@ -26,7 +26,7 @@ module TimeSpanner
         target_time   = DateTime.parse('2013-04-05 00:00:00')
         day           = Day.new(starting_time, target_time)
 
-        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
         day.calculate(nanoseconds)
 
         assert_equal 2, day.amount
@@ -39,7 +39,7 @@ module TimeSpanner
         target_time   = Time.at(target_days.to_time.to_r, 0.999)
         day           = Day.new(starting_time, target_time)
 
-        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
         day.calculate(nanoseconds)
 
         assert_equal 2, day.amount
@@ -53,7 +53,7 @@ module TimeSpanner
           target_time   = DateTime.parse('2014-01-01 00:00:00')
           day           = Day.new(starting_time, target_time)
 
-          nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+          nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
 
           day.calculate(nanoseconds)
 
@@ -66,7 +66,7 @@ module TimeSpanner
           target_time   = DateTime.parse('2013-01-01 00:00:00')
           day           = Day.new(starting_time, target_time)
 
-          nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+          nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
 
           day.calculate(nanoseconds)
 

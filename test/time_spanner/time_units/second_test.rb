@@ -3,9 +3,9 @@ require 'date'
 
 module TimeSpanner
   module TimeUnits
-    include TimeHelpers
 
     class SecondTest < TestCase
+      include TimeHelpers
 
       before do
         @second = Second.new
@@ -22,7 +22,7 @@ module TimeSpanner
         starting_time = DateTime.parse('2012-12-14 00:00:00')
         target_time   = DateTime.parse('2012-12-14 00:00:02')
 
-        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
 
         @second.calculate(nanoseconds)
 
@@ -35,7 +35,7 @@ module TimeSpanner
         target_seconds = Time.at(starting_time.to_r, 2000000.0)
         target_time    = Time.at(target_seconds.to_time.to_r, 0.999)
 
-        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
         @second.calculate(nanoseconds)
 
         assert_equal 2, @second.amount

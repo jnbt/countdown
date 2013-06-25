@@ -9,7 +9,7 @@ module TimeSpanner
       DEFAULT_ORDER   = AVAILABLE_UNITS
 
       attr_accessor :units
-      attr_reader   :unit_names, :from, :to
+      attr_reader   :unit_names, :from, :to, :duration_chain
 
       def initialize(from, to, unit_names)
         @from       = from
@@ -19,11 +19,8 @@ module TimeSpanner
 
         validate_unit_names!
         add_units_by_names
-        calculate
-      end
-
-      def total_nanoseconds
-        DurationHelper.nanoseconds(from, to)
+        sort!
+        @units = DurationChain.new(from, to, units).units
       end
 
       def add_units_by_names
@@ -63,16 +60,6 @@ module TimeSpanner
       # Units must be sorted to be able to perform a calculation chain.
       def sort!
         self.units = units.sort
-      end
-
-      # Calculate units in chain.
-      def calculate
-        sort!
-        rest = total_nanoseconds
-        each do |unit|
-          unit.calculate(rest)
-          rest = unit.rest
-        end
       end
 
       # TODO: remove

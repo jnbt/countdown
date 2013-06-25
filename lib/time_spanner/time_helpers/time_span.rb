@@ -40,7 +40,7 @@ module TimeSpanner
           when :millenniums_centuries_decades_years_months_weeks_days_hours_minutes_seconds_milliseconds_microseconds_nanoseconds
             calculate_all_units
           when :nanoseconds
-            @nanoseconds = unit_collection.total_nanoseconds
+            @nanoseconds =  DurationHelper.nanoseconds(from, to)
           when :days
             @days = total_days
           when :months
@@ -53,7 +53,7 @@ module TimeSpanner
       end
 
       def total_microseconds
-        unit_collection.total_nanoseconds / 1000
+        DurationHelper.nanoseconds(from, to) / 1000
       end
 
       def total_milliseconds
@@ -101,7 +101,7 @@ module TimeSpanner
       end
 
       def calculate_all_units
-        remaining_microseconds, @nanoseconds    = unit_collection.total_nanoseconds.divmod(1000)
+        remaining_microseconds, @nanoseconds    = DurationHelper.nanoseconds(from, to).divmod(1000)
         remaining_milliseconds, @microseconds   = remaining_microseconds.divmod(1000)
         remaining_seconds, @milliseconds  = remaining_milliseconds.divmod(1000)
         remaining_minutes, @seconds = remaining_seconds.divmod(60)

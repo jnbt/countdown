@@ -3,9 +3,9 @@ require 'date'
 
 module TimeSpanner
   module TimeUnits
-    include TimeHelpers
 
     class WeekTest < TestCase
+      include TimeHelpers
 
       before do
         @week = Week.new
@@ -22,7 +22,7 @@ module TimeSpanner
         starting_time = DateTime.parse('2013-04-01 00:00:00')
         target_time   = DateTime.parse('2013-04-08 00:00:00')
 
-        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
 
         @week.calculate(nanoseconds)
 
@@ -35,7 +35,7 @@ module TimeSpanner
         target_weeks  = DateTime.parse('2013-04-15 00:00:00')
         target_time   = Time.at(target_weeks.to_time.to_r, 0.999)
 
-        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
+        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
         @week.calculate(nanoseconds)
 
         assert_equal 2, @week.amount

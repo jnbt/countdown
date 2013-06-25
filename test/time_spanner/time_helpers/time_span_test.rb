@@ -10,31 +10,6 @@ module TimeSpanner
         @now = DateTime.now
       end
 
-      describe 'total nanoseconds' do
-
-        it 'should calculate 0 nanoseconds' do
-          starting_time = Time.at @now.to_time.to_f
-          target_time   = starting_time
-
-          assert_equal 0, TimeSpan.new(starting_time, target_time).unit_collection.total_nanoseconds
-        end
-
-        it 'should calculate 1 nanosecondsecond' do
-          starting_time = Time.at @now.to_time.to_f
-          target_time   = Time.at(starting_time.to_f, 0.001)
-
-          assert_equal 1, TimeSpan.new(starting_time, target_time).unit_collection.total_nanoseconds
-        end
-
-        it 'should calculate 235 nanoseconds' do
-          starting_time = Time.at @now.to_time.to_f
-          target_time   = Time.at(starting_time.to_f, 0.235)
-
-          assert_equal 235, TimeSpan.new(starting_time, target_time).unit_collection.total_nanoseconds
-        end
-
-      end
-
       describe 'total microseconds' do
 
         it 'should calculate 0 microseconds' do
