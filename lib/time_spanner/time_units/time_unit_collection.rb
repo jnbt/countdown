@@ -29,8 +29,6 @@ module TimeSpanner
         to.to_time.to_r - from.to_time.to_r
       end
 
-      # TODO: use Duration::Nanoseconds.new(from, to)
-      # and remove this and 'duration' method
       def total_nanoseconds
         (duration.round(9) * 1000000000).to_i
       end
@@ -51,7 +49,7 @@ module TimeSpanner
           #when :decades then Decade.new
           #when :years then Year.new
           #when :months then Month.new
-          #when :weeks then Week.new
+          when :weeks        then Week.new
           when :days         then Day.new(from, to)
           when :hours        then Hour.new
           when :minutes      then Minute.new
@@ -78,6 +76,8 @@ module TimeSpanner
       end
 
       # Calculate units in chain.
+      # TODO: use Duration::Nanoseconds.new(from, to) and remove 'total_nanoseconds' and 'duration' method
+      #
       def calculate
         sort!
         rest = total_nanoseconds
