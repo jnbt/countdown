@@ -22,13 +22,6 @@ module TimeSpanner
         end
       end
 
-      it 'sorts itself' do
-        collection  = TimeUnitCollection.new(@now, @now+1, [:minutes, :hours])
-
-        assert collection.units.first.is_a?(Hour)
-        assert collection.units.last.is_a?(Minute)
-      end
-
     end
   end
 end

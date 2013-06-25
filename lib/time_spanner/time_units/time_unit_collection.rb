@@ -2,11 +2,9 @@ module TimeSpanner
   module TimeUnits
 
     class TimeUnitCollection
-      include Enumerable
       include TimeHelpers
 
       AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
-      DEFAULT_ORDER   = AVAILABLE_UNITS
 
       attr_accessor :units
       attr_reader   :unit_names, :from, :to, :duration_chain
@@ -19,7 +17,6 @@ module TimeSpanner
 
         validate_unit_names!
         add_units_by_names
-        sort!
         @units = DurationChain.new(from, to, units).units
       end
 
@@ -49,17 +46,6 @@ module TimeSpanner
 
       def add(unit)
         self.units << unit if unit
-      end
-
-      def each
-        units.each do |unit|
-          yield unit
-        end
-      end
-
-      # Units must be sorted to be able to perform a calculation chain.
-      def sort!
-        self.units = units.sort
       end
 
       # TODO: remove

@@ -17,6 +17,14 @@ module TimeSpanner
           @second = Second.new
         end
 
+        it 'sorts' do
+          chain  = DurationChain.new(@from, @to, [@second, @hour, @minute])
+
+          assert chain.units.first.is_a?(Hour)
+          assert chain.units[1].is_a?(Minute)
+          assert chain.units.last.is_a?(Second)
+        end
+
         describe 'one unit given' do
 
           it 'calculates hours' do
