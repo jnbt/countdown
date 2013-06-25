@@ -4,7 +4,6 @@ module TimeSpanner
 
   class TimeSpanBuilder
     include TimeSpanner::TimeHelpers
-    include TimeSpanner::TimeUnits
 
     DEFAULT_UNITS = TimeUnitCollector::AVAILABLE_UNITS
 
@@ -14,7 +13,7 @@ module TimeSpanner
       @reverse        = target_time < start_time
       @start_time     = reverse ? target_time : start_time
       @target_time    = reverse ? start_time : target_time
-      @units          = set_units(time_units) # TODO: TimeUnits::TimeUnitCollector.new(from, to, unit_names)
+      @units          = set_units(time_units) # TODO: TimeUnitCollector.new(from, to, unit_names).units
 
       @duration = TimeSpan.new(@start_time, @target_time, units) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
     end

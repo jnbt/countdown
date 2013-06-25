@@ -1,6 +1,6 @@
 require 'time_spanner/time_helpers/date_helper'
 require 'time_spanner/time_helpers/duration_helper'
-require 'time_spanner/time_units/time_unit_collector'
+require 'time_spanner/time_unit_collector'
 
 
 #TODO: Remove class when Units are implemented.
@@ -29,7 +29,7 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collector = TimeUnits::TimeUnitCollector.new(from, to, unit_names)
+        @unit_collector = TimeUnitCollector.new(from, to, unit_names)
 
         delegate_calculation
       end
