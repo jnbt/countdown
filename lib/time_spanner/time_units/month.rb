@@ -3,24 +3,19 @@ module TimeSpanner
 
     class Month < TimeUnit
 
-      attr_reader :from, :to
-
-      def initialize(from, to)
-        super(5, 1)
-
-        @from  = from
-        @to    = to
+      def initialize
+        super(5)
       end
 
-      def calculate(duration) # duration equals to - from!
+      def calculate(from, to)
         self.amount = DurationHelper.months(from, to)
-        self.rest   = duration - days_in_nanoseconds
+        self.rest   = DurationHelper.nanoseconds(from, to) - days_in_nanoseconds(from, to)
       end
 
 
       private
 
-      def days_in_nanoseconds
+      def days_in_nanoseconds(from, to)
         DurationHelper.days(from, to) * 86400000000000
       end
 

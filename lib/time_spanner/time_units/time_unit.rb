@@ -5,18 +5,16 @@ module TimeSpanner
       include Comparable
       include TimeHelpers
 
+      DEFAULT_MULTIPLIER = 1
+
       attr_reader   :position, :nano_multiplier
       attr_accessor :amount, :rest
 
-      def initialize(position, nano_multiplier)
-        @nano_multiplier  = nano_multiplier
-        @position         = position
-        @amount           = 0
-        @rest             = 0
-      end
-
-      def calculate(duration)
-        raise "Implement me in #{self.class.name}"
+      def initialize(position, nano_multiplier=DEFAULT_MULTIPLIER)
+        @nano_multiplier = nano_multiplier
+        @position        = position
+        @amount          = 0
+        @rest            = 0
       end
 
       def <=>(other)

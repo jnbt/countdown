@@ -3,6 +3,7 @@ module TimeSpanner
   class DurationChain
     include Enumerable
     include TimeHelpers
+    include TimeUnits
 
     attr_accessor :units
     attr_reader   :duration
@@ -32,7 +33,7 @@ module TimeSpanner
       nanoseconds = duration
       sort!
       each do |unit|
-        unit.calculate(nanoseconds)
+        [Month, Day].include?(unit.class) ? unit.calculate(from, to): unit.calculate(nanoseconds)
         nanoseconds = unit.rest
       end
     end

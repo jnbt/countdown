@@ -3,20 +3,15 @@ module TimeSpanner
 
     class Day < TimeUnit
 
-      attr_reader :from, :to, :leaps
-
-      def initialize(from, to)
+      def initialize
         super(7, 86400000000000)
-
-        @from  = from
-        @to    = to
-        @leaps = DateHelper.leap_count from, to
       end
 
-      def calculate(duration) # duration equals to - from!
-        self.amount = DurationHelper.days(from, to) - leaps
+      def calculate(from, to)
+        leap_days   = DateHelper.leap_count(from, to)
+        self.amount = DurationHelper.days(from, to) - leap_days
 
-        calculate_rest(duration - leaps * nano_multiplier)
+        calculate_rest(DurationHelper.nanoseconds(from, to) - leap_days * nano_multiplier)
       end
 
     end
