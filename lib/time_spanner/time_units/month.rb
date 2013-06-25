@@ -8,12 +8,16 @@ module TimeSpanner
       end
 
       def calculate(from, to)
-        self.amount = DurationHelper.months(from, to)
-        self.rest   = DurationHelper.nanoseconds(from, to) - days_in_nanoseconds(from, to)
+        self.amount = months(from, to)
+        self.rest   = total_nanoseconds(from, to) - days_in_nanoseconds(from, to)
       end
 
 
       private
+
+      def months(from, to)
+        DurationHelper.months(from, to)
+      end
 
       def days_in_nanoseconds(from, to)
         DurationHelper.days(from, to) * 86400000000000

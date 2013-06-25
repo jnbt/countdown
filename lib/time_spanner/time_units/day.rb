@@ -8,10 +8,28 @@ module TimeSpanner
       end
 
       def calculate(from, to)
-        leap_days   = DateHelper.leap_count(from, to)
-        self.amount = DurationHelper.days(from, to) - leap_days
+        self.amount = days_without_leap_days(from, to)
 
-        calculate_rest(DurationHelper.nanoseconds(from, to) - leap_days * nano_multiplier)
+        calculate_rest(total_nanoseconds(from, to) - leap_days_in_nanos(from, to))
+      end
+
+
+      private
+
+      def days(from, to)
+        DurationHelper.days(from, to)
+      end
+
+      def days_without_leap_days(from, to)
+        days(from, to) - leap_days(from, to)
+      end
+
+      def leap_days_in_nanos(from, to)
+        leap_days(from, to) * nano_multiplier
+      end
+
+      def leap_days(from, to)
+        @__leap_days ||= DateHelper.leap_count(from, to)
       end
 
     end

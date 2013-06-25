@@ -25,12 +25,16 @@ module TimeSpanner
       private
 
       # The rest is needed to perform the calculation on the succeeding time units.
-      def calculate_rest(nanoseconds)
-        self.rest = nanoseconds - amount_in_nanoseconds
+      def calculate_rest(total_nanoseconds)
+        self.rest = total_nanoseconds - amount_in_nanoseconds
       end
 
       def amount_in_nanoseconds
         amount * nano_multiplier
+      end
+
+      def total_nanoseconds(from, to)
+        DurationHelper.nanoseconds(from, to)
       end
 
     end
