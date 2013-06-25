@@ -12,7 +12,8 @@ module TimeSpanner
     it 'initializes' do
       collector = TimeUnitCollector.new(@now, @now+1, [:hours])
 
-      assert_equal 1, collector.units.size
+      assert collector.duration_chain.is_a?(DurationChain)
+      assert_equal [:hours], collector.unit_names
     end
 
     it 'validates time units' do

@@ -6,23 +6,21 @@ module TimeSpanner
 
     AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
 
-    attr_accessor :units
-    attr_reader   :unit_names, :from, :to, :duration_chain
+    attr_reader :from, :to, :unit_names, :duration_chain
 
     def initialize(from, to, unit_names)
-      @from       = from
-      @to         = to
-      @unit_names = unit_names
-      @units      = []
+      @from = from
+      @to = to
+      @duration_chain = DurationChain.new(from, to)
+      @unit_names     = unit_names
 
       validate_unit_names!
-      add_units_by_names
-      @units = DurationChain.new(from, to, units).units
+      add_units_to_chain
     end
 
-    def add_units_by_names
+    def add_units_to_chain
       unit_names.each do |name|
-        add unit_by_name(name)
+        duration_chain << unit_by_name(name)
       end
     end
 
@@ -42,10 +40,6 @@ module TimeSpanner
         when :microseconds then Microsecond.new
         when :nanoseconds  then Nanosecond.new
       end
-    end
-
-    def add(unit)
-      self.units << unit if unit
     end
 
     # TODO: remove

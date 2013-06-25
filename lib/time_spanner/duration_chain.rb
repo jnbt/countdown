@@ -7,18 +7,19 @@ module TimeSpanner
     attr_accessor :units
     attr_reader   :duration
 
-    def initialize(from, to, units)
+    def initialize(from, to)
       @duration = DurationHelper.nanoseconds(from, to)
-      @units    = units
-
-      sort!
-      calculate!
+      @units    = []
     end
 
     def each
       units.each do |unit|
         yield unit
       end
+    end
+
+    def <<(unit)
+      units << unit
     end
 
     # Units must be sorted to be able to perform a calculation chain.
@@ -29,7 +30,7 @@ module TimeSpanner
     # Perform duration calculations for units in chain.
     def calculate!
       nanoseconds = duration
-
+      sort!
       each do |unit|
         unit.calculate(nanoseconds)
         nanoseconds = unit.rest
