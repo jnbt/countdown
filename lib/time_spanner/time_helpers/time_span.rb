@@ -1,6 +1,6 @@
 require 'time_spanner/time_helpers/date_helper'
 require 'time_spanner/time_helpers/duration_helper'
-require 'time_spanner/time_units/time_unit_collection'
+require 'time_spanner/time_units/time_unit_collector'
 
 
 #TODO: Remove class when Units are implemented.
@@ -9,7 +9,7 @@ module TimeSpanner
 
     class TimeSpan
 
-      attr_reader :from, :to, :unit_collection
+      attr_reader :from, :to, :unit_collector
 
       attr_reader :nanoseconds
       attr_reader :microseconds
@@ -29,14 +29,14 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collection = TimeUnits::TimeUnitCollection.new(from, to, unit_names)
+        @unit_collector = TimeUnits::TimeUnitCollector.new(from, to, unit_names)
 
         delegate_calculation
       end
 
       def delegate_calculation
-        # unit_collection.calculate
-        case unit_collection.identifier
+        # unit_collector.calculate
+        case unit_collector.identifier
           when :millenniums_centuries_decades_years_months_weeks_days_hours_minutes_seconds_milliseconds_microseconds_nanoseconds
             calculate_all_units
           when :nanoseconds

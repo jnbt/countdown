@@ -1,7 +1,7 @@
 module TimeSpanner
   module TimeUnits
 
-    class TimeUnitCollection
+    class TimeUnitCollector
       include TimeHelpers
 
       AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
