@@ -9,12 +9,6 @@ module TimeSpanner
       @now = DateTime.now
     end
 
-    it 'should validate time units' do
-      assert_raises InvalidUnitError do
-        TimeSpanBuilder.new(@now, @now, [:days, :something])
-      end
-    end
-
     it 'should use default units when if no units are given (no parameter given)' do
       time_span_builder = TimeSpanBuilder.new(@now, @now)
 

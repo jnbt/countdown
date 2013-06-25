@@ -4,8 +4,9 @@ module TimeSpanner
 
   class TimeSpanBuilder
     include TimeSpanner::TimeHelpers
+    include TimeSpanner::TimeUnits
 
-    DEFAULT_UNITS = TimeSpan::DEFAULT_UNITS
+    DEFAULT_UNITS = TimeUnitCollection::AVAILABLE_UNITS
 
     attr_reader :units, :reverse, :start_time, :target_time, :duration
 
@@ -13,9 +14,8 @@ module TimeSpanner
       @reverse        = target_time < start_time
       @start_time     = reverse ? target_time : start_time
       @target_time    = reverse ? start_time : target_time
-      @units          = set_units(time_units)
+      @units          = set_units(time_units) # TODO: TimeUnits::TimeUnitCollection.new(from, to, unit_names)
 
-      validate_units!
       @duration = TimeSpan.new(@start_time, @target_time, units) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
     end
 
@@ -44,14 +44,6 @@ module TimeSpanner
       !units || units.compact.empty? ? DEFAULT_UNITS : units
     end
 
-    # TODO: should TimeUnitCollection validate it's unit_names instead?
-    def validate_units!
-      units.each do |unit|
-        raise InvalidUnitError, "Unit '#{unit}' is not a valid time unit." unless TimeUnits::TimeUnitCollection::AVAILABLE_UNITS.include? unit
-      end
-    end
-
   end
 
-  class InvalidUnitError < StandardError; end
 end

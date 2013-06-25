@@ -9,7 +9,7 @@ module TimeSpanner
       DEFAULT_ORDER   = AVAILABLE_UNITS
 
       attr_accessor :units
-      attr_reader   :duration, :unit_names, :from, :to
+      attr_reader   :unit_names, :from, :to
 
       def initialize(from, to, unit_names)
         @from       = from
@@ -17,9 +17,7 @@ module TimeSpanner
         @unit_names = unit_names
         @units      = []
 
-        @total_nanoseconds = total_nanoseconds
-
-
+        validate_unit_names!
         add_units_by_names
         calculate
       end
@@ -40,7 +38,7 @@ module TimeSpanner
           #when :centuries then Century.new
           #when :decades then Decade.new
           #when :years then Year.new
-          #when :months       then Month.new
+          when :months       then Month.new(from, to)
           when :weeks        then Week.new
           when :days         then Day.new(from, to)
           when :hours        then Hour.new
@@ -68,8 +66,6 @@ module TimeSpanner
       end
 
       # Calculate units in chain.
-      # TODO: use Duration::Nanoseconds.new(from, to) and remove 'total_nanoseconds' and 'duration' method
-      #
       def calculate
         sort!
         rest = total_nanoseconds
@@ -84,7 +80,17 @@ module TimeSpanner
         unit_names.join('_').to_sym
       end
 
+      private
+
+      def validate_unit_names!
+        unit_names.each do |unit_name|
+          raise InvalidUnitError, "Unit '#{unit_name}' is not a valid time unit." unless AVAILABLE_UNITS.include? unit_name
+        end
+      end
+
     end
+
+    class InvalidUnitError < StandardError; end
 
   end
 end

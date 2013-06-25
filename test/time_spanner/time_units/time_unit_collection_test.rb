@@ -17,6 +17,12 @@ module TimeSpanner
         assert_equal 1, collection.units.size
       end
 
+      it 'validates time units' do
+        assert_raises InvalidUnitError do
+          TimeUnitCollection.new(@now, @now, [:days, :something])
+        end
+      end
+
       it 'sorts itself' do
         collection  = TimeUnitCollection.new(@now, @now+1, [:minutes, :hours])
 

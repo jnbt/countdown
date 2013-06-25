@@ -9,8 +9,6 @@ module TimeSpanner
 
     class TimeSpan
 
-      DEFAULT_UNITS = TimeUnits::TimeUnitCollection::AVAILABLE_UNITS
-
       attr_reader :from, :to, :unit_collection
 
       attr_reader :nanoseconds
