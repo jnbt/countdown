@@ -3,8 +3,10 @@ module TimeSpanner
 
     class Week < TimeUnit
 
+      MULTIPLIER = 604800000000000
+
       def initialize
-        super(6, 604800000000000)
+        super 6
       end
 
       def calculate(duration)

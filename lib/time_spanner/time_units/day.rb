@@ -3,8 +3,10 @@ module TimeSpanner
 
     class Day < TimeUnit
 
+      MULTIPLIER = 86400000000000
+
       def initialize
-        super(7, 86400000000000)
+        super 7
       end
 
       def calculate(from, to)
@@ -25,7 +27,7 @@ module TimeSpanner
       end
 
       def leap_days_in_nanos(from, to)
-        leap_days(from, to) * nano_multiplier
+        leap_days(from, to) * MULTIPLIER
       end
 
       def leap_days(from, to)

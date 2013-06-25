@@ -3,8 +3,10 @@ module TimeSpanner
 
     class Microsecond < TimeUnit
 
+      MULTIPLIER = 1000
+
       def initialize
-        super(12, 1000)
+        super 12
       end
 
       def calculate(duration)

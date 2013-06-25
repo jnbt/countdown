@@ -3,8 +3,10 @@ module TimeSpanner
 
     class Second < TimeUnit
 
+      MULTIPLIER = 1000000000
+
       def initialize
-        super(10, 1000000000)
+        super 10
       end
 
       def calculate(duration)

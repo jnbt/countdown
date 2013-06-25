@@ -3,8 +3,10 @@ module TimeSpanner
 
     class Hour < TimeUnit
 
+      MULTIPLIER = 3600000000000
+
       def initialize
-        super(8, 3600000000000)
+        super 8 # :-)
       end
 
       def calculate(duration)

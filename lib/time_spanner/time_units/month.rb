@@ -4,7 +4,7 @@ module TimeSpanner
     class Month < TimeUnit
 
       def initialize
-        super(5)
+        super 5
       end
 
       def calculate(from, to)
@@ -20,7 +20,7 @@ module TimeSpanner
       end
 
       def days_in_nanoseconds(from, to)
-        DurationHelper.days(from, to) * 86400000000000
+        DurationHelper.days(from, to) * Day::MULTIPLIER
       end
 
     end
