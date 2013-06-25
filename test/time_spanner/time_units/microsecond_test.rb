@@ -22,7 +22,7 @@ module TimeSpanner
         starting_time = Time.at Time.now.to_f
         target_time   = Time.at(starting_time.to_f, 2.0)
 
-        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
 
         @microsecond.calculate(nanoseconds)
 
@@ -35,7 +35,7 @@ module TimeSpanner
         target_micros = Time.at(starting_time.to_r, 2.0)
         target_time   = Time.at(target_micros.to_time.to_r, 0.999)
 
-        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
         @microsecond.calculate(nanoseconds)
 
         assert_equal 2, @microsecond.amount

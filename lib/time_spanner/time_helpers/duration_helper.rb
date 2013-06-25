@@ -1,6 +1,7 @@
 require 'date'
 require 'time'
 
+#TODO: transform to Class: Duration::Months.new(from.to)
 module TimeSpanner
   module TimeHelpers
     module DurationHelper

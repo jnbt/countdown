@@ -31,7 +31,7 @@ module TimeSpanner
         @from = from
         @to   = to
 
-        @unit_collection = TimeUnits::TimeUnitCollection.new(from, to, total_nanoseconds, unit_names)
+        @unit_collection = TimeUnits::TimeUnitCollection.new(from, to, unit_names)
 
         delegate_calculation
       end
@@ -42,7 +42,7 @@ module TimeSpanner
           when :millenniums_centuries_decades_years_months_weeks_days_hours_minutes_seconds_milliseconds_microseconds_nanoseconds
             calculate_all_units
           when :nanoseconds
-            @nanoseconds = total_nanoseconds
+            @nanoseconds = unit_collection.total_nanoseconds
           when :days
             @days = total_days
           when :months
@@ -54,16 +54,8 @@ module TimeSpanner
         end
       end
 
-      def duration
-        to.to_time.to_r - from.to_time.to_r
-      end
-
-      def total_nanoseconds
-        (duration.round(9) * 1000000000).to_i
-      end
-
       def total_microseconds
-        total_nanoseconds / 1000
+        unit_collection.total_nanoseconds / 1000
       end
 
       def total_milliseconds
@@ -111,7 +103,7 @@ module TimeSpanner
       end
 
       def calculate_all_units
-        remaining_microseconds, @nanoseconds    = total_nanoseconds.divmod(1000)
+        remaining_microseconds, @nanoseconds    = unit_collection.total_nanoseconds.divmod(1000)
         remaining_milliseconds, @microseconds   = remaining_microseconds.divmod(1000)
         remaining_seconds, @milliseconds  = remaining_milliseconds.divmod(1000)
         remaining_minutes, @seconds = remaining_seconds.divmod(60)

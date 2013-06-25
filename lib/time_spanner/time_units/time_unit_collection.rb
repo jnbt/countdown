@@ -10,15 +10,29 @@ module TimeSpanner
       attr_accessor :units
       attr_reader   :duration, :unit_names, :from, :to
 
-      def initialize(from, to, duration, unit_names)
+      def initialize(from, to, unit_names)
         @from       = from
         @to         = to
-        @duration   = duration
         @unit_names = unit_names
         @units      = []
 
+        @duration          = duration
+        @total_nanoseconds = total_nanoseconds
+
+
         add_units_by_names
         calculate
+      end
+
+
+      def duration
+        to.to_time.to_r - from.to_time.to_r
+      end
+
+      # TODO: use Duration::Nanoseconds.new(from, to)
+      # and remove this and 'duration' method
+      def total_nanoseconds
+        (duration.round(9) * 1000000000).to_i
       end
 
       def add_units_by_names
@@ -27,6 +41,9 @@ module TimeSpanner
         end
       end
 
+      # TODO:
+      # duration = Duration::Monthly.new(from, to)
+      # Pass this Duration to TimeUnit
       def unit_by_name(name)
         case name
           #when :millenniums then Millenium.new
@@ -63,7 +80,7 @@ module TimeSpanner
       # Calculate units in chain.
       def calculate
         sort!
-        rest = duration
+        rest = total_nanoseconds
         each do |unit|
           unit.calculate(rest)
           rest = unit.rest

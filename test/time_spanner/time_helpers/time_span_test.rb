@@ -10,51 +10,27 @@ module TimeSpanner
         @now = DateTime.now
       end
 
-      describe 'duration' do
-
-        it 'should be rational' do
-          assert TimeSpan.new(@now, @now+1).duration.is_a?(Rational)
-        end
-
-        it 'should calculate duration for 1 day in the future' do
-          assert_equal 86400.to_r, TimeSpan.new(@now, @now+1).duration
-        end
-
-        it 'should calculate duration for 1 day in the past' do
-          assert_equal -86400.to_r, TimeSpan.new(@now, @now-1).duration
-        end
-
-        it 'should calculate duration for same timestamp' do
-          assert_equal 0, TimeSpan.new(@now, @now).duration
-        end
-
-        it 'should calculate same duration for last week' do
-          assert_equal 86400.to_r, TimeSpan.new(@now-7, @now-6).duration
-        end
-
-      end
-
       describe 'total nanoseconds' do
 
         it 'should calculate 0 nanoseconds' do
           starting_time = Time.at @now.to_time.to_f
           target_time   = starting_time
 
-          assert_equal 0, TimeSpan.new(starting_time, target_time).total_nanoseconds
+          assert_equal 0, TimeSpan.new(starting_time, target_time).unit_collection.total_nanoseconds
         end
 
         it 'should calculate 1 nanosecondsecond' do
           starting_time = Time.at @now.to_time.to_f
           target_time   = Time.at(starting_time.to_f, 0.001)
 
-          assert_equal 1, TimeSpan.new(starting_time, target_time).total_nanoseconds
+          assert_equal 1, TimeSpan.new(starting_time, target_time).unit_collection.total_nanoseconds
         end
 
         it 'should calculate 235 nanoseconds' do
           starting_time = Time.at @now.to_time.to_f
           target_time   = Time.at(starting_time.to_f, 0.235)
 
-          assert_equal 235, TimeSpan.new(starting_time, target_time).total_nanoseconds
+          assert_equal 235, TimeSpan.new(starting_time, target_time).unit_collection.total_nanoseconds
         end
 
       end

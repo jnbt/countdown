@@ -25,7 +25,7 @@ module TimeSpanner
         starting_time = DateTime.parse('2013-04-03 00:00:00')
         target_time   = DateTime.parse('2013-04-05 00:00:00')
 
-        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
 
         @day.calculate(nanoseconds)
 
@@ -38,7 +38,7 @@ module TimeSpanner
         target_days   = DateTime.parse('2013-04-05 00:00:00')
         target_time   = Time.at(target_days.to_time.to_r, 0.999)
 
-        nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+        nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
         @day.calculate(nanoseconds)
 
         assert_equal 2, @day.amount
@@ -52,7 +52,7 @@ module TimeSpanner
           target_time   = DateTime.parse('2014-01-01 00:00:00')
           day           = Day.new(starting_time, target_time)
 
-          nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+          nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
 
           day.calculate(nanoseconds)
 
@@ -65,7 +65,7 @@ module TimeSpanner
           target_time   = DateTime.parse('2013-01-01 00:00:00')
           day           = Day.new(starting_time, target_time)
 
-          nanoseconds = TimeHelpers::TimeSpan.new(starting_time, target_time).total_nanoseconds
+          nanoseconds = TimeUnitCollection.new(starting_time, target_time, [:nanoseconds]).total_nanoseconds
 
           day.calculate(nanoseconds)
 
