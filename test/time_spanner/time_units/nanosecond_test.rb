@@ -14,8 +14,6 @@ module TimeSpanner
       it 'initializes' do
         assert @nanosecond.kind_of?(TimeUnit)
         assert_equal 13, @nanosecond.position
-        assert_equal 0, @nanosecond.amount
-        assert_equal 0, @nanosecond.rest
       end
 
       it 'calculates' do

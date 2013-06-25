@@ -14,8 +14,6 @@ module TimeSpanner
       it 'initializes' do
         assert @second.kind_of?(TimeUnit)
         assert_equal 10, @second.position
-        assert_equal 0, @second.amount
-        assert_equal 0, @second.rest
       end
 
       it 'calculates' do

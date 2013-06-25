@@ -14,8 +14,6 @@ module TimeSpanner
       it 'initializes' do
         assert @day.kind_of?(TimeUnit)
         assert_equal 7, @day.position
-        assert_equal 0, @day.amount
-        assert_equal 0, @day.rest
       end
 
       it 'calculates without rest' do

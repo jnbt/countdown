@@ -14,8 +14,6 @@ module TimeSpanner
       it 'initializes' do
         assert @week.kind_of?(TimeUnit)
         assert_equal 6, @week.position
-        assert_equal 0, @week.amount
-        assert_equal 0, @week.rest
       end
 
       it 'calculates without rest' do
