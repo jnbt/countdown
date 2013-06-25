@@ -1,10 +1,14 @@
 require 'date'
 require 'time'
 
-#TODO: transform to Class: Duration::Months.new(from.to)
 module TimeSpanner
   module TimeHelpers
     module DurationHelper
+
+      # Returns number of nanoseconds for given time span.
+      def self.nanoseconds(from, to)
+        ((to.to_time.to_r - from.to_time.to_r).round(9) * 1000000000).to_i
+      end
 
       # Returns number of days for given time span.
       def self.days(from, to)

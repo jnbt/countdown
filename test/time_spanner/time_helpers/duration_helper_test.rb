@@ -7,18 +7,46 @@ module TimeSpanner
 
       class DurationHelperTest < TestCase
 
+        before do
+          @now = DateTime.now
+        end
+
+        describe 'nanoseconds' do
+
+          it 'should be Integer' do
+            assert DurationHelper.nanoseconds(@now, @now+1).is_a?(Integer)
+          end
+
+          it 'calculates nanoseconds for 1 day in the future' do
+            assert_equal 86400000000000, DurationHelper.nanoseconds(@now, @now+1)
+          end
+
+          it 'calculates nanoseconds for 1 day last week' do
+            assert_equal 86400000000000, DurationHelper.nanoseconds(@now-7, @now-6)
+          end
+
+          it 'calculates nanoseconds for 1 day in the past' do
+            assert_equal -86400000000000,  DurationHelper.nanoseconds(@now, @now-1)
+          end
+
+          it 'calculates nanoseconds for same timestamp' do
+            assert_equal 0, DurationHelper.nanoseconds(@now, @now)
+          end
+
+        end
+
         describe 'days' do
 
           it 'calculates 0 days for given time span (same date)' do
-            assert_equal 0, DurationHelper.days(Date.parse('2013-02-01'), Date.parse('2013-02-01'))
+            assert_equal 0, DurationHelper.days(@now, @now)
           end
 
           it 'calculates 1 day for given time span' do
-            assert_equal 1, DurationHelper.days(Date.parse('2013-03-20'), Date.parse('2013-03-21'))
+            assert_equal 1, DurationHelper.days(@now, @now+1)
           end
 
           it 'calculates 2 days for given time span (2 days and something)' do
-            assert_equal 2, DurationHelper.days(Date.parse('2013-03-20'), Date.parse('2013-03-22'))
+            assert_equal 2, DurationHelper.days(@now, @now+2)
           end
 
         end
@@ -26,7 +54,7 @@ module TimeSpanner
         describe 'months' do
 
           it 'calculates 0 months for given time span (same date)' do
-            assert_equal 0, DurationHelper.months(Date.parse('2013-02-01'), Date.parse('2013-02-01'))
+            assert_equal 0, DurationHelper.months(@now, @now)
           end
 
           it 'calculates 0 months for given time span (same month)' do

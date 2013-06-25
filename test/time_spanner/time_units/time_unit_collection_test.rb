@@ -24,30 +24,6 @@ module TimeSpanner
         assert collection.units.last.is_a?(Minute)
       end
 
-      describe 'duration' do
-
-        it 'should be rational' do
-          assert TimeUnitCollection.new(@now, @now+1, [:nanoseconds]).duration.is_a?(Rational)
-        end
-
-        it 'should calculate duration for 1 day in the future' do
-          assert_equal 86400.to_r, TimeUnitCollection.new(@now, @now+1, [:nanoseconds]).duration
-        end
-
-        it 'should calculate duration for 1 day in the past' do
-          assert_equal -86400.to_r, TimeUnitCollection.new(@now, @now-1, [:nanoseconds]).duration
-        end
-
-        it 'should calculate duration for same timestamp' do
-          assert_equal 0, TimeUnitCollection.new(@now, @now, [:nanoseconds]).duration
-        end
-
-        it 'should calculate same duration for last week' do
-          assert_equal 86400.to_r, TimeUnitCollection.new(@now-7, @now-6, [:nanoseconds]).duration
-        end
-
-      end
-
       describe 'calculation by given units' do
 
         it 'calculates 1 unit' do

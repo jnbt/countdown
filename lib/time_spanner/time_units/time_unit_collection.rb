@@ -3,6 +3,7 @@ module TimeSpanner
 
     class TimeUnitCollection
       include Enumerable
+      include TimeHelpers
 
       AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
       DEFAULT_ORDER   = AVAILABLE_UNITS
@@ -16,7 +17,6 @@ module TimeSpanner
         @unit_names = unit_names
         @units      = []
 
-        @duration          = duration
         @total_nanoseconds = total_nanoseconds
 
 
@@ -24,13 +24,8 @@ module TimeSpanner
         calculate
       end
 
-
-      def duration
-        to.to_time.to_r - from.to_time.to_r
-      end
-
       def total_nanoseconds
-        (duration.round(9) * 1000000000).to_i
+        DurationHelper.nanoseconds(from, to)
       end
 
       def add_units_by_names
@@ -39,9 +34,6 @@ module TimeSpanner
         end
       end
 
-      # TODO:
-      # duration = Duration::Monthly.new(from, to)
-      # Pass this Duration to TimeUnit
       def unit_by_name(name)
         case name
           #when :millenniums then Millenium.new
