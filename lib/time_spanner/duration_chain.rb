@@ -5,12 +5,11 @@ module TimeSpanner
     include TimeHelpers
     include TimeUnits
 
-    attr_accessor :units
-    attr_reader   :duration
+    attr_accessor :remaining_time, :units
 
     def initialize(from, to)
-      @duration = DurationHelper.nanoseconds(from, to)
-      @units    = []
+      @remaining_time = DurationHelper.nanoseconds(from, to)
+      @units          = []
     end
 
     def each
@@ -30,12 +29,23 @@ module TimeSpanner
 
     # Perform duration calculations for units in chain.
     def calculate!
-      nanoseconds = duration
       sort!
+
       each do |unit|
-        [Month, Day].include?(unit.class) ? unit.calculate(from, to): unit.calculate(nanoseconds)
-        nanoseconds = unit.rest
+        calculate_unit(unit)
       end
+    end
+
+    private
+
+    def calculate_unit(unit)
+      if [Month, Day].include?(unit.class)
+        unit.calculate(from, to)
+      else
+        unit.calculate(remaining_time)
+      end
+
+      self.remaining_time = unit.rest
     end
 
   end
