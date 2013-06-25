@@ -5,13 +5,16 @@ module TimeSpanner
       include Comparable
       include TimeHelpers
 
-      attr_reader   :position
+      DEFAULT_MULTIPLIER = 1
+
+      attr_reader   :position, :multiplier
       attr_accessor :amount, :rest
 
-      def initialize(position)
-        @position = position
-        @amount   = 0
-        @rest     = 0
+      def initialize(position, multiplier=DEFAULT_MULTIPLIER)
+        @position   = position
+        @multiplier = multiplier
+        @amount     = 0
+        @rest       = 0
       end
 
       def <=>(other)
@@ -19,14 +22,14 @@ module TimeSpanner
       end
 
       def calculate(total_nanoseconds)
-        calculate_amount(total_nanoseconds)
+        calculate_amount total_nanoseconds
         calculate_rest total_nanoseconds
       end
 
       private
 
       def calculate_amount(total_nanoseconds)
-        self.amount = total_nanoseconds / self.class::MULTIPLIER
+        self.amount = total_nanoseconds / multiplier
       end
 
       # The rest is needed to perform the calculation on the succeeding time units.
@@ -35,7 +38,7 @@ module TimeSpanner
       end
 
       def amount_in_nanoseconds
-        amount * self.class::MULTIPLIER
+        amount * multiplier
       end
 
       def total_nanoseconds(from, to)

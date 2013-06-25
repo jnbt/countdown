@@ -6,7 +6,7 @@ module TimeSpanner
       MULTIPLIER = 86400000000000
 
       def initialize
-        super 7
+        super 7, MULTIPLIER
       end
 
       def calculate(from, to)
@@ -27,7 +27,7 @@ module TimeSpanner
       end
 
       def leap_days_in_nanos(from, to)
-        leap_days(from, to) * MULTIPLIER
+        leap_days(from, to) * multiplier
       end
 
       def leap_days(from, to)

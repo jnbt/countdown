@@ -6,7 +6,7 @@ module TimeSpanner
       MULTIPLIER = 604800000000000
 
       def initialize
-        super 6
+        super 6, MULTIPLIER
       end
 
     end

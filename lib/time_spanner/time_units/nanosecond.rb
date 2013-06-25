@@ -3,8 +3,6 @@ module TimeSpanner
 
     class Nanosecond < TimeUnit
 
-      MULTIPLIER = 1
-
       def initialize
         super 13
       end
