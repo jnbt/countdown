@@ -9,12 +9,6 @@ module TimeSpanner
         super 12
       end
 
-      def calculate(duration)
-        self.amount, rest = duration.divmod(1000)
-
-        calculate_rest(duration)
-      end
-
     end
   end
 

@@ -9,15 +9,6 @@ module TimeSpanner
         super 9
       end
 
-      def calculate(duration)
-        rest, nanoseconds     = duration.divmod(1000)
-        rest, microseconds    = rest.divmod(1000)
-        seconds, milliseconds = rest.divmod(1000)
-        self.amount, rest     = seconds.divmod(60)
-
-        calculate_rest(duration)
-      end
-
     end
   end
 
