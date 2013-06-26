@@ -123,6 +123,21 @@ module TimeSpanner
           assert_equal 2, chain.units.last.amount
         end
 
+        it 'calculates months with microseconds' do
+          from             = DateTime.parse('2013-04-01 00:00:00')
+          from_with_months = DateTime.parse('2013-08-01 00:00:00')
+          to               = Time.at(from_with_months.to_time.to_f, 2.0)
+          month            = Month.new
+          microsecond      = Microsecond.new
+          chain            = DurationChain.new(from, to)
+
+          [month, microsecond].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 4, chain.units.first.amount
+          assert_equal 2, chain.units.last.amount
+        end
+
       end
 
       describe 'three units given' do
