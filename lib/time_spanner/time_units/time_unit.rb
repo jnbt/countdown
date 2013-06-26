@@ -41,10 +41,6 @@ module TimeSpanner
         amount * multiplier
       end
 
-      def total_nanoseconds(from, to)
-        DurationHelper.nanoseconds(from, to)
-      end
-
     end
   end
 

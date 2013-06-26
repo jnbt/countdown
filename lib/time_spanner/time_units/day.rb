@@ -25,6 +25,10 @@ module TimeSpanner
         DurationHelper.days(from, to)
       end
 
+      def total_nanoseconds(from, to)
+        DurationHelper.nanoseconds(from, to)
+      end
+
       def days_without_leap_days(from, to)
         days(from, to) - leap_days(from, to)
       end
