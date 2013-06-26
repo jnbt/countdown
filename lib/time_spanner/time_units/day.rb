@@ -13,7 +13,7 @@ module TimeSpanner
 
       def calculate(from, to)
         self.amount = days_without_leap_days(from, to)
-        self.from   = from >> amount
+        self.from   = from.to_datetime >> amount
 
         calculate_rest(total_nanoseconds(from, to) - leap_days_in_nanos(from, to))
       end

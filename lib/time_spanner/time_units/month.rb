@@ -14,7 +14,7 @@ module TimeSpanner
 
         self.amount = months
         self.rest   = rest
-        self.from   = from >> amount
+        self.from   = from.to_datetime >> amount
       end
 
     end
