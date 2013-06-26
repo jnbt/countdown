@@ -5,9 +5,12 @@ module TimeSpanner
     include TimeHelpers
     include TimeUnits
 
-    attr_accessor :remaining_time, :units
+    attr_accessor :from, :remaining_time, :units
+    attr_reader   :to
 
     def initialize(from, to)
+      @from           = from
+      @to             = to
       @remaining_time = DurationHelper.nanoseconds(from, to)
       @units          = []
     end
@@ -41,6 +44,7 @@ module TimeSpanner
     def calculate_unit(unit)
       if [Month, Day].include?(unit.class)
         unit.calculate(from, to)
+        self.from = unit.from
       else
         unit.calculate(remaining_time)
       end

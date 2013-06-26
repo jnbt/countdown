@@ -5,12 +5,15 @@ module TimeSpanner
 
       MULTIPLIER = 86400000000000
 
+      attr_accessor :from
+
       def initialize
         super 7, MULTIPLIER
       end
 
       def calculate(from, to)
         self.amount = days_without_leap_days(from, to)
+        self.from   = from >> amount
 
         calculate_rest(total_nanoseconds(from, to) - leap_days_in_nanos(from, to))
       end

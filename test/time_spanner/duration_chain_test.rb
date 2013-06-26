@@ -17,6 +17,15 @@ module TimeSpanner
         @second = Second.new
       end
 
+      it 'initializes' do
+        chain  = DurationChain.new(@from, @to)
+
+        assert_equal @from, chain.from
+        assert_equal @to, chain.to
+        assert_equal 7957000000000, chain.remaining_time
+        assert_equal [], chain.units
+      end
+
       it 'sorts' do
         chain  = DurationChain.new(@from, @to)
         [@second, @hour, @minute].each { |unit| chain << unit }
@@ -82,6 +91,36 @@ module TimeSpanner
 
           assert_equal 2, chain.units.first.amount
           assert_equal 757, chain.units.last.amount
+        end
+
+        it 'calculates months and days' do
+          from   = DateTime.parse('2013-04-01 00:00:00')
+          to     = DateTime.parse('2013-07-19 00:00:00')
+          month  = Month.new
+          day    = Day.new
+          chain  = DurationChain.new(from, to)
+
+          [month, day].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 3, chain.units.first.amount
+          assert_equal 18, chain.units.last.amount
+        end
+
+        it 'calculates months and days and hours' do
+          from   = DateTime.parse('2013-04-01 00:00:00')
+          to     = DateTime.parse('2013-07-19 02:00:00')
+          month  = Month.new
+          day    = Day.new
+          hour   = Hour.new
+          chain  = DurationChain.new(from, to)
+
+          [month, day, hour].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 3, chain.units.first.amount
+          assert_equal 18, chain.units[1].amount
+          assert_equal 2, chain.units.last.amount
         end
 
       end

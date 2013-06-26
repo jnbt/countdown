@@ -78,6 +78,18 @@ module TimeSpanner
             assert_equal 2, DurationHelper.months(Date.parse('2013-03-20'), Date.parse('2013-06-19'))
           end
 
+          it 'calculates 2 months with  1 second rest in nanos' do
+            assert_equal [2, 1000000000], DurationHelper.months_with_rest(DateTime.parse('2013-01-01 00:00:04'), DateTime.parse('2013-03-01 00:00:05'))
+          end
+
+          it 'calculates 0 months with  1 hour rest in nanos' do
+            assert_equal [0, 3600000000000], DurationHelper.months_with_rest(DateTime.parse('2013-01-01 00:00:00'), DateTime.parse('2013-01-01 01:00:00'))
+          end
+
+          it 'calculates 0 months with  1 day rest in nanos' do
+            assert_equal [0, 86400000000000], DurationHelper.months_with_rest(DateTime.parse('2013-01-01 00:00:00'), DateTime.parse('2013-01-02 00:00:00'))
+          end
+
         end
 
         describe 'months and days' do

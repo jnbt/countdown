@@ -22,6 +22,18 @@ module TimeSpanner
         (to.year*12 + to.month) - (from.year*12 + from.month) - (to.day < from.day ? 1 : 0)
       end
 
+      def self.months_with_rest(from, to)
+        total  = nanoseconds(from, to)
+        months = months(from, to)
+
+        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
+        month_end          = (from.to_date >> months).to_datetime
+        months_in_nanos    = nanoseconds(from, month_end) + rest_from_in_nanos
+
+        rest = total - months_in_nanos
+        [months, rest]
+      end
+
       # Returns Array with number of months and remaining days for given time span.
       def self.months_with_days(from, to)
         months = months from, to
