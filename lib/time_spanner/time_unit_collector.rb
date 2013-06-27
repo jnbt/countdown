@@ -6,11 +6,9 @@ module TimeSpanner
 
     AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
 
-    attr_reader :from, :to, :unit_names, :duration_chain
+    attr_reader :unit_names, :duration_chain
 
     def initialize(from, to, unit_names)
-      @from = from
-      @to = to
       @duration_chain = DurationChain.new(from, to)
       @unit_names     = unit_names
 
