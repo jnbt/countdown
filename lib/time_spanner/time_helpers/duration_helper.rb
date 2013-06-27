@@ -55,6 +55,17 @@ module TimeSpanner
         [decades, rest]
       end
 
+      def self.centuries_with_rest(from, to)
+        centuries = (to.year - from.year) / 100
+
+        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
+        centuries_end      = (from.to_date >> centuries*1200).to_datetime
+        rest_in_nanos      = nanoseconds(from, centuries_end) + rest_from_in_nanos
+
+        rest = nanoseconds(from, to) - rest_in_nanos
+        [centuries, rest]
+      end
+
       # Returns Array with number of months and remaining days for given time span.
       def self.months_with_days(from, to)
         months = months from, to

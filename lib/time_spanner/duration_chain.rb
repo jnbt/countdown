@@ -43,7 +43,7 @@ module TimeSpanner
 
     # TODO: if unit.is_a?(CalendarUnit)
     def calculate_unit(unit)
-      if [Decade, Year, Month, Day].include?(unit.class)
+      if [Century, Decade, Year, Month, Day].include?(unit.class)
         unit.calculate(from, to)
         self.from = unit.from
       else

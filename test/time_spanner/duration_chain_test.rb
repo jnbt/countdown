@@ -150,6 +150,20 @@ module TimeSpanner
           assert_equal 3, chain.units.last.amount
         end
 
+        it 'calculates centuries and years' do
+          from    = DateTime.parse('2013-04-01 00:00:00')
+          to      = DateTime.parse('2216-04-01 00:00:00')
+          century = Century.new
+          year    = Year.new
+          chain   = DurationChain.new(from, to)
+
+          [century, year].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 2, chain.units.first.amount
+          assert_equal 3, chain.units.last.amount
+        end
+
       end
 
       describe 'three units given' do
