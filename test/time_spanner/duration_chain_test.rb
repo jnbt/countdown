@@ -136,6 +136,20 @@ module TimeSpanner
           assert_equal 4, chain.units.last.amount
         end
 
+        it 'calculates decades and years' do
+          from   = DateTime.parse('2013-04-01 00:00:00')
+          to     = DateTime.parse('2036-04-01 00:00:00')
+          decade = Decade.new
+          year   = Year.new
+          chain  = DurationChain.new(from, to)
+
+          [decade, year].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 2, chain.units.first.amount
+          assert_equal 3, chain.units.last.amount
+        end
+
       end
 
       describe 'three units given' do

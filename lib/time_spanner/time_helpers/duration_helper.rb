@@ -34,7 +34,7 @@ module TimeSpanner
       end
 
       def self.years_with_rest(from, to)
-        years  = to.year - from.year
+        years = to.year - from.year
 
         rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
         years_end          = (from.to_date >> years*12).to_datetime
@@ -42,6 +42,17 @@ module TimeSpanner
 
         rest = nanoseconds(from, to) - rest_in_nanos
         [years, rest]
+      end
+
+      def self.decades_with_rest(from, to)
+        decades = (to.year - from.year) / 10
+
+        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
+        decades_end        = (from.to_date >> decades*120).to_datetime
+        rest_in_nanos      = nanoseconds(from, decades_end) + rest_from_in_nanos
+
+        rest = nanoseconds(from, to) - rest_in_nanos
+        [decades, rest]
       end
 
       # Returns Array with number of months and remaining days for given time span.
