@@ -10,11 +10,9 @@ module TimeSpanner
       end
 
       def calculate(from, to)
-        millenniums, rest = DurationHelper.millenniums_with_rest(from, to)
-
-        self.amount = millenniums
-        self.rest   = rest
+        self.amount = (to.year - from.year) / 1000
         self.from   = from.to_datetime >> amount*12000
+        self.rest   = DurationHelper.nanoseconds self.from, to
       end
 
     end

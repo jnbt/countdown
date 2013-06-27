@@ -25,6 +25,7 @@ module TimeSpanner
         assert_equal 0, century.rest
       end
 
+=begin
       it 'calculates with rest (1 decade in nanoseconds)' do
         starting_time = DateTime.parse('2013-01-01 00:00:00')
         target_time   = DateTime.parse('2223-01-01 00:00:00')
@@ -35,6 +36,7 @@ module TimeSpanner
         assert_equal 2, century.amount
         assert_equal 315569520000000000, century.rest
       end
+=end
 
     end
   end

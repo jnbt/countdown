@@ -22,39 +22,39 @@ module TimeSpanner
         (to.year*12 + to.month) - (from.year*12 + from.month) - (to.day < from.day ? 1 : 0)
       end
 
+      def self.weeks_with_rest(from, to)
+        days = to.to_datetime - from.to_datetime
+        weeks = (days / 7).to_i
+
+        from_with_weeks = from.to_datetime + weeks*7
+        rest = nanoseconds(from_with_weeks, to)
+
+        [weeks, rest]
+      end
+
       def self.months_with_rest(from, to)
         months = months(from, to)
 
-        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
-        month_end          = (from.to_date >> months).to_datetime
-        rest_in_nanos      = nanoseconds(from, month_end) + rest_from_in_nanos
+        from_with_months = from.to_datetime >> months
+        rest = nanoseconds(from_with_months, to)
 
-        rest = nanoseconds(from, to) - rest_in_nanos
         [months, rest]
       end
 
       def self.years_with_rest(from, to)
-        years = to.year - from.year
+        years = (to.year - from.year)
 
-        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
-        years_end          = (from.to_date >> years*12).to_datetime
-        rest_in_nanos      = nanoseconds(from, years_end) + rest_from_in_nanos
+        from_with_years = from.to_datetime >> years*12
+        rest = nanoseconds(from_with_years, to)
 
-        rest = nanoseconds(from, to) - rest_in_nanos
         [years, rest]
       end
 
       def self.decades_with_rest(from, to)
-        from    = from.to_time
-        to      = to.to_time
         decades = (to.year - from.year) / 10
 
-        from_with_decades = from + decades*10*31557600
-        duration_from_time_at_decades_until_to  = to - from_with_decades
-
-        p :from => from.to_time, :to => to.to_time, :decades => decades, :from_with_decades => (from + decades*10*31557600), :time_at_decades => duration_from_time_at_decades_until_to
-
-        rest = ((to.to_r - duration_from_time_at_decades_until_to.to_r).round(9) * 1000000000).to_i
+        from_with_decades = from.to_datetime >> decades*120
+        rest = nanoseconds(from_with_decades, to)
 
         [decades, rest]
       end
@@ -62,22 +62,18 @@ module TimeSpanner
       def self.centuries_with_rest(from, to)
         centuries = (to.year - from.year) / 100
 
-        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
-        centuries_end      = (from.to_date >> centuries*1200).to_datetime
-        rest_in_nanos      = nanoseconds(from, centuries_end) + rest_from_in_nanos
+        from_with_centuries = from.to_datetime >> centuries*1200
+        rest = nanoseconds(from_with_centuries, to)
 
-        rest = nanoseconds(from, to) - rest_in_nanos
         [centuries, rest]
       end
 
       def self.millenniums_with_rest(from, to)
         millenniums = (to.year - from.year) / 1000
 
-        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
-        millenniums_end    = (from.to_date >> millenniums*12000).to_datetime
-        rest_in_nanos      = nanoseconds(from, millenniums_end) + rest_from_in_nanos
+        from_with_millenniums = from.to_datetime >> millenniums*12000
+        rest = nanoseconds(from_with_millenniums, to)
 
-        rest = nanoseconds(from, to) - rest_in_nanos
         [millenniums, rest]
       end
 
