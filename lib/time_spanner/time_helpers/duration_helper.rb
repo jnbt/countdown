@@ -45,13 +45,17 @@ module TimeSpanner
       end
 
       def self.decades_with_rest(from, to)
+        from    = from.to_time
+        to      = to.to_time
         decades = (to.year - from.year) / 10
 
-        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
-        decades_end        = (from.to_date >> decades*120).to_datetime
-        rest_in_nanos      = nanoseconds(from, decades_end) + rest_from_in_nanos
+        from_with_decades = from + decades*10*31557600
+        duration_from_time_at_decades_until_to  = to - from_with_decades
 
-        rest = nanoseconds(from, to) - rest_in_nanos
+        p :from => from.to_time, :to => to.to_time, :decades => decades, :from_with_decades => (from + decades*10*31557600), :time_at_decades => duration_from_time_at_decades_until_to
+
+        rest = ((to.to_r - duration_from_time_at_decades_until_to.to_r).round(9) * 1000000000).to_i
+
         [decades, rest]
       end
 
@@ -64,6 +68,17 @@ module TimeSpanner
 
         rest = nanoseconds(from, to) - rest_in_nanos
         [centuries, rest]
+      end
+
+      def self.millenniums_with_rest(from, to)
+        millenniums = (to.year - from.year) / 1000
+
+        rest_from_in_nanos = nanoseconds(from.to_date.to_datetime, from)
+        millenniums_end    = (from.to_date >> millenniums*12000).to_datetime
+        rest_in_nanos      = nanoseconds(from, millenniums_end) + rest_from_in_nanos
+
+        rest = nanoseconds(from, to) - rest_in_nanos
+        [millenniums, rest]
       end
 
       # Returns Array with number of months and remaining days for given time span.

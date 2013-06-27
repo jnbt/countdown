@@ -164,6 +164,20 @@ module TimeSpanner
           assert_equal 3, chain.units.last.amount
         end
 
+        it 'calculates milleniums and seconds' do
+          from       = DateTime.parse('2013-04-01 00:00:00')
+          to         = DateTime.parse('4013-04-01 00:02:24')
+          millennium = Millennium.new
+          second     = Second.new
+          chain      = DurationChain.new(from, to)
+
+          [millennium, second].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 2, chain.units.first.amount
+          assert_equal 144, chain.units.last.amount
+        end
+
       end
 
       describe 'three units given' do
