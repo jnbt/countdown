@@ -41,8 +41,9 @@ module TimeSpanner
 
     private
 
+    # TODO: if unit.is_a?(CalendarUnit)
     def calculate_unit(unit)
-      if [Month, Day].include?(unit.class)
+      if [Year, Month, Day].include?(unit.class)
         unit.calculate(from, to)
         self.from = unit.from
       else

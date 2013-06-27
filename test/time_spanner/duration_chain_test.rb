@@ -107,22 +107,6 @@ module TimeSpanner
           assert_equal 18, chain.units.last.amount
         end
 
-        it 'calculates months and days and hours' do
-          from   = DateTime.parse('2013-04-01 00:00:00')
-          to     = DateTime.parse('2013-07-19 02:00:00')
-          month  = Month.new
-          day    = Day.new
-          hour   = Hour.new
-          chain  = DurationChain.new(from, to)
-
-          [month, day, hour].each { |unit| chain << unit }
-          chain.calculate!
-
-          assert_equal 3, chain.units.first.amount
-          assert_equal 18, chain.units[1].amount
-          assert_equal 2, chain.units.last.amount
-        end
-
         it 'calculates months with microseconds' do
           from             = DateTime.parse('2013-04-01 00:00:00')
           from_with_months = DateTime.parse('2013-08-01 00:00:00')
@@ -138,6 +122,20 @@ module TimeSpanner
           assert_equal 2, chain.units.last.amount
         end
 
+        it 'calculates years and months' do
+          from   = DateTime.parse('2013-04-01 00:00:00')
+          to     = DateTime.parse('2016-08-01 00:00:00')
+          year   = Year.new
+          month  = Month.new
+          chain  = DurationChain.new(from, to)
+
+          [year, month].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 3, chain.units.first.amount
+          assert_equal 4, chain.units.last.amount
+        end
+
       end
 
       describe 'three units given' do
@@ -150,6 +148,22 @@ module TimeSpanner
           assert_equal 2, chain.units.first.amount
           assert_equal 12, chain.units[1].amount
           assert_equal 37, chain.units.last.amount
+        end
+
+        it 'calculates months and days and hours' do
+          from   = DateTime.parse('2013-04-01 00:00:00')
+          to     = DateTime.parse('2013-07-19 02:00:00')
+          month  = Month.new
+          day    = Day.new
+          hour   = Hour.new
+          chain  = DurationChain.new(from, to)
+
+          [month, day, hour].each { |unit| chain << unit }
+          chain.calculate!
+
+          assert_equal 3, chain.units.first.amount
+          assert_equal 18, chain.units[1].amount
+          assert_equal 2, chain.units.last.amount
         end
 
       end
