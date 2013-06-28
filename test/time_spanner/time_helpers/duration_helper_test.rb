@@ -170,6 +170,32 @@ module TimeSpanner
 
         end
 
+        it 'calculates years with rest (1 nanosecond)' do
+          from         = DateTime.parse('3013-01-01 00:00:00')
+          target_years = DateTime.parse('3015-01-01 00:00:00')
+          to           = Time.at(target_years.to_time.to_r, 0.001)
+
+          assert_equal [2, 1], DurationHelper.years_with_rest(from, to)
+        end
+
+        it 'calculates millenniums with rest (1 nanosecond)' do
+          from                  = DateTime.parse('3013-01-01 00:00:00')
+          target_millenniums    = DateTime.parse('5013-01-01 00:00:00')
+          to                    = Time.at(target_millenniums.to_time.to_r, 0.001)
+
+          assert_equal [2, 1], DurationHelper.millenniums_with_rest(from, to)
+        end
+
+        # TODO: fails! why are 6h calculated in addition to 1 century?
+        # Test with decades and year first
+        # We dont have this problem on years with months, do we?
+        it 'calculates millenniums with rest (1 century in nanoseconds)' do
+          from = DateTime.parse('3013-01-01 00:00:00')
+          to   = DateTime.parse('5113-01-01 00:00:00')
+
+          assert_equal [2, 3155695200000000000], DurationHelper.millenniums_with_rest(from, to)
+        end
+
       end
     end
   end

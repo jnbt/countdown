@@ -36,6 +36,39 @@ module TimeSpanner
         assert chain.units.last.is_a?(Second)
       end
 
+      it 'calculates decades and succeeding units (ensures leap years are correctly calculated)' do
+        from = DateTime.parse('2013-01-01 00:00:00')
+        to   = DateTime.parse('2023-01-01 00:00:00')
+
+        decade      = Decade.new
+        year        = Year.new
+        month       = Month.new
+        week        = Week.new
+        day         = Day.new
+        hour        = Hour.new
+        minute      = Minute.new
+        second      = Second.new
+        millisecond = Millisecond.new
+        microsecond = Microsecond.new
+        nanosecond  = Nanosecond.new
+        chain       = DurationChain.new(from, to)
+
+        [decade, year, month, week, day, hour, minute, second, millisecond, microsecond, nanosecond].each { |unit| chain << unit }
+        chain.calculate!
+
+        assert_equal 1, chain.units[0].amount
+        assert_equal 0, chain.units[1].amount
+        assert_equal 0, chain.units[2].amount
+        assert_equal 0, chain.units[3].amount
+        assert_equal 0, chain.units[4].amount
+        assert_equal 0, chain.units[5].amount
+        assert_equal 0, chain.units[6].amount
+        assert_equal 0, chain.units[7].amount
+        assert_equal 0, chain.units[8].amount
+        assert_equal 0, chain.units[9].amount
+        assert_equal 0, chain.units[10].amount
+      end
+
       describe 'one unit given' do
 
         it 'calculates hours' do
