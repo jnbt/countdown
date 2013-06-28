@@ -5,7 +5,6 @@ module TimeSpanner
   module TimeUnits
 
     class YearTest < TestCase
-      include TimeHelpers
 
       it 'initializes' do
         year = Year.new
@@ -57,6 +56,17 @@ module TimeSpanner
 
         assert_equal 2002, year.amount
         assert_equal 1, year.rest
+      end
+
+      it 'calculates correctly on exact leap day' do
+        starting_time = DateTime.parse('2012-02-29 00:00:00') # leap year
+        target_time   = DateTime.parse('2013-02-28 00:00:00')
+        year          = Year.new
+
+        year.calculate(starting_time, target_time)
+
+        assert_equal 1, year.amount
+        assert_equal 0, year.rest
       end
 
     end

@@ -5,7 +5,6 @@ module TimeSpanner
   module TimeUnits
 
     class DayTest < TestCase
-      include TimeHelpers
 
       before do
         @day = Day.new
@@ -59,7 +58,7 @@ module TimeSpanner
 
           day.calculate(starting_time, target_time)
 
-          assert_equal 365, day.amount
+          assert_equal 366, day.amount
           assert_equal 0, day.rest
         end
 

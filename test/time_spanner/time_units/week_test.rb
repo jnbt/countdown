@@ -5,7 +5,6 @@ module TimeSpanner
   module TimeUnits
 
     class WeekTest < TestCase
-      include TimeHelpers
 
       before do
         @week = Week.new

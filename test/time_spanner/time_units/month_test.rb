@@ -5,7 +5,6 @@ module TimeSpanner
   module TimeUnits
 
     class MonthTest < TestCase
-      include TimeHelpers
 
       it 'initializes' do
         month = Month.new

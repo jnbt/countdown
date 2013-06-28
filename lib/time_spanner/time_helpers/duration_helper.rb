@@ -7,7 +7,6 @@ module TimeSpanner
 
       # Returns number of nanoseconds for given time span.
       def self.nanoseconds(from, to)
-        p :from => from, :to => to
         ((to.to_time.to_r - from.to_time.to_r).round(9) * 1000000000).to_i
       end
 
@@ -64,7 +63,6 @@ module TimeSpanner
         years = (to.year - from.year)
 
         from_with_years = from.to_datetime >> years*12
-        p :from_with_years => from_with_years
         rest = nanoseconds(from_with_years, to)
 
         [years, rest]
@@ -74,7 +72,6 @@ module TimeSpanner
         millenniums = (to.year - from.year) / 1000
 
         from_with_millenniums = from.to_datetime >> millenniums*12000
-        p :from_with_millenniums => from_with_millenniums
         rest = nanoseconds(from_with_millenniums, to)
 
         [millenniums, rest]

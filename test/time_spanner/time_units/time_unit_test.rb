@@ -5,7 +5,6 @@ module TimeSpanner
   module TimeUnits
 
     class TimeUnitTest < TestCase
-      include TimeHelpers
 
       it 'initializes' do
         time_unit = TimeUnit.new(1)

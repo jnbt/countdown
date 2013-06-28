@@ -170,7 +170,7 @@ module TimeSpanner
 
         end
 
-        it 'calculates years with rest (1 nanosecond)' do
+        it 'calculates years with rest (1 month)' do
           from         = DateTime.parse('3013-01-01 00:00:00')
           target_years = DateTime.parse('3015-01-01 00:00:00')
           to           = Time.at(target_years.to_time.to_r, 0.001)
