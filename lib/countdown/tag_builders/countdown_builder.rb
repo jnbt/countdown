@@ -1,5 +1,3 @@
-require 'time'
-
 module Countdown
   module TagBuilders
 

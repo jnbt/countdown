@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'date'
+require 'time'
 
 module Countdown
   module TagBuilders
@@ -7,7 +7,7 @@ module Countdown
     class CountdownBuilderTest < TestCase
 
       before do
-        from = DateTime.now
+        from = Time.now
         to   = from + 1
         @counter = CountdownBuilder.new(from: from, to: to)
       end
