@@ -10,11 +10,13 @@ module TimeSpanner
       end
 
       def calculate(from, to)
-        centuries, rest = DurationHelper.centuries_with_rest(from, to)
-
-        self.amount = centuries
-        self.rest   = rest
+        self.amount = (to.year - from.year) / 100
         self.from   = from.to_datetime >> amount*1200
+        self.rest   = Nanosecond.duration self.from, to
+      end
+
+      def plural_name
+        :centuries
       end
 
     end

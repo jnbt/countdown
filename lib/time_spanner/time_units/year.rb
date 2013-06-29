@@ -10,11 +10,9 @@ module TimeSpanner
       end
 
       def calculate(from, to)
-        years, rest = DurationHelper.years_with_rest(from, to)
-
-        self.amount = years
-        self.rest   = rest
+        self.amount = to.year - from.year
         self.from   = from.to_datetime >> amount*12
+        self.rest   = Nanosecond.duration self.from, to
       end
 
     end

@@ -1,21 +1,18 @@
-require 'time_spanner/time_helpers/time_span'
-
 module TimeSpanner
 
   class TimeSpanBuilder
-    include TimeSpanner::TimeHelpers
 
     DEFAULT_UNITS = TimeUnitCollector::AVAILABLE_UNITS
 
-    attr_reader :units, :reverse, :start_time, :target_time, :duration
+    attr_reader :start_time, :target_time, :unit_names, :units, :reverse
 
-    def initialize(start_time, target_time, time_units=[])
-      @reverse        = target_time < start_time
-      @start_time     = reverse ? target_time : start_time
-      @target_time    = reverse ? start_time : target_time
-      @units          = set_units(time_units) # TODO: TimeUnitCollector.new(from, to, unit_names).units
+    def initialize(start_time, target_time, unit_names=[])
+      @reverse     = target_time < start_time
+      @start_time  = reverse ? target_time : start_time
+      @target_time = reverse ? start_time : target_time
 
-      @duration = TimeSpan.new(@start_time, @target_time, units) # Interesting: if I use attr_readers for start- and target time nano-calculation is inaccurate!
+      @unit_names  = valid_unit_names(unit_names)
+      @units       = TimeUnitCollector.new(@start_time, @target_time, @unit_names).units
     end
 
     def time_span
@@ -28,8 +25,7 @@ module TimeSpanner
       unit_container = {}
 
       units.each do |unit|
-        value_for_unit = duration.instance_variable_get(:"@#{unit}")
-        unit_container[unit] = reverse? ? -value_for_unit : value_for_unit
+        unit_container[unit.plural_name] = reverse? ? -unit.amount : unit.amount
       end
       unit_container
     end
@@ -39,8 +35,8 @@ module TimeSpanner
       reverse
     end
 
-    def set_units(units)
-      !units || units.compact.empty? ? DEFAULT_UNITS : units
+    def valid_unit_names(unit_names)
+      !unit_names || unit_names.compact.empty? ? DEFAULT_UNITS : unit_names
     end
 
   end

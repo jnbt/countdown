@@ -5,7 +5,6 @@ module TimeSpanner
   module TimeUnits
 
     class MillisecondTest < TestCase
-      include TimeHelpers
 
       before do
         @millisecond = Millisecond.new
@@ -20,7 +19,7 @@ module TimeSpanner
         starting_time = Time.at Time.now.to_f
         target_time   = Time.at(starting_time.to_f, 2000.0)
 
-        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
+        nanoseconds = Nanosecond.duration starting_time, target_time
 
         @millisecond.calculate(nanoseconds)
 
@@ -33,7 +32,7 @@ module TimeSpanner
         target_millis = Time.at(starting_time.to_r, 2000.0)
         target_time   = Time.at(target_millis.to_time.to_r, 0.999)
 
-        nanoseconds = DurationHelper.nanoseconds(starting_time, target_time)
+        nanoseconds = Nanosecond.duration starting_time, target_time
         @millisecond.calculate(nanoseconds)
 
         assert_equal 2, @millisecond.amount

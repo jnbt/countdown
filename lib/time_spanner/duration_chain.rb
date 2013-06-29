@@ -2,7 +2,6 @@ module TimeSpanner
 
   class DurationChain
     include Enumerable
-    include TimeHelpers
     include TimeUnits
 
     attr_accessor :from, :remaining_time, :units
@@ -11,7 +10,7 @@ module TimeSpanner
     def initialize(from, to)
       @from           = from
       @to             = to
-      @remaining_time = DurationHelper.nanoseconds(from, to)
+      @remaining_time = Nanosecond.duration from, to
       @units          = []
     end
 
@@ -39,9 +38,9 @@ module TimeSpanner
       end
     end
 
+
     private
 
-    # TODO: if unit.is_a?(CalendarUnit)
     def calculate_unit(unit)
       if [Millennium, Century, Decade, Year, Month, Week, Day].include?(unit.class)
         unit.calculate(from, to)

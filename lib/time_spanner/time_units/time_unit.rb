@@ -3,7 +3,6 @@ module TimeSpanner
 
     class TimeUnit
       include Comparable
-      include TimeHelpers
 
       DEFAULT_MULTIPLIER = 1
 
@@ -24,6 +23,10 @@ module TimeSpanner
       def calculate(total_nanoseconds)
         calculate_amount total_nanoseconds
         calculate_rest total_nanoseconds
+      end
+
+      def plural_name
+        "#{self.class.name.split('::').last.downcase}s".to_sym
       end
 
       private

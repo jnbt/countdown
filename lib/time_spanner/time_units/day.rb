@@ -3,26 +3,16 @@ module TimeSpanner
 
     class Day < TimeUnit
 
-      MULTIPLIER = 86400000000000
-
       attr_accessor :from
 
       def initialize
-        super 7, MULTIPLIER
+        super 7
       end
 
       def calculate(from, to)
-        self.amount = DurationHelper.days(from, to)
-        self.from   = from.to_datetime >> amount
-
-        calculate_rest total_nanoseconds(from, to)
-      end
-
-
-      private
-
-      def total_nanoseconds(from, to)
-        DurationHelper.nanoseconds(from, to)
+        self.amount = (to.to_time - from.to_time).to_i / 86400
+        self.from   = from.to_datetime + amount
+        self.rest   = Nanosecond.duration self.from, to
       end
 
     end

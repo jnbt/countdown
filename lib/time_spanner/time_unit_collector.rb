@@ -1,33 +1,39 @@
 module TimeSpanner
 
   class TimeUnitCollector
-    include TimeHelpers
     include TimeUnits
 
     AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
 
-    attr_reader :unit_names, :duration_chain
+    attr_reader   :unit_names, :duration_chain
+    attr_accessor :units
 
     def initialize(from, to, unit_names)
       @duration_chain = DurationChain.new(from, to)
       @unit_names     = unit_names
 
       validate_unit_names!
-      add_units_to_chain
+      calculate_units!
     end
 
-    def add_units_to_chain
+
+    private
+
+    def calculate_units!
       unit_names.each do |name|
         duration_chain << unit_by_name(name)
       end
+
+      duration_chain.calculate!
+      self.units = duration_chain.units
     end
 
     def unit_by_name(name)
       case name
-        #when :millenniums then Millenium.new
-        #when :centuries then Century.new
-        #when :decades then Decade.new
-        #when :years then Year.new
+        when :millenniums  then Millennium.new
+        when :centuries    then Century.new
+        when :decades      then Decade.new
+        when :years        then Year.new
         when :months       then Month.new
         when :weeks        then Week.new
         when :days         then Day.new
@@ -39,13 +45,6 @@ module TimeSpanner
         when :nanoseconds  then Nanosecond.new
       end
     end
-
-    # TODO: remove
-    def identifier
-      unit_names.join('_').to_sym
-    end
-
-    private
 
     def validate_unit_names!
       unit_names.each do |unit_name|
