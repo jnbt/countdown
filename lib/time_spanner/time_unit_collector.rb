@@ -5,44 +5,41 @@ module TimeSpanner
 
     AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
 
-    attr_reader   :unit_names, :duration_chain
+    attr_reader   :unit_names
     attr_accessor :units
 
-    def initialize(from, to, unit_names)
-      @duration_chain = DurationChain.new(from, to)
-      @unit_names     = unit_names
+    def initialize(unit_names)
+      @unit_names = unit_names
+      @units      = []
 
       validate_unit_names!
-      calculate_units!
+      collect!
     end
 
 
     private
 
-    def calculate_units!
+    def collect!
       unit_names.each do |name|
-        duration_chain << unit_by_name(name)
+        units << unit_by_name(name)
       end
-
-      duration_chain.calculate!
-      self.units = duration_chain.units
     end
 
     def unit_by_name(name)
       case name
-        when :millenniums  then Millennium.new
-        when :centuries    then Century.new
-        when :decades      then Decade.new
-        when :years        then Year.new
-        when :months       then Month.new
-        when :weeks        then Week.new
-        when :days         then Day.new
-        when :hours        then Hour.new
-        when :minutes      then Minute.new
-        when :seconds      then Second.new
-        when :milliseconds then Millisecond.new
-        when :microseconds then Microsecond.new
-        when :nanoseconds  then Nanosecond.new
+        when :millenniums  then Millennium
+        when :centuries    then Century
+        when :decades      then Decade
+        when :years        then Year
+        when :months       then Month
+        when :weeks        then Week
+        when :days         then Day
+        when :hours        then Hour
+        when :minutes      then Minute
+        when :seconds      then Second
+        when :milliseconds then Millisecond
+        when :microseconds then Microsecond
+        when :nanoseconds  then Nanosecond
       end
     end
 
