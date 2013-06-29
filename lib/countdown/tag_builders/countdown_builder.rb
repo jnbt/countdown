@@ -1,3 +1,5 @@
+# TODO: 'railsify' only here -> force Rails DateTime objects to convert to time; safe_buffer
+
 module Countdown
   module TagBuilders
 
