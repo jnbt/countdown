@@ -10,15 +10,17 @@ module Countdown
       end
 
       it 'creates a default 24h countdown' do
-        time = DateTime.now+1
+        from = DateTime.now
+        to   = from + 1
 
-        assert @view.countdown(time).is_a?(String)
+        assert @view.countdown(from: from, to: to).is_a?(String)
       end
 
       it 'creates a default 24h countup' do
-        time = DateTime.now+1
+        from = DateTime.now
+        to   = from + 1
 
-        assert @view.countup(time).is_a?(String)
+        assert @view.countup(from: from, to: to).is_a?(String)
       end
 
     end

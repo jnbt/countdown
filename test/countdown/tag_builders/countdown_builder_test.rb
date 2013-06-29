@@ -7,8 +7,9 @@ module Countdown
     class CountdownBuilderTest < TestCase
 
       before do
-        time = DateTime.now+1
-        @counter = CountdownBuilder.new(time, options={})
+        from = DateTime.now
+        to   = from + 1
+        @counter = CountdownBuilder.new(from: from, to: to)
       end
 
       it 'should initialize with default values' do

@@ -2,13 +2,14 @@ module Countdown
   module ViewHelpers
     include ::Countdown::TagBuilders
 
-    def countdown(time, options={})
-      safe_buffer CountdownBuilder.new(time, options).to_html
+    def countdown(options={})
+      safe_buffer CountdownBuilder.new(options).to_html
     end
 
-    def countup(time, options={})
-      safe_buffer CountdownBuilder.new(time, options.merge(direction: :up)).to_html
+    def countup(options={})
+      safe_buffer CountdownBuilder.new(options.merge(direction: :up)).to_html
     end
+
 
     private
 
