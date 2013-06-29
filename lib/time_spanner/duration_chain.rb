@@ -4,25 +4,25 @@ module TimeSpanner
     include Enumerable
     include TimeUnits
 
-    attr_accessor :from, :remaining_time, :spanned_units
+    attr_accessor :current_time, :remaining, :units
     attr_reader   :to
 
     def initialize(from, to, units)
-      @from           = from
-      @to             = to
-      @remaining_time = Nanosecond.duration from, to
-      @spanned_units  = units.map(&:new)
+      @current_time = from
+      @to           = to
+      @remaining    = Nanosecond.duration from, to
+      @units        = units.map &:new
 
       calculate!
     end
 
-    private
-
     def each
-      spanned_units.each do |unit|
+      units.each do |unit|
         yield unit
       end
     end
+
+    private
 
     # Perform duration calculations for units in chain.
     def calculate!
@@ -30,23 +30,25 @@ module TimeSpanner
 
       each do |unit|
         calculate_unit(unit)
+        #unit.calculate! remaining, to
+        #self.remaining = unit.rest
       end
     end
 
     # Units must be sorted to perform a correct calculation chain.
     def sort!
-      self.spanned_units = spanned_units.sort
+      self.units = units.sort
     end
 
     def calculate_unit(unit)
       if [Millennium, Century, Decade, Year, Month, Week, Day].include?(unit.class)
-        unit.calculate(from, to)
-        self.from = unit.from
+        unit.calculate(current_time, to)
+        self.current_time = unit.from
       else
-        unit.calculate(remaining_time)
+        unit.calculate(remaining)
       end
 
-      self.remaining_time = unit.rest
+      self.remaining = unit.rest
     end
 
   end
