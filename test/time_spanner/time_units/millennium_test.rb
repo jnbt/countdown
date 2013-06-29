@@ -24,15 +24,15 @@ module TimeSpanner
         assert_equal 0, millennium.rest
       end
 
-      it 'calculates with rest (1 century in nanoseconds)' do
+      it 'calculates with rest (1 minute in nanoseconds)' do
         starting_time = DateTime.parse('3013-01-01 00:00:00')
-        target_time   = DateTime.parse('5113-01-01 00:00:00')
+        target_time   = DateTime.parse('5013-01-01 00:01:00')
         millennium    = Millennium.new
 
         millennium.calculate(starting_time, target_time)
 
         assert_equal 2, millennium.amount
-        assert_equal 3155695200000000000, millennium.rest
+        assert_equal 60000000000, millennium.rest
       end
 
       it 'calculates with rest (1 nanosecond)' do

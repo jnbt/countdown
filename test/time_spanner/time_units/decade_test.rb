@@ -24,15 +24,15 @@ module TimeSpanner
         assert_equal 0, decade.rest
       end
 
-      it 'calculates with rest (1 year and 1 second in nanoseconds)' do
+      it 'calculates with rest (1 second in nanoseconds)' do
         starting_time = DateTime.parse('2013-01-01 00:00:00')
-        target_time   = DateTime.parse('2034-01-01 00:00:01')
+        target_time   = DateTime.parse('2033-01-01 00:00:01')
         decade        = Decade.new
 
         decade.calculate(starting_time, target_time)
 
         assert_equal 2, decade.amount
-        assert_equal 31556953000000000, decade.rest
+        assert_equal 1000000000, decade.rest
       end
 
       it 'calculates correctly on exact leap day' do
