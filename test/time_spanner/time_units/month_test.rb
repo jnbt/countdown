@@ -11,6 +11,7 @@ module TimeSpanner
 
         assert month.kind_of?(TimeUnit)
         assert_equal 5, month.position
+        assert_equal :months, month.plural_name
       end
 
       it 'calculates without rest' do

@@ -6,36 +6,36 @@ module TimeSpanner
 
     class NanosecondTest < TestCase
 
-      before do
-        @nanosecond = Nanosecond.new
-      end
-
       it 'initializes' do
-        assert @nanosecond.kind_of?(TimeUnit)
-        assert_equal 13, @nanosecond.position
+        nanosecond = Nanosecond.new
+
+        assert nanosecond.kind_of?(TimeUnit)
+        assert_equal 13, nanosecond.position
+        assert_equal :nanoseconds, nanosecond.plural_name
       end
 
       it 'calculates' do
         starting_time = Time.at Time.now.to_f
         target_time   = Time.at(starting_time.to_f, 0.002)
+        nanosecond    = Nanosecond.new
 
         nanoseconds = Nanosecond.duration starting_time, target_time
+        nanosecond.calculate(nanoseconds)
 
-        @nanosecond.calculate(nanoseconds)
-
-        assert_equal 2, @nanosecond.amount
-        assert_equal 0, @nanosecond.rest
+        assert_equal 2, nanosecond.amount
+        assert_equal 0, nanosecond.rest
       end
 
       it 'calculate without rest' do
         starting_time = Time.at Time.now.to_r
         target_time   = Time.at(starting_time.to_r, 0.0024567465)
+        nanosecond    = Nanosecond.new
 
         nanoseconds = Nanosecond.duration starting_time, target_time
-        @nanosecond.calculate(nanoseconds)
+        nanosecond.calculate(nanoseconds)
 
-        assert_equal 2, @nanosecond.amount
-        assert_equal 0, @nanosecond.rest
+        assert_equal 2, nanosecond.amount
+        assert_equal 0, nanosecond.rest
       end
 
       describe 'duration' do

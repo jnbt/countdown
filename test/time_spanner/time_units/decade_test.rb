@@ -11,6 +11,7 @@ module TimeSpanner
 
         assert decade.kind_of?(TimeUnit)
         assert_equal 3, decade.position
+        assert_equal :decades, decade.plural_name
       end
 
       it 'calculates without rest' do

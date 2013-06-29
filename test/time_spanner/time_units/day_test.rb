@@ -6,13 +6,12 @@ module TimeSpanner
 
     class DayTest < TestCase
 
-      before do
-        @day = Day.new
-      end
-
       it 'initializes' do
-        assert @day.kind_of?(TimeUnit)
-        assert_equal 7, @day.position
+        day = Day.new
+
+        assert day.kind_of?(TimeUnit)
+        assert_equal 7, day.position
+        assert_equal :days, day.plural_name
       end
 
       it 'calculates without rest' do

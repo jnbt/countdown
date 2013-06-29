@@ -11,6 +11,7 @@ module TimeSpanner
 
         assert millennium.kind_of?(TimeUnit)
         assert_equal 1, millennium.position
+        assert_equal :millenniums, millennium.plural_name
       end
 
       it 'calculates without rest' do
