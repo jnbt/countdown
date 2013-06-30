@@ -1,6 +1,5 @@
 module TimeSpanner
 
-  # TODO: add a few more tests
   class TimeUnitCollector
     include TimeUnits
 
@@ -20,7 +19,6 @@ module TimeSpanner
 
     private
 
-    # TODO: test
     def collect!
       unit_names.each do |name|
         units << unit_by_name(name)
