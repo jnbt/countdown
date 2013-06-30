@@ -8,7 +8,7 @@ module TimeSpanner
       it 'initializes' do
         day = Day.new
 
-        assert day.kind_of?(TimeUnit)
+        assert day.kind_of?(CalendarUnit)
         assert_equal 7, day.position
         assert_equal :days, day.plural_name
       end

@@ -1,32 +1,21 @@
 module TimeSpanner
   module TimeUnits
 
-    class TimeUnit
-      include Comparable
+    class TimeUnit < Unit
 
       DEFAULT_MULTIPLIER = 1
 
-      attr_reader   :position, :multiplier
-      attr_accessor :amount, :rest
+      attr_reader   :multiplier
 
       def initialize(position, multiplier=DEFAULT_MULTIPLIER)
-        @position   = position
-        @multiplier = multiplier
-        @amount     = 0
-        @rest       = 0
-      end
+        super position
 
-      def <=>(other)
-        position <=> other.position
+        @multiplier = multiplier
       end
 
       def calculate(total_nanoseconds, to=nil)
         calculate_amount total_nanoseconds
         calculate_rest total_nanoseconds
-      end
-
-      def plural_name
-        "#{self.class.name.split('::').last.downcase}s".to_sym
       end
 
       private

@@ -1,7 +1,7 @@
 module TimeSpanner
   module TimeUnits
 
-    class Week < TimeUnit
+    class Week < CalendarUnit
 
       def initialize
         super 6

@@ -8,7 +8,7 @@ module TimeSpanner
       it 'initializes' do
         century = Century.new
 
-        assert century.kind_of?(TimeUnit)
+        assert century.kind_of?(CalendarUnit)
         assert_equal 2, century.position
         assert_equal :centuries, century.plural_name
       end

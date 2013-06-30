@@ -1,7 +1,7 @@
 module TimeSpanner
   module TimeUnits
 
-    class Day < TimeUnit
+    class Day < CalendarUnit
 
       def initialize
         super 7

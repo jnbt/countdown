@@ -3,12 +3,12 @@ require 'test_helper'
 module TimeSpanner
   module TimeUnits
 
-    class TimeUnitTest < TestCase
+    class UnitTest < TestCase
 
       it 'initializes' do
         time_unit = TimeUnit.new(1)
 
-        assert time_unit.is_a?(TimeUnit)
+        assert time_unit.is_a?(Unit)
         assert_equal 1, time_unit.position
         assert_equal 0, time_unit.amount
         assert_equal 0, time_unit.rest

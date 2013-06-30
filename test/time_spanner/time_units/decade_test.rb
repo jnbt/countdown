@@ -8,7 +8,7 @@ module TimeSpanner
       it 'initializes' do
         decade = Decade.new
 
-        assert decade.kind_of?(TimeUnit)
+        assert decade.kind_of?(CalendarUnit)
         assert_equal 3, decade.position
         assert_equal :decades, decade.plural_name
       end

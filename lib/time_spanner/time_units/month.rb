@@ -1,7 +1,7 @@
 module TimeSpanner
   module TimeUnits
 
-    class Month < TimeUnit
+    class Month < CalendarUnit
 
       def initialize
         super 5

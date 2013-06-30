@@ -1,7 +1,7 @@
 module TimeSpanner
   module TimeUnits
 
-    class Decade < TimeUnit
+    class Decade < CalendarUnit
 
       def initialize
         super 3

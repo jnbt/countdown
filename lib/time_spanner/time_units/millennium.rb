@@ -1,7 +1,7 @@
 module TimeSpanner
   module TimeUnits
 
-    class Millennium < TimeUnit
+    class Millennium < CalendarUnit
 
       def initialize
         super 1

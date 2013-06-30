@@ -8,7 +8,7 @@ module TimeSpanner
       it 'initializes' do
         month = Month.new
 
-        assert month.kind_of?(TimeUnit)
+        assert month.kind_of?(CalendarUnit)
         assert_equal 5, month.position
         assert_equal :months, month.plural_name
       end

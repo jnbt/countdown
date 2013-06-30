@@ -1,4 +1,7 @@
-require 'time_spanner/time_units/time_unit'
+require 'time_spanner/time_units/base/unit'
+require 'time_spanner/time_units/base/calendar_unit'
+require 'time_spanner/time_units/base/time_unit'
+
 require 'time_spanner/time_units/nanosecond'
 require 'time_spanner/time_units/microsecond'
 require 'time_spanner/time_units/millisecond'
