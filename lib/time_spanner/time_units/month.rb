@@ -14,7 +14,7 @@ module TimeSpanner
         (to.year*12 + to.month) - (from.year*12 + from.month) - (to.day < from.day ? 1 : 0)
       end
 
-      def from_at_amount
+      def at_amount
         (from.to_datetime >> amount).to_time
       end
 

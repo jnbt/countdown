@@ -19,7 +19,7 @@ module TimeSpanner
         (to.year - from.year) / 100
       end
 
-      def from_at_amount
+      def at_amount
         (from.to_datetime >> amount*1200).to_time
       end
 

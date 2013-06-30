@@ -14,7 +14,7 @@ module TimeSpanner
         ((to.to_datetime - from.to_datetime) / 7).to_i
       end
 
-      def from_at_amount
+      def at_amount
         (from.to_datetime + amount * 7).to_time
       end
 

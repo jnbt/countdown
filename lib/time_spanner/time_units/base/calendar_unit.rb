@@ -13,7 +13,7 @@ module TimeSpanner
         self.from = to - (duration / 1000000000.to_r)
 
         self.amount = calculate_amount(from, to)
-        self.rest   = calculate_rest(from_at_amount, to)
+        self.rest   = calculate_rest(at_amount, to)
       end
 
 
