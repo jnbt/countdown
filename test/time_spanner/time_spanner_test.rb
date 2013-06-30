@@ -2,6 +2,7 @@ require 'test_helper'
 
 module TimeSpanner
   class TimeSpannerTest < TestCase
+    include Errors
 
     it 'creates a builder instance' do
       from    = Time.now

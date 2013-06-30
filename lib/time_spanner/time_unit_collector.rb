@@ -2,6 +2,7 @@ module TimeSpanner
 
   class TimeUnitCollector
     include TimeUnits
+    include Errors
 
     AVAILABLE_UNITS = [:millenniums, :centuries, :decades, :years, :months, :weeks, :days, :hours, :minutes, :seconds, :milliseconds, :microseconds, :nanoseconds]
 
@@ -54,7 +55,5 @@ module TimeSpanner
     end
 
   end
-
-  class InvalidUnitError < StandardError; end
 
 end

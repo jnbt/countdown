@@ -4,6 +4,7 @@ module TimeSpanner
 
   class TimeUnitCollectorTest < TestCase
     include TimeUnits
+    include Errors
 
     before do
       @now = Time.now
