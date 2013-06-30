@@ -9,8 +9,8 @@ module TimeSpanner
     attr_reader   :unit_names
     attr_accessor :units
 
-    def initialize(unit_names)
-      @unit_names = unit_names
+    def initialize(unit_names=[])
+      @unit_names = collect_unit_names(unit_names)
       @units      = []
 
       validate_unit_names!
@@ -20,6 +20,7 @@ module TimeSpanner
 
     private
 
+    # TODO: test
     def collect!
       unit_names.each do |name|
         units << unit_by_name(name)
@@ -42,6 +43,10 @@ module TimeSpanner
         when :microseconds then Microsecond
         when :nanoseconds  then Nanosecond
       end
+    end
+
+    def collect_unit_names(unit_names)
+      !unit_names || unit_names.compact.empty? ? AVAILABLE_UNITS : unit_names
     end
 
     def validate_unit_names!

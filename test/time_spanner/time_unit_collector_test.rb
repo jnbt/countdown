@@ -20,6 +20,28 @@ module TimeSpanner
       end
     end
 
+    describe "collecting unit names" do
+
+      it 'should use all units when if no units are given (no parameter given)' do
+        collector = TimeUnitCollector.new
+
+        assert_equal TimeUnitCollector::AVAILABLE_UNITS, collector.unit_names
+      end
+
+      it 'should use all units when if no units are given (nil given)' do
+        collector = TimeUnitCollector.new nil
+
+        assert_equal TimeUnitCollector::AVAILABLE_UNITS, collector.unit_names
+      end
+
+      it 'should use all units when if no units are given (empty Array given)' do
+        collector = TimeUnitCollector.new []
+
+        assert_equal TimeUnitCollector::AVAILABLE_UNITS, collector.unit_names
+      end
+
+    end
+
   end
 
 end

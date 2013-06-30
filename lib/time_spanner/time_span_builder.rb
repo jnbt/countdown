@@ -2,13 +2,10 @@ module TimeSpanner
 
   class TimeSpanBuilder
 
-    DEFAULT_UNITS = TimeUnitCollector::AVAILABLE_UNITS
-
-    attr_reader :unit_names, :unit_chain
+    attr_reader :unit_chain
 
     def initialize(from, to, unit_names=[])
-      @unit_names = valid_unit_names(unit_names)
-      units       = TimeUnitCollector.new(@unit_names).units
+      units       = TimeUnitCollector.new(unit_names).units
       @unit_chain = DurationChain.new(from, to, units)
     end
 
@@ -25,10 +22,6 @@ module TimeSpanner
         unit_container[unit.plural_name] = unit.amount
       end
       unit_container
-    end
-
-    def valid_unit_names(unit_names)
-      !unit_names || unit_names.compact.empty? ? DEFAULT_UNITS : unit_names
     end
 
   end
