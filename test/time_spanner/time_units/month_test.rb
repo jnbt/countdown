@@ -14,11 +14,12 @@ module TimeSpanner
       end
 
       it 'calculates without rest' do
-        from  = Time.parse('2013-04-01 00:00:00')
-        to    = Time.parse('2013-06-01 00:00:00')
-        month = Month.new
+        from     = Time.parse('2013-04-01 00:00:00')
+        to       = Time.parse('2013-06-01 00:00:00')
+        duration = Nanosecond.duration from, to
+        month    = Month.new
 
-        month.calculate(from, to)
+        month.calculate duration, to
 
         assert_equal 2, month.amount
         assert_equal 0, month.rest
@@ -27,21 +28,23 @@ module TimeSpanner
       it 'calculates with rest (999 nanoseconds)' do
         from          = Time.parse('2013-04-01 00:00:00')
         target_months = Time.parse('2013-06-01 00:00:00')
-        to            = Time.at(target_months.to_time.to_r, 0.999)
+        to            = Time.at(target_months.to_r, 0.999)
+        duration      = Nanosecond.duration from, to
         month         = Month.new
 
-        month.calculate(from, to)
+        month.calculate duration, to
 
         assert_equal 2, month.amount
         assert_equal 999, month.rest
       end
 
       it 'calculates with rest (19 days in nanoseconds)' do
-        from  = Time.parse('2013-04-12 00:00:00')
-        to    = Time.parse('2013-07-31 00:00:00')
-        month = Month.new
+        from     = Time.parse('2013-04-12 00:00:00')
+        to       = Time.parse('2013-07-31 00:00:00')
+        duration = Nanosecond.duration from, to
+        month    = Month.new
 
-        month.calculate(from, to)
+        month.calculate duration, to
 
         assert_equal 3, month.amount
         assert_equal 1641600000000000, month.rest

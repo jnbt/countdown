@@ -14,26 +14,25 @@ module TimeSpanner
       end
 
       it 'calculates' do
-        from        = Time.at Time.now.to_f
-        to          = Time.at(from.to_f, 2000.0)
+        from        = Time.now
+        to          = Time.at(from.to_r, 2000.0)
+        duration    = Nanosecond.duration from, to
         millisecond = Millisecond.new
 
-        nanoseconds = Nanosecond.duration from, to
-
-        millisecond.calculate(nanoseconds)
+        millisecond.calculate duration
 
         assert_equal 2, millisecond.amount
         assert_equal 0, millisecond.rest
       end
 
       it 'calculates with rest' do
-        from          = Time.at Time.now.to_r
+        from          = Time.now
         target_millis = Time.at(from.to_r, 2000.0)
-        to            = Time.at(target_millis.to_time.to_r, 0.999)
+        to            = Time.at(target_millis.to_r, 0.999)
+        duration      = Nanosecond.duration from, to
         millisecond   = Millisecond.new
 
-        nanoseconds = Nanosecond.duration from, to
-        millisecond.calculate(nanoseconds)
+        millisecond.calculate duration
 
         assert_equal 2, millisecond.amount
         assert_equal 999, millisecond.rest

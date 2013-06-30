@@ -20,7 +20,7 @@ module TimeSpanner
         position <=> other.position
       end
 
-      def calculate(total_nanoseconds)
+      def calculate(total_nanoseconds, to=nil)
         calculate_amount total_nanoseconds
         calculate_rest total_nanoseconds
       end

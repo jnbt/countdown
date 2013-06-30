@@ -5,7 +5,7 @@ module TimeSpanner
     include TimeUnits
 
     attr_accessor :current_time, :remaining, :units
-    attr_reader   :to
+    attr_reader   :from, :to
 
     def initialize(from, to, units)
       @current_time = from
@@ -30,8 +30,6 @@ module TimeSpanner
 
       each do |unit|
         calculate_unit(unit)
-        #unit.calculate! remaining, to
-        #self.remaining = unit.rest
       end
     end
 
@@ -41,13 +39,7 @@ module TimeSpanner
     end
 
     def calculate_unit(unit)
-      if [Millennium, Century, Decade, Year, Month, Week, Day].include?(unit.class)
-        unit.calculate(current_time, to)
-        self.current_time = unit.from
-      else
-        unit.calculate(remaining)
-      end
-
+      unit.calculate remaining, to
       self.remaining = unit.rest
     end
 
