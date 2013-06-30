@@ -13,56 +13,26 @@ module TimeSpanner
         assert_equal :nanoseconds, nanosecond.plural_name
       end
 
-      it 'calculates' do
+      it 'calculates amount' do
         from       = Time.now
         to         = Time.at(from.to_r, 0.002)
-        duration   = Nanosecond.duration from, to
+        duration   = to.to_r - from.to_r
         nanosecond = Nanosecond.new
 
         nanosecond.calculate duration
 
         assert_equal 2, nanosecond.amount
-        assert_equal 0, nanosecond.rest
       end
 
-      it 'calculate without rest' do
-        from       = Time.now
-        to         = Time.at(from.to_r, 0.0024567465)
-        duration   = Nanosecond.duration from, to
+      it 'calculates amount on odd nanoseconds' do
+        from       = Time.at(DateTime.parse('2013-07-28 00:00:01').to_time, 0.021)
+        to         = Time.at(DateTime.parse('2013-07-28 00:00:01').to_time, 0.023)
+        duration   = to.to_r - from.to_r
         nanosecond = Nanosecond.new
 
         nanosecond.calculate duration
 
         assert_equal 2, nanosecond.amount
-        assert_equal 0, nanosecond.rest
-      end
-
-      describe 'duration' do
-
-        before do
-          @now = Time.now
-        end
-
-        it 'should be Integer' do
-          assert Nanosecond.duration(@now, @now+86400).is_a?(Integer)
-        end
-
-        it 'calculates nanoseconds for 1 day in the future' do
-          assert_equal 86400000000000, Nanosecond.duration(@now, @now+86400)
-        end
-
-        it 'calculates nanoseconds for 1 day last week' do
-          assert_equal 86400000000000, Nanosecond.duration(@now-604800, @now-518400)
-        end
-
-        it 'calculates nanoseconds for 1 day in the past' do
-          assert_equal -86400000000000,  Nanosecond.duration(@now, @now-86400)
-        end
-
-        it 'calculates nanoseconds for same timestamp' do
-          assert_equal 0, Nanosecond.duration(@now, @now)
-        end
-
       end
 
     end

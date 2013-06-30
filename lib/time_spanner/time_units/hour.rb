@@ -3,7 +3,7 @@ module TimeSpanner
 
     class Hour < TimeUnit
 
-      MULTIPLIER = 3600000000000
+      MULTIPLIER = Rational(1, 3600)
 
       def initialize
         super 8, MULTIPLIER

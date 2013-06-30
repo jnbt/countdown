@@ -6,7 +6,7 @@ module TimeSpanner
     class UnitTest < TestCase
 
       it 'initializes' do
-        time_unit = TimeUnit.new(1)
+        time_unit = Unit.new(1)
 
         assert time_unit.is_a?(Unit)
         assert_equal 1, time_unit.position

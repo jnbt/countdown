@@ -16,7 +16,7 @@ module TimeSpanner
       it 'calculates' do
         from        = Time.now
         to          = Time.at(from.to_r, 2.0)
-        duration    = Nanosecond.duration from, to
+        duration    = to.to_r - from.to_r
         microsecond = Microsecond.new
 
         microsecond.calculate duration
@@ -25,17 +25,17 @@ module TimeSpanner
         assert_equal 0, microsecond.rest
       end
 
-      it 'calculates with rest' do
+      it 'calculates with rest (999 nanoseconds in seconds)' do
         from          = Time.now
         target_micros = Time.at(from.to_r, 2.0)
         to            = Time.at(target_micros.to_r, 0.999)
-        duration      = Nanosecond.duration from, to
+        duration      = to.to_r - from.to_r
         microsecond   = Microsecond.new
 
         microsecond.calculate duration
 
         assert_equal 2, microsecond.amount
-        assert_equal 999, microsecond.rest
+        assert_equal Rational(8998192055486251, 9007199254740992000000), microsecond.rest
       end
 
     end

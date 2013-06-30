@@ -10,18 +10,17 @@ module TimeSpanner
       end
 
       def calculate(duration, to)
-        @duration = duration
-
-        self.from   = to - (self.duration / 1000000000.to_r)
-        self.amount = calculate_amount(from, to)
-        self.rest   = calculate_rest(at_amount, to)
+        self.duration = duration
+        self.from     = to - (self.duration.to_r)
+        self.amount   = calculate_amount(from, to)
+        self.rest     = calculate_rest(at_amount, to)
       end
 
 
       private
 
       def calculate_rest(from, to)
-        Nanosecond.duration from, to
+        to.to_r - from.to_r
       end
 
     end

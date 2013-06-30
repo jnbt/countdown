@@ -17,7 +17,7 @@ module TimeSpanner
 
         assert_equal @from, chain.current_time
         assert_equal @to, chain.to
-        assert_equal 7957000000000, chain.remaining
+        assert_equal 7957, chain.remaining
         assert_equal [], chain.units
       end
 

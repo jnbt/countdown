@@ -16,7 +16,7 @@ module TimeSpanner
       it 'calculates without rest' do
         from     = Time.parse('2013-04-03 00:00:00')
         to       = Time.parse('2013-04-05 00:00:00')
-        duration = Nanosecond.duration from, to
+        duration = to.to_r - from.to_r
         day      = Day.new
 
         day.calculate duration, to
@@ -29,13 +29,13 @@ module TimeSpanner
         from        = Time.parse('2013-04-03 00:00:00')
         target_days = Time.parse('2013-04-05 00:00:00')
         to          = Time.at(target_days.to_time.to_r, 0.999)
-        duration    = Nanosecond.duration from, to
+        duration    = to.to_r - from.to_r
         day         = Day.new
 
         day.calculate duration, to
 
         assert_equal 2, day.amount
-        assert_equal 999, day.rest
+        assert_equal Rational(8998192055486251, 9007199254740992000000), day.rest
       end
 
       describe 'leap days' do
@@ -43,7 +43,7 @@ module TimeSpanner
         it 'calculates correctly without leap day' do
           from     = Time.parse('2013-01-01 00:00:00')
           to       = Time.parse('2014-01-01 00:00:00')
-          duration = Nanosecond.duration from, to
+          duration = to.to_r - from.to_r
           day      = Day.new
 
           day.calculate duration, to
@@ -55,7 +55,7 @@ module TimeSpanner
         it 'calculates correctly on leap day' do
           from     = Time.parse('2012-01-01 00:00:00') # leap year
           to       = Time.parse('2013-01-01 00:00:00')
-          duration = Nanosecond.duration from, to
+          duration = to.to_r - from.to_r
           day      = Day.new
 
           day.calculate duration, to

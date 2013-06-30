@@ -10,7 +10,7 @@ module TimeSpanner
     def initialize(from, to, units)
       @current_time = from
       @to           = to
-      @remaining    = Nanosecond.duration from, to
+      @remaining    = to.to_r - from.to_r
       @units        = units.map &:new
 
       calculate!

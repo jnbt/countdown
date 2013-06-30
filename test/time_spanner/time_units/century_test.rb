@@ -16,7 +16,7 @@ module TimeSpanner
       it 'calculates without rest' do
         from     = Time.parse('2013-04-01 00:00:00')
         to       = Time.parse('2213-04-01 00:00:00')
-        duration = Nanosecond.duration from, to
+        duration = to.to_r - from.to_r
         century  = Century.new
 
         century.calculate duration, to
@@ -25,16 +25,16 @@ module TimeSpanner
         assert_equal 0, century.rest
       end
 
-      it 'calculates with rest (1 day in nanoseconds)' do
+      it 'calculates with rest (1 day in seconds)' do
         from     = Time.parse('2013-01-01 00:00:00')
         to       = Time.parse('2213-01-02 00:00:00')
-        duration = Nanosecond.duration from, to
+        duration = to.to_r - from.to_r
         century  = Century.new
 
         century.calculate duration, to
 
         assert_equal 2, century.amount
-        assert_equal 86400000000000, century.rest
+        assert_equal 86400, century.rest
       end
 
     end

@@ -16,7 +16,7 @@ module TimeSpanner
       it 'calculates' do
         from     = Time.parse('2012-12-14 00:00:00')
         to       = Time.parse('2012-12-14 00:00:02')
-        duration = Nanosecond.duration from, to
+        duration = to.to_r - from.to_r
         second   = Second.new
 
         second.calculate duration
@@ -29,13 +29,13 @@ module TimeSpanner
         from           = Time.now
         target_seconds = Time.at(from.to_r, 2000000.0)
         to             = Time.at(target_seconds.to_r, 0.999)
-        duration       = Nanosecond.duration from, to
+        duration       = to.to_r - from.to_r
         second         = Second.new
 
         second.calculate duration
 
         assert_equal 2, second.amount
-        assert_equal 999, second.rest
+        assert_equal Rational(8998192055486251, 9007199254740992000000), second.rest
       end
 
     end

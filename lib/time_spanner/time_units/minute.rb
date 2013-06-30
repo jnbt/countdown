@@ -3,7 +3,7 @@ module TimeSpanner
 
     class Minute < TimeUnit
 
-      MULTIPLIER = 60000000000
+      MULTIPLIER = Rational(1, 60)
 
       def initialize
         super 9, MULTIPLIER

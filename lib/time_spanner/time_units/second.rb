@@ -3,7 +3,7 @@ module TimeSpanner
 
     class Second < TimeUnit
 
-      MULTIPLIER = 1000000000
+      MULTIPLIER = 1
 
       def initialize
         super 10, MULTIPLIER
