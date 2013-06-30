@@ -4,13 +4,13 @@ module TimeSpanner
   class TimeSpannerTest < TestCase
     include Errors
 
-    it 'creates a builder instance' do
+    it 'creates a span instance' do
       from    = Time.now
       to      = from + 1
-      options = {}
-      builder = TimeSpanner.new(from, to, options)
+      span    = TimeSpan.new(from, to)
 
-      assert builder.is_a?(TimeSpanBuilder)
+      assert span.is_a?(TimeSpan)
+      assert span.kind_of?(Hash)
     end
 
     it 'ensures converting to Time' do
@@ -19,7 +19,7 @@ module TimeSpanner
       end
 
       assert_raises InvalidClassError do
-        TimeSpanner.new(InvalidClass.new, InvalidClass.new)
+        TimeSpan.new(InvalidClass.new, InvalidClass.new)
       end
     end
 

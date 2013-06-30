@@ -12,7 +12,7 @@ module TimeSpanner
       @from    = reverse ? to : from
       @to      = reverse ? from : to
 
-      @remaining = @to.to_r - @from.to_r
+      @remaining = @to.to_time.to_r - @from.to_time.to_r
       @units     = units.map &:new
 
       calculate!

@@ -21,7 +21,7 @@ module TimeSpanner
       private
 
       def calculate_rest(from, to)
-        @rest = to.to_r - from.to_r
+        @rest = to.to_time.to_r - from.to_r
       end
 
     end

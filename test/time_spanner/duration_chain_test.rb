@@ -37,6 +37,13 @@ module TimeSpanner
         assert chain.units.last.is_a?(Second)
       end
 
+      it 'calculates with DateTimes' do
+        from  = DateTime.parse('2013-04-03 00:00:00')
+        to    = DateTime.parse('2013-04-05 02:12:37')
+
+        assert DurationChain.new(from, to, [Day, Hour, Minute, Second])
+      end
+
       it 'calculates decades and succeeding units (ensures leap years are correctly calculated)' do
         from = Time.parse('2013-01-01 00:00:00')
         to   = Time.parse('2023-01-01 00:00:00')
