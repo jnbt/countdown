@@ -13,7 +13,6 @@ module TimeSpanner
         @rest       = 0
       end
 
-      # TODO: test
       def reverse!
         @amount = -amount
       end
