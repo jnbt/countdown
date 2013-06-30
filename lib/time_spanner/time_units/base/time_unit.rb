@@ -18,15 +18,15 @@ module TimeSpanner
         calculate_rest
       end
 
+
       private
 
       def calculate_amount
-        self.amount = ((duration * multiplier).round(12)).to_i
+        @amount = ((duration * multiplier).round(12)).to_i
       end
 
-      # The rest is needed to perform the calculation on the succeeding time units.
       def calculate_rest
-        self.rest = duration - amount_in_seconds
+        @rest = duration - amount_in_seconds
       end
 
       def amount_in_seconds

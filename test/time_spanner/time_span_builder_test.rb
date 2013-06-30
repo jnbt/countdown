@@ -25,15 +25,6 @@ module TimeSpanner
       assert_equal TimeSpanBuilder::DEFAULT_UNITS, time_span_builder.unit_names
     end
 
-    it 'should switch time span when target time is smaller than start time' do
-      from              = Time.parse('2013-06-17 12:34:56')
-      to                = Time.parse('2013-04-17 12:34:56')
-      time_span_builder = TimeSpanBuilder.new(from, to)
-
-      assert_equal to, time_span_builder.from
-      assert_equal from, time_span_builder.to
-    end
-
     describe 'output all time units' do
 
       it 'should output all time units (in the future)' do

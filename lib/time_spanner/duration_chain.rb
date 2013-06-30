@@ -4,14 +4,16 @@ module TimeSpanner
     include Enumerable
     include TimeUnits
 
-    attr_accessor :current_time, :remaining, :units
-    attr_reader   :from, :to
+    attr_accessor :remaining, :units, :reverse
+    attr_reader   :to
 
     def initialize(from, to, units)
-      @current_time = from
-      @to           = to
-      @remaining    = to.to_r - from.to_r
-      @units        = units.map &:new
+      @reverse = to < from
+      @from    = reverse ? to : from
+      @to      = reverse ? from : to
+
+      @remaining = @to.to_r - @from.to_r
+      @units     = units.map &:new
 
       calculate!
     end
@@ -35,12 +37,14 @@ module TimeSpanner
 
     # Units must be sorted to perform a correct calculation chain.
     def sort!
-      self.units = units.sort
+      @units = units.sort
     end
 
     def calculate_unit(unit)
       unit.calculate remaining, to
-      self.remaining = unit.rest
+      unit.reverse! if reverse
+
+      @remaining = unit.rest
     end
 
   end

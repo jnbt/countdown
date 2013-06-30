@@ -13,16 +13,24 @@ module TimeSpanner
       end
 
       it 'initializes' do
-        chain  = DurationChain.new(@from, @to, [])
+        chain = DurationChain.new(@from, @to, [])
 
-        assert_equal @from, chain.current_time
         assert_equal @to, chain.to
         assert_equal 7957, chain.remaining
         assert_equal [], chain.units
       end
 
+      it 'should switch time span when target time is smaller than start time' do
+        from  = Time.parse('2013-06-17 12:34:56')
+        to    = Time.parse('2013-04-17 12:34:56')
+        chain = DurationChain.new(from, to, [])
+
+        assert_equal to, chain.instance_variable_get(:@from)
+        assert_equal from, chain.to
+      end
+
       it 'sorts' do
-        chain  = DurationChain.new(@from, @to, [Second, Hour, Minute])
+        chain = DurationChain.new(@from, @to, [Second, Hour, Minute])
 
         assert chain.units.first.is_a?(Hour)
         assert chain.units[1].is_a?(Minute)

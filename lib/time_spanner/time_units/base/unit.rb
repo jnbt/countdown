@@ -13,6 +13,11 @@ module TimeSpanner
         @rest       = 0
       end
 
+      # TODO: test
+      def reverse!
+        @amount = -amount
+      end
+
       def <=>(other)
         position <=> other.position
       end

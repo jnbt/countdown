@@ -1,5 +1,6 @@
 module TimeSpanner
 
+  # TODO: add a few more tests
   class TimeUnitCollector
     include TimeUnits
 
