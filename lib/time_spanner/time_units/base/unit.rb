@@ -5,7 +5,7 @@ module TimeSpanner
       include Comparable
 
       attr_reader   :position
-      attr_accessor :amount, :rest
+      attr_accessor :duration, :amount, :rest
 
       def initialize(position)
         @position   = position

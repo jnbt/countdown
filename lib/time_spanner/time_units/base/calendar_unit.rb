@@ -10,8 +10,9 @@ module TimeSpanner
       end
 
       def calculate(duration, to)
-        self.from = to - (duration / 1000000000.to_r)
+        @duration = duration
 
+        self.from   = to - (self.duration / 1000000000.to_r)
         self.amount = calculate_amount(from, to)
         self.rest   = calculate_rest(at_amount, to)
       end

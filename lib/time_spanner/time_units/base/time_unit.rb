@@ -14,18 +14,20 @@ module TimeSpanner
       end
 
       def calculate(duration, to=nil)
-        calculate_amount duration
-        calculate_rest duration
+        @duration = duration
+
+        calculate_amount
+        calculate_rest
       end
 
       private
 
-      def calculate_amount(duration)
+      def calculate_amount
         self.amount = duration / multiplier
       end
 
       # The rest is needed to perform the calculation on the succeeding time units.
-      def calculate_rest(duration)
+      def calculate_rest
         self.rest = duration - amount_in_nanoseconds
       end
 
