@@ -14,11 +14,11 @@ module TimeSpanner
       end
 
       it 'calculates' do
-        starting_time = Time.at Time.now.to_f
-        target_time   = Time.at(starting_time.to_f, 0.002)
-        nanosecond    = Nanosecond.new
+        from       = Time.at Time.now.to_f
+        to         = Time.at(from.to_f, 0.002)
+        nanosecond = Nanosecond.new
 
-        nanoseconds = Nanosecond.duration starting_time, target_time
+        nanoseconds = Nanosecond.duration from, to
         nanosecond.calculate(nanoseconds)
 
         assert_equal 2, nanosecond.amount
@@ -26,11 +26,11 @@ module TimeSpanner
       end
 
       it 'calculate without rest' do
-        starting_time = Time.at Time.now.to_r
-        target_time   = Time.at(starting_time.to_r, 0.0024567465)
-        nanosecond    = Nanosecond.new
+        from       = Time.at Time.now.to_r
+        to         = Time.at(from.to_r, 0.0024567465)
+        nanosecond = Nanosecond.new
 
-        nanoseconds = Nanosecond.duration starting_time, target_time
+        nanoseconds = Nanosecond.duration from, to
         nanosecond.calculate(nanoseconds)
 
         assert_equal 2, nanosecond.amount
@@ -40,23 +40,23 @@ module TimeSpanner
       describe 'duration' do
 
         before do
-          @now = DateTime.now
+          @now = Time.now
         end
 
         it 'should be Integer' do
-          assert Nanosecond.duration(@now, @now+1).is_a?(Integer)
+          assert Nanosecond.duration(@now, @now+86400).is_a?(Integer)
         end
 
         it 'calculates nanoseconds for 1 day in the future' do
-          assert_equal 86400000000000, Nanosecond.duration(@now, @now+1)
+          assert_equal 86400000000000, Nanosecond.duration(@now, @now+86400)
         end
 
         it 'calculates nanoseconds for 1 day last week' do
-          assert_equal 86400000000000, Nanosecond.duration(@now-7, @now-6)
+          assert_equal 86400000000000, Nanosecond.duration(@now-604800, @now-518400)
         end
 
         it 'calculates nanoseconds for 1 day in the past' do
-          assert_equal -86400000000000,  Nanosecond.duration(@now, @now-1)
+          assert_equal -86400000000000,  Nanosecond.duration(@now, @now-86400)
         end
 
         it 'calculates nanoseconds for same timestamp' do

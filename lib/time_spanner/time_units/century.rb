@@ -12,7 +12,7 @@ module TimeSpanner
       def calculate(from, to)
         self.amount = (to.year - from.year) / 100
         self.from   = from.to_datetime >> amount*1200
-        self.rest   = Nanosecond.duration self.from, to
+        self.rest   = Nanosecond.duration self.from.to_time, to
       end
 
       def plural_name

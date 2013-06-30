@@ -12,7 +12,7 @@ module TimeSpanner
       def calculate(from, to)
         self.amount = (to.to_time - from.to_time).to_i / 86400
         self.from   = from.to_datetime + amount
-        self.rest   = Nanosecond.duration self.from, to
+        self.rest   = Nanosecond.duration self.from.to_time, to
       end
 
     end

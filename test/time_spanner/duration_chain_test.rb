@@ -8,8 +8,8 @@ module TimeSpanner
     describe 'calculation by given units' do
 
       before do
-        @from = DateTime.parse('2013-04-03 00:00:00')
-        @to   = DateTime.parse('2013-04-03 02:12:37')
+        @from = Time.parse('2013-04-03 00:00:00')
+        @to   = Time.parse('2013-04-03 02:12:37')
       end
 
       it 'initializes' do
@@ -30,8 +30,8 @@ module TimeSpanner
       end
 
       it 'calculates decades and succeeding units (ensures leap years are correctly calculated)' do
-        from = DateTime.parse('2013-01-01 00:00:00')
-        to   = DateTime.parse('2023-01-01 00:00:00')
+        from = Time.parse('2013-01-01 00:00:00')
+        to   = Time.parse('2023-01-01 00:00:00')
 
         chain = DurationChain.new(from, to, [Decade, Year, Month, Week, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond])
 
@@ -94,8 +94,8 @@ module TimeSpanner
         end
 
         it 'calculates months and days' do
-          from   = DateTime.parse('2013-04-01 00:00:00')
-          to     = DateTime.parse('2013-07-19 00:00:00')
+          from   = Time.parse('2013-04-01 00:00:00')
+          to     = Time.parse('2013-07-19 00:00:00')
           chain  = DurationChain.new(from, to, [Month, Day])
 
           assert_equal 3, chain.units.first.amount
@@ -103,9 +103,9 @@ module TimeSpanner
         end
 
         it 'calculates months with microseconds' do
-          from             = DateTime.parse('2013-04-01 00:00:00')
-          from_with_months = DateTime.parse('2013-08-01 00:00:00')
-          to               = Time.at(from_with_months.to_time.to_f, 2.0)
+          from             = Time.parse('2013-04-01 00:00:00')
+          from_with_months = Time.parse('2013-08-01 00:00:00')
+          to               = Time.at(from_with_months.to_f, 2.0)
           chain            = DurationChain.new(from, to, [Month, Microsecond])
 
           assert_equal 4, chain.units.first.amount
@@ -113,8 +113,8 @@ module TimeSpanner
         end
 
         it 'calculates years and months' do
-          from   = DateTime.parse('2013-04-01 00:00:00')
-          to     = DateTime.parse('2016-08-01 00:00:00')
+          from   = Time.parse('2013-04-01 00:00:00')
+          to     = Time.parse('2016-08-01 00:00:00')
           chain  = DurationChain.new(from, to, [Year, Month])
 
           assert_equal 3, chain.units.first.amount
@@ -122,8 +122,8 @@ module TimeSpanner
         end
 
         it 'calculates decades and years' do
-          from   = DateTime.parse('2013-04-01 00:00:00')
-          to     = DateTime.parse('2036-04-01 00:00:00')
+          from   = Time.parse('2013-04-01 00:00:00')
+          to     = Time.parse('2036-04-01 00:00:00')
           chain  = DurationChain.new(from, to, [Decade, Year])
 
           assert_equal 2, chain.units.first.amount
@@ -131,8 +131,8 @@ module TimeSpanner
         end
 
         it 'calculates centuries and years' do
-          from    = DateTime.parse('2013-04-01 00:00:00')
-          to      = DateTime.parse('2216-04-01 00:00:00')
+          from    = Time.parse('2013-04-01 00:00:00')
+          to      = Time.parse('2216-04-01 00:00:00')
           chain   = DurationChain.new(from, to, [Century, Year])
 
           assert_equal 2, chain.units.first.amount
@@ -140,9 +140,9 @@ module TimeSpanner
         end
 
         it 'calculates milleniums and nanoseconds' do
-          from               = DateTime.parse('2013-04-01 00:00:00')
-          target_millenniums = DateTime.parse('4013-04-01 00:00:00')
-          to                 = Time.at(target_millenniums.to_time.to_r, 0.001)
+          from               = Time.parse('2013-04-01 00:00:00')
+          target_millenniums = Time.parse('4013-04-01 00:00:00')
+          to                 = Time.at(target_millenniums.to_r, 0.001)
           chain              = DurationChain.new(from, to, [Millennium, Nanosecond])
 
           assert_equal 2, chain.units.first.amount
@@ -150,8 +150,8 @@ module TimeSpanner
         end
 
         it 'calculates weeks and days' do
-          from  = DateTime.parse('2013-04-01 00:00:00')
-          to    = DateTime.parse('2013-04-26 00:00:00')
+          from  = Time.parse('2013-04-01 00:00:00')
+          to    = Time.parse('2013-04-26 00:00:00')
           chain = DurationChain.new(from, to, [Week, Day])
 
           assert_equal 3, chain.units.first.amount
@@ -171,8 +171,8 @@ module TimeSpanner
         end
 
         it 'calculates months, days and hours' do
-          from  = DateTime.parse('2013-04-01 00:00:00')
-          to    = DateTime.parse('2013-07-19 02:00:00')
+          from  = Time.parse('2013-04-01 00:00:00')
+          to    = Time.parse('2013-07-19 02:00:00')
           chain = DurationChain.new(from, to, [Month, Day, Hour])
 
           assert_equal 3, chain.units.first.amount
@@ -181,8 +181,8 @@ module TimeSpanner
         end
 
         it 'calculates months, weeks and days' do
-          from   = DateTime.parse('2013-04-01 00:00:00')
-          to     = DateTime.parse('2013-07-19 02:00:00')
+          from   = Time.parse('2013-04-01 00:00:00')
+          to     = Time.parse('2013-07-19 02:00:00')
           chain  = DurationChain.new(from, to, [Month, Week, Day])
 
           assert_equal 3, chain.units.first.amount

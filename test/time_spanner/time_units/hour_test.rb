@@ -14,11 +14,11 @@ module TimeSpanner
       end
 
       it 'calculates without rest' do
-        starting_time = DateTime.parse('2013-04-03 00:00:00')
-        target_time   = DateTime.parse('2013-04-03 02:00:00')
+        from = Time.parse('2013-04-03 00:00:00')
+        to   = Time.parse('2013-04-03 02:00:00')
         hour          = Hour.new
 
-        nanoseconds = Nanosecond.duration starting_time, target_time
+        nanoseconds = Nanosecond.duration from, to
         hour.calculate(nanoseconds)
 
         assert_equal 2, hour.amount
@@ -26,12 +26,12 @@ module TimeSpanner
       end
 
       it 'calculates with rest' do
-        starting_time = DateTime.parse('2013-04-03 00:00:00')
-        target_hours  = DateTime.parse('2013-04-03 02:00:00')
-        target_time   = Time.at(target_hours.to_time.to_r, 0.999)
+        from = Time.parse('2013-04-03 00:00:00')
+        target_hours  = Time.parse('2013-04-03 02:00:00')
+        to   = Time.at(target_hours.to_time.to_r, 0.999)
         hour          = Hour.new
 
-        nanoseconds = Nanosecond.duration starting_time, target_time
+        nanoseconds = Nanosecond.duration from, to
         hour.calculate(nanoseconds)
 
         assert_equal 2, hour.amount

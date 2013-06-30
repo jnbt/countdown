@@ -5,7 +5,7 @@ module TimeSpanner
   class TimeUnitCollectorTest < TestCase
 
     before do
-      @now = DateTime.now
+      @now = Time.now
     end
 
     it 'initializes' do

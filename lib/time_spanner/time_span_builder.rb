@@ -4,16 +4,16 @@ module TimeSpanner
 
     DEFAULT_UNITS = TimeUnitCollector::AVAILABLE_UNITS
 
-    attr_reader :start_time, :target_time, :unit_names, :reverse, :unit_chain
+    attr_reader :from, :to, :unit_names, :reverse, :unit_chain
 
-    def initialize(start_time, target_time, unit_names=[])
-      @reverse     = target_time < start_time
-      @start_time  = reverse ? target_time : start_time
-      @target_time = reverse ? start_time : target_time
+    def initialize(from, to, unit_names=[])
+      @reverse = to < from
+      @from    = reverse ? to : from
+      @to      = reverse ? from : to
 
       @unit_names  = valid_unit_names(unit_names)
       units        = TimeUnitCollector.new(@unit_names).units
-      @unit_chain  = DurationChain.new(@start_time, @target_time, units)
+      @unit_chain  = DurationChain.new(@from, @to, units)
     end
 
     def time_span
@@ -31,7 +31,7 @@ module TimeSpanner
       unit_container
     end
 
-    # Countdown with negative values because target_time is before start_time.
+    # Countdown with negative values because to is before from.
     def reverse?
       reverse
     end
