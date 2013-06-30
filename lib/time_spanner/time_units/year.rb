@@ -7,12 +7,15 @@ module TimeSpanner
         super 4
       end
 
-      def calculate(duration, to)
-        from = to - (duration / 1000000000.to_r)
 
-        self.amount = to.year - from.year
-        new_from    = (from.to_datetime >> amount*12).to_time
-        self.rest   = Nanosecond.duration new_from, to
+      private
+
+      def calculate_amount(from, to)
+        to.year - from.year
+      end
+
+      def from_at_amount
+        (from.to_datetime >> amount*12).to_time
       end
 
     end

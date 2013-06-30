@@ -7,17 +7,20 @@ module TimeSpanner
         super 2
       end
 
-      def calculate(duration, to)
-        from = to - (duration / 1000000000.to_r)
-
-        self.amount = (to.year - from.year) / 100
-        new_from    = (from.to_datetime >> amount*1200).to_time
-        self.rest   = Nanosecond.duration new_from, to
-      end
-
       # Overwrite!
       def plural_name
         :centuries
+      end
+
+
+      private
+
+      def calculate_amount(from, to)
+        (to.year - from.year) / 100
+      end
+
+      def from_at_amount
+        (from.to_datetime >> amount*1200).to_time
       end
 
     end

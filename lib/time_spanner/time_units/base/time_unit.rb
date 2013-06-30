@@ -5,7 +5,7 @@ module TimeSpanner
 
       DEFAULT_MULTIPLIER = 1
 
-      attr_reader   :multiplier
+      attr_reader :multiplier
 
       def initialize(position, multiplier=DEFAULT_MULTIPLIER)
         super position
@@ -13,20 +13,20 @@ module TimeSpanner
         @multiplier = multiplier
       end
 
-      def calculate(total_nanoseconds, to=nil)
-        calculate_amount total_nanoseconds
-        calculate_rest total_nanoseconds
+      def calculate(duration, to=nil)
+        calculate_amount duration
+        calculate_rest duration
       end
 
       private
 
-      def calculate_amount(total_nanoseconds)
-        self.amount = total_nanoseconds / multiplier
+      def calculate_amount(duration)
+        self.amount = duration / multiplier
       end
 
       # The rest is needed to perform the calculation on the succeeding time units.
-      def calculate_rest(total_nanoseconds)
-        self.rest = total_nanoseconds - amount_in_nanoseconds
+      def calculate_rest(duration)
+        self.rest = duration - amount_in_nanoseconds
       end
 
       def amount_in_nanoseconds
