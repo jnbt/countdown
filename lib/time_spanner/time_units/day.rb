@@ -3,8 +3,6 @@ module TimeSpanner
 
     class Day < TimeUnit
 
-      attr_accessor :from
-
       def initialize
         super 7
       end

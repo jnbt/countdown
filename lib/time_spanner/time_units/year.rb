@@ -3,8 +3,6 @@ module TimeSpanner
 
     class Year < TimeUnit
 
-      attr_accessor :from
-
       def initialize
         super 4
       end

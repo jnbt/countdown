@@ -3,8 +3,6 @@ module TimeSpanner
 
     class Week < TimeUnit
 
-      attr_accessor :from
-
       def initialize
         super 6
       end

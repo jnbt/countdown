@@ -3,8 +3,6 @@ module TimeSpanner
 
     class Month < TimeUnit
 
-      attr_accessor :from
-
       def initialize
         super 5
       end

@@ -3,8 +3,6 @@ module TimeSpanner
 
     class Century < TimeUnit
 
-      attr_accessor :from
-
       def initialize
         super 2
       end
