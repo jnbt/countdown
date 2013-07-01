@@ -229,6 +229,21 @@ module TimeSpanner
           assert_equal 354, chain.units[12].amount
         end
 
+        it 'each calles for every unit' do
+          from  = Time.at(DateTime.parse('2013-06-17 12:34:56').to_time, 2216234.383)
+          to    = Time.at(DateTime.parse('5447-12-12 23:11:12').to_time, 3153476.737)
+          units = [Millennium, Century, Decade, Year, Month, Week, Day, Hour, Minute, Second, Millisecond, Microsecond, Nanosecond]
+          chain = DurationChain.new(from, to, units)
+
+          yielded = []
+          chain.each{|u| yielded << u}
+
+          assert_equal units.size, yielded.size
+          units.each do |unit|
+            assert_kind_of unit, yielded.shift
+          end
+        end
+
         it 'calculates only some of them' do
           from  = Time.at(DateTime.parse('2013-07-28 00:00:01').to_time, 0.021)
           to    = Time.at(DateTime.parse('2014-08-01 00:00:59').to_time, 0.023)

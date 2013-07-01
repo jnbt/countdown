@@ -1,11 +1,14 @@
 module TimeSpanner
 
   class DurationChain
+    extend Forwardable
     include Enumerable
     include TimeUnits
 
     attr_accessor :remaining, :units, :reverse
     attr_reader   :to
+
+    def_delegator :units, :each
 
     def initialize(from, to, units)
       @reverse = to < from
@@ -16,12 +19,6 @@ module TimeSpanner
       @units     = units.map &:new
 
       calculate!
-    end
-
-    def each
-      units.each do |unit|
-        yield unit
-      end
     end
 
     private
