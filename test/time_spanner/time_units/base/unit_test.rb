@@ -23,7 +23,7 @@ module TimeSpanner
 
       it "reverses!" do
         second = Second.new
-        second.calculate Time.now - Time.now+1
+        second.calculate 1
 
         assert_equal 1, second.amount
 
